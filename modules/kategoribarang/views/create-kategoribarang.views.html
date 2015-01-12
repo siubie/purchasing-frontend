@@ -1,0 +1,19 @@
+<div>
+	<h3>Tambah Kategori Barang</h3>
+	<br/>
+	<form name="kategoriBarangForm">
+		<table class="table-bordered table-condensed"> 
+			<tr>
+				<td>Kode Kategori Barang</td>
+				<td><input type="text" ng-model="kategoriBarang.kdKategori" required /></td>
+			</tr>
+				<tr>
+				<td>Kategori Barang</td>
+				<td><input type="text" ng-model="kategoriBarang.kategori" required /></td>
+			</tr>
+		</table>
+	</form>
+	<br/>
+	<button class="btn btn-primary" type="button" ng-click="create()" ng-disabled="kategoriBarangForm.$invalid">Simpan</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</div>

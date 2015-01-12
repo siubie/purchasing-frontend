@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="purchasingApp">
+
+<head>
+	<title>SIM Purchasing</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-i18n/angular-locale_id"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="bower_components/angular-ui-bootstrap/src/datepicker/datepicker.js"></script>
+	<script src="bower_components/angular-ui-bootstrap/src/dateparser/dateparser.js"></script>
+	<script src="bower_components/angular-ui-bootstrap/src/position/position.js"></script>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<script src="app.js"></script>
+	<script src="modules/kategoribarang/config/kategoribarang.routes.js"></script>
+	<script src="modules/kategoribarang/controllers/kategoribarang.controllers.js"></script>
+	<script src="modules/kategoribarang/services/kategoribarang.services.js"></script>
+	<script src="modules/barang/config/barang.routes.js"></script>
+	<script src="modules/barang/controllers/barang.controllers.js"></script>
+	<script src="modules/barang/services/barang.services.js"></script>
+	<script src="modules/departemen/services/departemen.services.js"></script>
+	<script src="modules/permintaanbarang/config/permintaanbarang.routes.js"></script>
+	<script src="modules/permintaanbarang/controllers/permintaanbarang.controllers.js"></script>
+	<script src="modules/permintaanbarang/services/permintaanbarang.services.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<h1>SIM Purchasing</h1>
+		<div class="row">
+			<div class="col-sm-2">
+				<h4>Master</h4>
+				<ul>
+					<li><a ui-sref="listKategoriBarangState">Kategori Barang</a></li>
+					<li><a ui-sref="listBarangState">Barang</a></li>
+				</ul>
+				<h4>Transaksi</h4>
+				<ul>
+					<li><a ui-sref="listPermintaanBarangState">Permintaan Barang</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-10">
+                <div ui-view></div>
+            </div>
+		</div>
+	</div>
+</body>
+</html>

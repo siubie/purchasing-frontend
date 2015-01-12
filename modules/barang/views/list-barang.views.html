@@ -1,0 +1,38 @@
+<div ng-init="find()">
+	<h3>Master Barang</h3>
+	<br/>
+	<button type="button" ui-sref="createBarangState">Tambah Barang</button>
+	<br/>
+	<br/>
+	<table class="table-condensed">
+		<tr>
+			<td>Filter</td>
+			<td><input ng-model="query" /></td>
+		</tr>
+	</table>
+	<br/>
+	<table class="table-striped table-hover table-bordered table-condensed">
+		<tr>
+			<th><a href="" ng-click="sort='kdBarang';reverse=!reverse">Kode Barang</a></th>
+			<th><a href="" ng-click="sort='kategori.kategori';reverse=!reverse">Kategori Barang</a></th>
+			<th><a href="" ng-click="sort='namaBarang';reverse=!reverse">Nama Barang</a></th>
+			<th><a href="" ng-click="sort='alias';reverse=!reverse">Nama Alias</a></th>
+			<th><a href="" ng-click="sort='satuan';reverse=!reverse">Satuan Gudang</a></th>
+			<th><a href="" ng-click="sort='deskripsi';reverse=!reverse">Deskripsi</a></th>
+			<th>Pilihan</th>
+		</tr>
+		<tr ng-repeat="barang in barangs | filter:query | orderBy:sort:reverse">
+			<td>{{ barang.kdBarang }}</td>
+			<td>{{ barang.kategori.kategori }}</td>
+			<td>{{ barang.namaBarang }}</td>
+			<td>{{ barang.alias }}</td>
+			<td>{{ barang.satuan }}</td>
+			<td>{{ barang.deskripsi }}</td>
+			<td>
+				<button type="button" ui-sref="readBarangState({id:barang.kdBarang})">Detail</button>
+				<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>
+				<button type="button" ng-click="delete(barang)">Hapus</button>
+			</td>
+		</tr>
+	</table>
+</div>

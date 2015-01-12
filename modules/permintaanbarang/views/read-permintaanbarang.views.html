@@ -1,0 +1,50 @@
+<div ng-init="find()">
+	<h3>Detail Permintaan Barang</h3>
+	<br/>
+	<table class="table-bordered table-condensed">
+		<tr>
+			<td>Nomor Permintaan Barang</td>
+			<td>{{ permintaanBarang.noSpp }}</td>
+		</tr>
+		<tr>
+			<td>Tanggal Permintaan</td>
+			<td>{{ permintaanBarang.tglPermintaan | date:'longDate' }}</td>
+		</tr>
+		<tr>
+			<td>Jenis Permintaan</td>
+			<td>
+				<div ng-if="permintaanBarang.jenis">EMERGENCY</div>
+				<div ng-if="!permintaanBarang.jenis">RUTIN</div>
+			</td>
+		</tr>
+		<tr>
+			<td>Peminta</td>
+			<td>{{ permintaanBarang.departemen.departemen }}</td>
+		</tr>
+		<tr>
+			<td>Periode</td>
+			<td>{{ permintaanBarang.periode }}</td>
+		</tr>
+		<tr>
+			<td>Detail Barang</td>
+			<td>
+				<table class="table-bordered table-condensed">
+					<tr>
+						<th>Nama Barang</th>
+						<th>Jumlah</th>
+						<th>Tanggal Butuh</th>
+					</tr>
+					<tr ng-repeat="detail in permintaanBarang.lineItemsSppList">
+						<td>{{ detail.barang.namaBarang }}</td>
+						<td>{{ detail.jumlah }}</td>
+						<td>{{ detail.tglButuh | date:'longDate' }}</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<button type="button" ui-sref="updateBarangState({id:permintaanBarang.kdBarang})">Edit</button>
+	<button type="button" ng-click="delete()">Hapus</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</div>

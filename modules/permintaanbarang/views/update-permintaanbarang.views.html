@@ -1,0 +1,45 @@
+<div ng-init="find()">
+	<h3>Edit Barang</h3>
+	<br/>
+	<form name="permintaanBarangForm">
+		<table class="table-bordered table-condensed"> 
+			<tr>
+				<td>Nomor Permintaan Barang</td>
+				<td><input type="text" ng-model="permintaanBarang.noSpp" disabled /></td>
+			</tr>
+			<tr>
+				<td>Tanggal Permintaan</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>Jenis Permintaan</td>
+				<td>
+					<input type="checkbox" ng-model="permintaanBarang.jenis" />
+					<div ng-if="permintaanBarang.jenis">EMERGENCY</div>
+					<div ng-if="!permintaanBarang.jenis">RUTIN</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Peminta</td>
+				<td>
+					<select ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens | orderBy: 'departemen' track by departemen.departemen" required>
+						<option value="">-- Pilih Peminta --</option> 
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Periode</td>
+				<td><input type="text" ng-model="permintaanBarang.periode" required /></td>
+			</tr>
+			<tr>
+				<td>Detail Barang</td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+	<br/>
+	<button type="button" ng-click="update()" ng-disabled="permintaanBarangForm.$invalid">Simpan</button>
+	<button type="button" ng-click="delete()">Hapus</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</div>

@@ -1,0 +1,36 @@
+<div ng-init="findOne()">
+	<h3>Edit Barang</h3>
+	<br/>
+	<form name="barangForm">
+		<table class="table-bordered table-condensed"> 
+			<tr>
+				<td>Kode Barang</td>
+				<td><input type="text" ng-model="barang.kdBarang" disabled /></td>
+			</tr>
+			<tr>
+				<td>Kategori Barang</td>
+				<td><select ng-model="barang.kategori" ng-options="kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori' track by kategoriBarang.kategori" required /></select></td>
+			</tr>
+			<tr>
+				<td>Nama Barang</td>
+				<td><input type="text" ng-model="barang.namaBarang" required /></td>
+			</tr>
+			<tr>
+				<td>Nama Alias</td>
+				<td><input type="text" ng-model="barang.alias" required /></td>
+			</tr>
+						<tr>
+				<td>Satuan Gudang</td>
+				<td><input type="text" ng-model="barang.satuan" required /></td>
+			</tr>
+			<tr>
+				<td>Deskripsi</td>
+				<td><input type="text" ng-model="barang.deskripsi" required /></td>
+			</tr>
+		</table>
+	</form>
+	<br/>
+	<button type="button" ng-click="update()" ng-disabled="barangForm.$invalid">Simpan</button>
+	<button type="button" ng-click="delete()">Hapus</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</div>

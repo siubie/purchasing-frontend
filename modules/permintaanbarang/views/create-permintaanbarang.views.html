@@ -1,0 +1,106 @@
+<div>
+	<h3>Buat Permintaan Barang</h3>
+	<br/>
+	<form name="permintaanBarangForm">
+		<table class="table-bordered table-condensed"> 
+			<tr>
+				<td>Nomor Permintaan Barang</td>
+				<td><input type="text" ng-model="permintaanBarang.noSpp" required /></td>
+			</tr>
+			<tr>
+				<td>Tanggal Permintaan</td>
+				<td>
+					<div>
+						<input type="text"
+							ng-model="permintaanBarang.tglPermintaan"
+							init-date="permintaanBarang.tglPermintaan"
+							datepicker-popup="dd MMMM yyyy"
+							is-open="openedTglPermintaan"
+							min-date="permintaanBarang.tglPermintaan"
+							startingDay="1"
+							current-text="Sekarang"
+							clear-text="Hapus"
+							close-text="Tutup"
+							required
+						/>
+						<span>
+							<button type="button" ng-click="openCalendar($event,'openedTglPermintaan')">Edit</button>
+						</span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Permintaan Emergency</td>
+				<td>
+					<input type="checkbox" ng-model="permintaanBarang.jenis" />
+				</td>
+			</tr>
+			<tr>
+				<td>Peminta</td>
+				<td>
+					<select ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens | orderBy: 'departemen'" required>
+						<option value="">-- Pilih Peminta --</option> 
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Periode</td>
+				<td><input type="text" ng-model="permintaanBarang.periode" required /></td>
+			</tr>
+			<tr>
+				<td>Detail Barang</td>
+				<td>
+					<table class="table-bordered table-condensed">
+						<tr>
+							<th>Nama Barang</th>
+							<th>Jumlah</th>
+							<th>Tanggal Butuh</th>
+							<th>Pilihan</th>
+						</tr>
+						<tr>
+							<ng-form name="detailBarangForm">
+								<td>
+									<select ng-model="detailBarang.barang" ng-options="barang.kdBarang for barang in barangs | orderBy: 'barang.namaBarang'" required>
+										<option value="">-- Pilih Barang --</option>
+									</select>
+								</td>
+								<td><input type="number" ng-model="detailBarang.jumlah" min="1" required/></td>
+								<td>
+									<div>
+										<input type="text"
+											ng-model="detailBarang.tglButuh"
+											init-date="detailBarang.tglButuh"
+											datepicker-popup="dd MMMM yyyy"
+											is-open="openedTglButuh"
+											min-date="detailBarang.tglButuh"
+											startingDay="1"
+											current-text="Sekarang"
+											clear-text="Hapus"
+											close-text="Tutup"
+											required
+										/>
+										<span>
+											<button type="button" ng-click="openCalendar($event,'openedTglButuh')">Edit</button>
+										</span>
+									</div>
+								</td>
+							</ng-form>
+							detailBarangForm.$valid = {{detailBarangForm.$valid}}<br/>
+							detailBarangForm.$invalid = {{detailBarangForm.$invalid}}<br/>
+							<td><button type="button" ng-click="addDetail(detailBarang)" ng-disabled="detailBarangForm.$invalid">Tambahkan</button><td>
+						</tr>
+						<tr ng-repeat="detailBarang in permintaanBarang.lineItemsSppList">
+							<td>{{ detailBarang.barang.namaBarang }}</td>
+							<td>{{ detailBarang.jumlah }}</td>
+							<td>{{ detailBarang.tglButuh | date:'longDate' }}</td>
+							<td><button type="button" ng-click="removeDetail(listBarang)">Hapus</button></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	<form>
+	<br/>
+	<button type="button" ng-click="create()" ng-show="permintaanBarangForm.$valid">Simpan</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</div>

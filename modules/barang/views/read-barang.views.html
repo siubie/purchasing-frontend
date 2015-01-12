@@ -1,0 +1,34 @@
+<div ng-init="findOne()">
+	<h3>Detail Barang</h3>
+	<br/>
+	<table class="table-bordered table-condensed">
+		<tr>
+			<td>Kode Barang</td>
+			<td>{{ barang.kdBarang }}</td>
+		</tr>
+		<tr>
+			<td>Kategori Barang</td>
+			<td>{{ barang.kategori.kategori }}</td>
+		</tr>
+		<tr>
+			<td>Nama Barang</td>
+			<td>{{ barang.namaBarang }}</td>
+		</tr>
+		<tr>
+			<td>Nama Alias</td>
+			<td>{{ barang.alias }}</td>
+		</tr>
+		<tr>
+			<td>Satuan Gudang</td>
+			<td>{{ barang.satuan }}</td>
+		</tr>
+		<tr>
+			<td>Deskripsi</td>
+			<td>{{ barang.deskripsi }}</td>
+		</tr>
+	</table>
+	<br/>
+	<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>
+	<button type="button" ng-click="delete()">Hapus</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</div>
