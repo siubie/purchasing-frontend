@@ -8,12 +8,13 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 	$scope.barangs = barangFactory.query();
 	$scope.permintaanBarang = new permintaanBarangFactory({
 		tglPermintaan: $filter('date')(new Date(), 'dd MMMM yyyy'),
-		lineItemsSppList: new Array
+		jenis: false,
+		lineItemsSppList: new Array({
+			jumlah: 1,
+			tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
+		})
 	});
 	$scope.permintaanBarangs = permintaanBarangFactory.query();
-	$scope.detailBarang = new Object({
-		tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
-	});
 	$scope.create = function() {
 		$scope.permintaanBarang.$save(function() {
 			$state.go('listPermintaanBarangState');
@@ -46,35 +47,28 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 		};
 	};
 	$scope.find = function() {
-		$scope.barang = barangFactory.get({ id: $stateParams.id	});
+		$scope.permintaanBarang = permintaanBarangFactory.get({ id: $stateParams.id	});
 	};
-	
-	
 	$scope.addDetail = function () {
-		if ($scope.detailBarang.barang && $scope.detailBarang.jumlah && $scope.detailBarang.tglButuh) {
-			$scope.permintaanBarang.lineItemsSppList.push($scope.detailBarang);
-			$scope.detailBarang = new Object({
-				tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
-			});
-		}
-		else {
-			console.log("KOSONG");
-		};
+		$scope.permintaanBarang.lineItemsSppList.push({
+            jumlah: 1,
+			tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
+		});
 	};
-	$scope.removeDetail = function(detail) {
-		for (var i in $scope.details) {
-			if ($scope.details [i] === detail) {
-				$scope.details.splice(i, 1);
-			};
-		};
+	$scope.removeDetail = function(index) {
+		$scope.permintaanBarang.lineItemsSppList.splice(index, 1);
 	};
-	
 	$scope.back = function() {
 		$state.go('listPermintaanBarangState');
 	};
-	$scope.openCalendar = function($event,opened) {
+	$scope.openTglPermintaan = function($event, openedTglPermintaan) {
 		$event.preventDefault();
 		$event.stopPropagation();
-		$scope[opened] = true;
+		$scope.openedTglPermintaan = true;
+	};
+	$scope.openTglButuh = function($event, detailBarang) {
+		$event.preventDefault();
+		$event.stopPropagation();
+		detailBarang.openedTglButuh = true;
 	};
 }]);

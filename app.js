@@ -13,5 +13,5 @@ angular.module('purchasingApp', [
 ]);
 	
 angular.module('purchasingRoutes', []).config(function($urlRouterProvider) {
-	$urlRouterProvider.otherwise('/kategoribarang/');
+	$urlRouterProvider.otherwise('/permintaanbarang/');
 });
