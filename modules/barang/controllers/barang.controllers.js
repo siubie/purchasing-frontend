@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('barangControllers', [])
-.controller('barangController', ['$scope', '$window', '$state', '$stateParams', 'kategoriBarangFactory', 'barangFactory',
-function($scope, $window, $state, $stateParams, kategoriBarangFactory, barangFactory) {
+.controller('barangController', ['$scope', '$window', '$state', '$stateParams', 'kategoriBarangFactory', 'satuanGudangFactory', 'barangFactory',
+function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGudangFactory, barangFactory) {
 	$scope.sort = "namaBarang";
 	$scope.kategoriBarangs = kategoriBarangFactory.query();
+	$scope.satuanGudangs = satuanGudangFactory.query();
 	$scope.barang = new barangFactory();
 	$scope.create = function() {
 		$scope.barang.$save(function() {

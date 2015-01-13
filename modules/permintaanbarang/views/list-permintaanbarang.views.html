@@ -21,14 +21,14 @@
 			<th>Pilihan</th>
 		</tr>
 		<tr ng-repeat="permintaanBarang in permintaanBarangs | filter:query | orderBy:sort">
-			<td>{{ permintaanBarang.noSpp }}</td>
-			<td>{{ permintaanBarang.tglPermintaan | date:'longDate'}}</td>
+			<td ng-bind="permintaanBarang.noSpp"></td>
+			<td ng-bind="permintaanBarang.tglPermintaan | date:'longDate'"></td>
 			<td>
 				<div ng-if="permintaanBarang.jenis">EMERGENCY</div>
 				<div ng-if="!permintaanBarang.jenis">RUTIN</div>
 			</td>
-			<td>{{ permintaanBarang.departemen.departemen }}</td>
-			<td>{{ permintaanBarang.periode }}</td>
+			<td ng-bind="permintaanBarang.departemen.departemen"></td>
+			<td ng-bind="permintaanBarang.periode"></td>
 			<td>
 				<button type="button" ui-sref="readPermintaanBarangState({id:permintaanBarang.noSpp})">Detail</button>
 				<button type="button" ui-sref="updatePermintaanBarangState({id:permintaanBarang.noSpp})">Edit</button>

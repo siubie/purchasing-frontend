@@ -22,12 +22,12 @@
 			<th>Pilihan</th>
 		</tr>
 		<tr ng-repeat="barang in barangs | filter:query | orderBy:sort:reverse">
-			<td>{{ barang.kdBarang }}</td>
-			<td>{{ barang.kategori.kategori }}</td>
-			<td>{{ barang.namaBarang }}</td>
-			<td>{{ barang.alias }}</td>
-			<td>{{ barang.satuan }}</td>
-			<td>{{ barang.deskripsi }}</td>
+			<td ng-bind="barang.kdBarang"></td>
+			<td ng-bind="barang.kategori.kategori"></td>
+			<td ng-bind="barang.namaBarang"></td>
+			<td ng-bind="barang.alias"></td>
+			<td ng-bind="barang.satuan.satuan"></td>
+			<td ng-bind="barang.deskripsi"></td>
 			<td>
 				<button type="button" ui-sref="readBarangState({id:barang.kdBarang})">Detail</button>
 				<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>

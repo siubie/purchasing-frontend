@@ -99,8 +99,8 @@
 				</td>
 			</tr>
 		</table>
-	<form>
-	<br/>
-	<button type="button" ng-click="create()" ng-show="permintaanBarangForm.$valid">Simpan</button>
-	<button type="button" ng-click="back()">Kembali</button>
+		<br/>
+		<input type="submit" value="Simpan" ng-click="create()" ng-disabled="permintaanBarangForm.$invalid" />
+		<button type="button" ng-click="back()">Kembali</button>
+	</form>
 </div>

@@ -12,8 +12,8 @@
 				<td><input type="text" ng-model="kategoriBarang.kategori" required /></td>
 			</tr>
 		</table>
+		<br/>
+		<input type="submit" value="Simpan" ng-click="create()" ng-disabled="kategoriBarangForm.$invalid" />
+		<button type="button" ng-click="back()">Kembali</button>
 	</form>
-	<br/>
-	<button class="btn btn-primary" type="button" ng-click="create()" ng-disabled="kategoriBarangForm.$invalid">Simpan</button>
-	<button type="button" ng-click="back()">Kembali</button>
 </div>

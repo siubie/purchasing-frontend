@@ -21,16 +21,16 @@
 			</tr>
 						<tr>
 				<td>Satuan Gudang</td>
-				<td><input type="text" ng-model="barang.satuan" required /></td>
+				<td><select ng-model="barang.satuan" ng-options="satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy:'satuan' track by satuanGudang.satuan" required /></select></td>
 			</tr>
 			<tr>
 				<td>Deskripsi</td>
-				<td><input type="text" ng-model="barang.deskripsi" required /></td>
+				<td><input type="textarea" ng-model="barang.deskripsi" /></td>
 			</tr>
 		</table>
+		<br/>
+		<input type="submit" value="Simpan" ng-click="update()" ng-disabled="barangForm.$invalid" />
+		<button type="button" ng-click="delete()">Hapus</button>
+		<button type="button" ng-click="back()">Kembali</button>
 	</form>
-	<br/>
-	<button type="button" ng-click="update()" ng-disabled="barangForm.$invalid">Simpan</button>
-	<button type="button" ng-click="delete()">Hapus</button>
-	<button type="button" ng-click="back()">Kembali</button>
 </div>

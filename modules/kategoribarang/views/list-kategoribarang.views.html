@@ -18,8 +18,8 @@
 			<th>Pilihan</th>
 		</tr>
 		<tr ng-repeat="kategoriBarang in kategoriBarangs | filter:query | orderBy:sort:reverse">
-			<td>{{ kategoriBarang.kdKategori }}</td>
-			<td>{{ kategoriBarang.kategori }}</td>
+			<td ng-bind="kategoriBarang.kdKategori"></td>
+			<td ng-bind="kategoriBarang.kategori"></td>
 			<td>
 				<button type="button" ui-sref="readKategoriBarangState({id:kategoriBarang.kdKategori})">Detail</button>
 				<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kdKategori})">Edit</button>

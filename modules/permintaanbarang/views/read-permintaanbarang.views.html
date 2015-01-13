@@ -4,11 +4,11 @@
 	<table class="table-bordered table-condensed">
 		<tr>
 			<td>Nomor Permintaan Barang</td>
-			<td>{{ permintaanBarang.noSpp }}</td>
+			<td ng-bind="permintaanBarang.noSpp"></td>
 		</tr>
 		<tr>
 			<td>Tanggal Permintaan</td>
-			<td>{{ permintaanBarang.tglPermintaan | date:'longDate' }}</td>
+			<td ng-bind="permintaanBarang.tglPermintaan | date:'longDate'"></td>
 		</tr>
 		<tr>
 			<td>Jenis Permintaan</td>
@@ -19,11 +19,11 @@
 		</tr>
 		<tr>
 			<td>Peminta</td>
-			<td>{{ permintaanBarang.departemen.departemen }}</td>
+			<td ng-bind="permintaanBarang.departemen.departemen"></td>
 		</tr>
 		<tr>
 			<td>Periode</td>
-			<td>{{ permintaanBarang.periode }}</td>
+			<td ng-bind="permintaanBarang.periode"></td>
 		</tr>
 		<tr>
 			<td>Detail Barang</td>
@@ -35,9 +35,9 @@
 						<th>Tanggal Butuh</th>
 					</tr>
 					<tr ng-repeat="detail in permintaanBarang.lineItemsSppList">
-						<td>{{ detail.barang.namaBarang }}</td>
-						<td>{{ detail.jumlah }}</td>
-						<td>{{ detail.tglButuh | date:'longDate' }}</td>
+						<td ng-bind="detail.barang.namaBarang"></td>
+						<td ng-bind="detail.jumlah"></td>
+						<td ng-bind="detail.tglButuh | date:'longDate'"></td>
 					</tr>
 				</table>
 			</td>
