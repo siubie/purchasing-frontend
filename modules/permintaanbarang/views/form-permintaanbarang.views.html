@@ -1,0 +1,108 @@
+<h3>
+	<div ng-if="status">Tambah Permintaan Barang</div>
+	<div ng-if="!status">Edit Permintaan Barang</div>
+</h3>
+<br/>
+<form name="permintaanBarangForm" ng-init="status==true ? null : find()">
+	<table class="table-bordered table-condensed">
+		<tr>
+			<td>Nomor Permintaan Barang</td>
+			<td>
+				<input type="text" name="noSpp" ng-model="permintaanBarang.noSpp" ng-disabled="!status" required/>
+				<span ng-show="permintaanBarangForm.noSpp.$error.required && status">*</span>
+			</td>
+		</tr>
+		<tr>
+			<td>Tanggal Permintaan</td>
+			<td>
+				<input type="text"
+					name="tglPermintaan"
+					ng-model="permintaanBarang.tglPermintaan"
+					init-date="permintaanBarang.tglPermintaan"
+					datepicker-popup="dd MMMM yyyy"
+					is-open="openedTglPermintaan"
+					min-date="today"
+					startingDay="1"
+					current-text="Sekarang"
+					clear-text="Hapus"
+					close-text="Tutup"
+					required
+				/>
+				<span>
+					<button type="button" ng-click="openTglPermintaan($event)">Edit</button>
+				</span>
+				<span ng-show="permintaanBarangForm.tglPermintaan.$error.required">*</span>
+			</td>
+		</tr>
+		<tr>
+			<td>Permintaan Emergency</td>
+			<td><input type="checkbox" name="jenis" ng-model="permintaanBarang.jenis"/></td>
+		</tr>
+		<tr>
+			<td>Peminta</td>
+			<td>
+				<select name="departemen" ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens | orderBy: 'departemen.departemen' track by departemen.departemen" required>
+					<option value="">-- Pilih Peminta --</option>
+				</select>
+				<span ng-show="permintaanBarangForm.departemen.$error.required">*</span>
+			</td>
+		</tr>
+		<tr>
+			<td>Periode</td>
+			<td>
+				<input type="text" name="periode" ng-model="permintaanBarang.periode" required/>
+				<span ng-show="permintaanBarangForm.periode.$error.required">*</span>
+			</td>
+		</tr>
+		<tr>
+			<td>Detail Barang</td>
+			<td>
+				<table class="table-bordered table-condensed">
+					<tr>
+						<th>Nama Barang</th>
+						<th>Jumlah</th>
+						<th>Tanggal Butuh</th>
+						<th>Pilihan</th>
+					</tr>
+					<tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.lineItemsSppList">
+						<td>
+							<select name="barang" ng-model="detailBarang.barang" ng-options="barang.namaBarang for barang in barangs | orderBy: 'barang.namaBarang' track by barang.namaBarang" required>
+								<option value="">-- Pilih Barang --</option>
+							</select>
+							<span ng-show="detailBarangForm.barang.$error.required">*</span>
+						</td>
+						<td>
+							<input type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
+							<span ng-show="detailBarangForm.jumlah.$error.required">*</span>
+						</td>
+						<td>
+							<input type="text"
+								name="tglButuh"
+								ng-model="detailBarang.tglButuh"
+								init-date="detailBarang.tglButuh"
+								datepicker-popup="dd MMMM yyyy"
+								is-open="detailBarang.openedTglButuh"
+								min-date="today"
+								startingDay="1"
+								current-text="Sekarang"
+								clear-text="Hapus"
+								close-text="Tutup"
+								required
+							/>
+							<span>
+								<button type="button" ng-click="openTglButuh($event, detailBarang)">Edit</button>
+							</span>
+							<span ng-show="detailBarangForm.tglButuh.$error.required">*</span>
+						</td>
+						<td><button type="button" ng-click="removeDetail($index)">Hapus</button></td>
+					</tr>
+				</table>
+				<button type="button" ng-click="addDetail()">Tambah Barang</button>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<input type="submit" value="Simpan" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid || !permintaanBarang.lineItemsSppList.length"/>
+	<button type="button" ng-click="delete()" ng-show="!status">Hapus</button>
+	<button type="button" ng-click="back()">Kembali</button>
+</form>

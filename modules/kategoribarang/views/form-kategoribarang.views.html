@@ -1,0 +1,27 @@
+<h3>
+    <div ng-if="status">Tambah Kategori Barang</div>
+    <div ng-if="!status">Edit Kategori Barang</div>
+</h3>
+<br/>
+<form name="kategoriBarangForm" ng-init="status==true ? null : find()">
+    <table class="table-bordered table-condensed">
+        <tr>
+            <td>Kode Kategori Barang</td>
+            <td>
+                <input type="text" name="kdKategori" ng-model="kategoriBarang.kdKategori" ng-disabled="!status" required/>
+                <span ng-show="kategoriBarangForm.kdKategori.$error.required && status">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Kategori Barang</td>
+            <td>
+                <input type="text" name="kategori" ng-model="kategoriBarang.kategori" required/>
+                <span ng-show="kategoriBarangForm.kategori.$error.required">*</span>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <input type="submit" value="Simpan" ng-click="status==true ? create() : update()" ng-disabled="kategoriBarangForm.$invalid"/>
+    <button type="button" ng-click="delete()" ng-show="!status">Hapus</button>
+    <button type="button" ng-click="back()">Kembali</button>
+</form>

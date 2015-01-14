@@ -1,0 +1,56 @@
+<h3>
+    <div ng-if="status">Tambah Barang</div>
+    <div ng-if="!status">Edit Barang</div>
+</h3>
+<br/>
+<form name="barangForm" ng-init="status==true ? null : find()">
+    <table class="table-bordered table-condensed">
+        <tr>
+            <td>Kode Barang</td>
+            <td>
+                <input type="text" name="kdBarang" ng-model="barang.kdBarang" ng-disabled="!status" required/>
+                <span ng-show="barangForm.kdBarang.$error.required && status">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Kategori Barang</td>
+            <td>{{barang.kategori}}<br/>
+                <select name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori' track by kategoriBarang.kategori" required>
+                    <option value="" ng-init="barang.kategori=''">-- Kategori Barang --</option>
+                </select>
+                <span ng-show="barangForm.kategori.$error.required">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Barang</td>
+            <td>
+                <input type="text" name="namaBarang" ng-model="barang.namaBarang" required/>
+                <span ng-show="barangForm.namaBarang.$error.required">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Alias</td>
+            <td>
+                <input type="text" name="alias" ng-model="barang.alias"required/>
+                <span ng-show="barangForm.alias.$error.required">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Satuan Gudang</td>
+            <td>
+                <select name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy:'satuan' track by satuanGudang.satuan" required/>
+                    <option value="">-- Satuan Gudang --</option>
+                </select>
+                <span ng-show="barangForm.satuan.$error.required">*</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td><textarea name="deskripsi" ng-model="barang.deskripsi"></textarea></td>
+        </tr>
+    </table>
+    <br/>
+    <input type="submit" value="Simpan" ng-click="status==true ? create() : update()" ng-disabled="barangForm.$invalid"/>
+    <button type="button" ng-click="delete()" ng-show="!status">Hapus</button>
+    <button type="button" ng-click="back()">Kembali</button>
+</form>
