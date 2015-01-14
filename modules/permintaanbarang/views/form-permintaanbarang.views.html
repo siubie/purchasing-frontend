@@ -29,7 +29,7 @@
 					required
 				/>
 				<span>
-					<button type="button" ng-click="openTglPermintaan($event)">Edit</button>
+					<button type="button" ng-click="openCalendar($event,'openedTglPermintaan')">Edit</button>
 				</span>
 				<span ng-show="permintaanBarangForm.tglPermintaan.$error.required">*</span>
 			</td>
@@ -50,7 +50,22 @@
 		<tr>
 			<td>Periode</td>
 			<td>
-				<input type="text" name="periode" ng-model="permintaanBarang.periode" required/>
+				<input type="text"
+					name="periode"
+					ng-model="permintaanBarang.periode"
+					init-date="permintaanBarang.periode"
+					datepicker-mode="'month'"
+					datepicker-popup="MMMM yyyy"
+					datepicker-options="{minMode:'month',maxMode:'year'}"
+					is-open="openedPeriode"
+					current-text="Sekarang"
+					clear-text="Hapus"
+					close-text="Tutup"
+					required
+				/>
+				<span>
+					<button type="button" ng-click="openCalendar($event,'openedPeriode')">Edit</button>
+				</span>
 				<span ng-show="permintaanBarangForm.periode.$error.required">*</span>
 			</td>
 		</tr>

@@ -9,6 +9,7 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 	$scope.permintaanBarang = new permintaanBarangFactory({
 		tglPermintaan: $filter('date')(new Date(), 'dd MMMM yyyy'),
 		jenis: false,
+		periode: $filter('date')(new Date(), 'MMMM yyyy'),
 		lineItemsSppList: new Array({
 			jumlah: 1,
 			tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
@@ -63,10 +64,10 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 	$scope.back = function() {
 		$state.go('listPermintaanBarangState');
 	};
-	$scope.openTglPermintaan = function($event, openedTglPermintaan) {
+	$scope.openCalendar = function($event, opened) {
 		$event.preventDefault();
 		$event.stopPropagation();
-		$scope.openedTglPermintaan = true;
+		$scope[opened] = true;
 	};
 	$scope.openTglButuh = function($event, detailBarang) {
 		$event.preventDefault();

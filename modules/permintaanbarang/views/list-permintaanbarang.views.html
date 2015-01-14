@@ -29,7 +29,7 @@
 				<div ng-if="!permintaanBarang.jenis">RUTIN</div>
 			</td>
 			<td ng-bind="permintaanBarang.departemen.departemen"></td>
-			<td ng-bind="permintaanBarang.periode"></td>
+			<td ng-bind="permintaanBarang.periode | date:'MMMM yyyy'"></td>
 			<td>
 				<button type="button" ui-sref="readPermintaanBarangState({id:permintaanBarang.noSpp})">Detail</button>
 				<button type="button" ui-sref="updatePermintaanBarangState({id:permintaanBarang.noSpp})">Edit</button>
