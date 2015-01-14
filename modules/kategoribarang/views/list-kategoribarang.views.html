@@ -3,26 +3,29 @@
 <button type="button" ui-sref="createKategoriBarangState">Tambah Kategori Barang</button>
 <br/>
 <br/>
-<table class="table-condensed">
-	<tr>
-		<td>Filter</td>
-		<td><input ng-model="query"/></td>
-	</tr>
-</table>
-<br/>
-<table class="table-striped table-bordered table-hover table-condensed">
-	<tr>
-		<th><a href="" ng-click="sort='kdKategori';reverse=!reverse">Kode Kategori Barang</a></th>
-		<th><a href="" ng-click="sort='kategori';reverse=!reverse">Kategori Barang</a></th>
-		<th>Pilihan</th>
-	</tr>
-	<tr ng-repeat="kategoriBarang in kategoriBarangs | filter:query | orderBy:sort:reverse">
-		<td ng-bind="kategoriBarang.kdKategori"></td>
-		<td ng-bind="kategoriBarang.kategori"></td>
-		<td>
-			<button type="button" ui-sref="readKategoriBarangState({id:kategoriBarang.kdKategori})">Detail</button>
-			<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kdKategori})">Edit</button>
-			<button type="button" ng-click="delete(kategoriBarang)">Hapus</button>
-		</td>
-	</tr>
-</table>
+<h4 ng-show="!kategoriBarangs.length">Data Permintaan Barang Kosong</h4>
+<div ng-show="!!kategoriBarangs.length">
+	<table class="table-condensed">
+		<tr>
+			<td>Filter</td>
+			<td><input name="query" ng-model="query"/></td>
+		</tr>
+	</table>
+	<br/>
+	<table class="table-striped table-bordered table-hover table-condensed">
+		<tr>
+			<th><a href="" ng-click="sort='kdKategori';reverse=!reverse">Kode Kategori Barang</a></th>
+			<th><a href="" ng-click="sort='kategori';reverse=!reverse">Kategori Barang</a></th>
+			<th>Pilihan</th>
+		</tr>
+		<tr ng-repeat="kategoriBarang in kategoriBarangs | filter:query | orderBy:sort:reverse">
+			<td ng-bind="kategoriBarang.kdKategori"></td>
+			<td ng-bind="kategoriBarang.kategori"></td>
+			<td>
+				<button type="button" ui-sref="readKategoriBarangState({id:kategoriBarang.kdKategori})">Detail</button>
+				<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kdKategori})">Edit</button>
+				<button type="button" ng-click="delete(kategoriBarang)">Hapus</button>
+			</td>
+		</tr>
+	</table>
+</div>

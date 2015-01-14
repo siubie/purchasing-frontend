@@ -6,6 +6,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory) {
 	$scope.sort = "kategori";
 	$scope.kategoriBarangs = kategoriBarangFactory.query();
 	$scope.kategoriBarang = new kategoriBarangFactory();
+	$scope.status = $state.$current.data;
 	$scope.create = function() {
 		$scope.kategoriBarang.$save(function() {
 			$state.go('listKategoriBarangState');

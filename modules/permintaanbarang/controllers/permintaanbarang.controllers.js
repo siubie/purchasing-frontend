@@ -16,6 +16,7 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 	});
 	$scope.permintaanBarangs = permintaanBarangFactory.query();
 	$scope.today = $filter('date')(new Date(), 'dd MMMM yyyy');
+	$scope.status = $state.$current.data;
 	$scope.create = function() {
 		$scope.permintaanBarang.$save(function() {
 			$state.go('listPermintaanBarangState');

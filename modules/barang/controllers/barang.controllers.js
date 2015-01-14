@@ -8,6 +8,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGud
 	$scope.satuanGudangs = satuanGudangFactory.query();
 	$scope.barangs = barangFactory.query();
 	$scope.barang = new barangFactory();
+	$scope.status = $state.$current.data;
 	$scope.create = function() {
 		$scope.barang.$save(function() {
 			$state.go('listBarangState');
