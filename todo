@@ -1,1 +1,5 @@
 beri name="" di setiap input
+perbaiki satu list barang SPP tidak boleh ada duplikat barang
+perbaiki edit tanggal di list barang SPP harus bisa kembali ke tanggal sekarang
+pilih periode menggunakan bulan tahun datepicker
+buat frame baru sebelah kanan

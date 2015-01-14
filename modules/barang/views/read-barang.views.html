@@ -1,34 +1,32 @@
-<div ng-init="findOne()">
-	<h3>Detail Barang</h3>
-	<br/>
-	<table class="table-bordered table-condensed">
-		<tr>
-			<td>Kode Barang</td>
-			<td ng-bind="barang.kdBarang"></td>
-		</tr>
-		<tr>
-			<td>Kategori Barang</td>
-			<td ng-bind="barang.kategori.kategori"></td>
-		</tr>
-		<tr>
-			<td>Nama Barang</td>
-			<td ng-bind="barang.namaBarang"></td>
-		</tr>
-		<tr>
-			<td>Nama Alias</td>
-			<td ng-bind="barang.alias"></td>
-		</tr>
-		<tr>
-			<td>Satuan Gudang</td>
-			<td ng-bind="barang.satuan.satuan"></td>
-		</tr>
-		<tr>
-			<td>Deskripsi</td>
-			<td ng-bind="barang.deskripsi"></td>
-		</tr>
-	</table>
-	<br/>
-	<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>
-	<button type="button" ng-click="delete()">Hapus</button>
-	<button type="button" ng-click="back()">Kembali</button>
-</div>
+<h3>Detail Barang</h3>
+<br/>
+<table class="table-bordered table-condensed" ng-init="find()">
+	<tr>
+		<td>Kode Barang</td>
+		<td ng-bind="barang.kdBarang"></td>
+	</tr>
+	<tr>
+		<td>Kategori Barang</td>
+		<td ng-bind="barang.kategori.kategori"></td>
+	</tr>
+	<tr>
+		<td>Nama Barang</td>
+		<td ng-bind="barang.namaBarang"></td>
+	</tr>
+	<tr>
+		<td>Nama Alias</td>
+		<td ng-bind="barang.alias"></td>
+	</tr>
+	<tr>
+		<td>Satuan Gudang</td>
+		<td ng-bind="barang.satuan.satuan"></td>
+	</tr>
+	<tr>
+		<td>Deskripsi</td>
+		<td ng-bind="barang.deskripsi"></td>
+	</tr>
+</table>
+<br/>
+<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>
+<button type="button" ng-click="delete()">Hapus</button>
+<button type="button" ng-click="back()">Kembali</button>

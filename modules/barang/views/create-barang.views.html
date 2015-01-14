@@ -1,43 +1,41 @@
-<div>
-	<h3>Tambah Barang</h3>
-	<br/>
-	<form name="barangForm">
-		<table class="table-bordered table-condensed"> 
-			<tr>
-				<td>Kode Barang</td>
-				<td><input type="text" ng-model="barang.kdBarang" required /></td>
-			</tr>
-			<tr>
-				<td>Kategori Barang</td>
-				<td>
-					<select ng-model="barang.kategori" ng-options="kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori'" required>
-						<option value="">-- Kategori Barang --</option> 
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>Nama Barang</td>
-				<td><input type="text" ng-model="barang.namaBarang" required /></td>
-			</tr>
-			<tr>
-				<td>Nama Alias</td>
-				<td><input type="text" ng-model="barang.alias" /></td>
-			</tr>
-						<tr>
-				<td>Satuan Gudang</td>
-				<td>
-					<select ng-model="barang.satuan" ng-options="satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy:'satuan'" required />
-						<option value="">-- Satuan Gudang --</option> 
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>Deskripsi</td>
-				<td><textarea ng-model="barang.deskripsi"></textarea></td>
-			</tr>
-		</table>
-		<br/>
-		<input type="submit" value="Simpan" ng-click="create()" ng-disabled="barangForm.$invalid" />
-		<button type="button" ng-click="back()">Kembali</button>
-	</form>
-</div>
+<h3>Tambah Barang</h3>
+<br/>
+<form name="barangForm">
+    <table class="table-bordered table-condensed">
+        <tr>
+            <td>Kode Barang</td>
+            <td><input type="text" ng-model="barang.kdBarang" required/></td>
+        </tr>
+        <tr>
+            <td>Kategori Barang</td>
+            <td>
+                <select ng-model="barang.kategori" ng-options="kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori' track by kategoriBarang.kategori" required>
+                    <option value="">-- Kategori Barang --</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Barang</td>
+            <td><input type="text" ng-model="barang.namaBarang" required/></td>
+        </tr>
+        <tr>
+            <td>Nama Alias</td>
+            <td><input type="text" ng-model="barang.alias"/></td>
+        </tr>
+        <tr>
+            <td>Satuan Gudang</td>
+            <td>
+                <select ng-model="barang.satuan" ng-options="satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy:'satuan' track by satuanGudang.satuan" required/>
+                    <option value="">-- Satuan Gudang --</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td><textarea ng-model="barang.deskripsi"></textarea></td>
+        </tr>
+    </table>
+    <br/>
+    <input type="submit" value="Simpan" ng-click="create()" ng-disabled="barangForm.$invalid"/>
+    <button type="button" ng-click="back()">Kembali</button>
+</form>

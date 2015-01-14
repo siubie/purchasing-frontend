@@ -1,20 +1,18 @@
-<div ng-init="findOne()">
-	<h3>Edit Kategori Barang</h3>
-	<br/>
-	<form name="kategoriBarangForm">
-		<table class="table-bordered table-condensed"> 
-			<tr>
-				<td>Kode Kategori Barang</td>
-				<td><input type="text" ng-model="kategoriBarang.kdKategori" disabled /></td>
-		</tr>
-				<tr>
-				<td>Kategori Barang</td>
-				<td><input type="text" ng-model="kategoriBarang.kategori" required /></td>
-			</tr>
-		</table>
-		<br/>
-		<input type="submit" value="Simpan" ng-click="update()" ng-disabled="kategoriBarangForm.$invalid" />
-		<button type="button" ng-click="delete()">Hapus</button>
-		<button type="button" ng-click="back()">Kembali</button>
-	</form>
-</div>
+<h3>Tambah Kategori Barang</h3>
+<br/>
+<form name="kategoriBarangForm" ng-init="find()">
+    <table class="table-bordered table-condensed">
+        <tr>
+            <td>Kode Kategori Barang</td>
+            <td><input type="text" ng-model="kategoriBarang.kdKategori" disabled/></td>
+        </tr>
+        <tr>
+            <td>Kategori Barang</td>
+            <td><input type="text" ng-model="kategoriBarang.kategori" required/></td>
+        </tr>
+    </table>
+    <br/>
+    <input type="submit" value="Simpan" ng-click="update()" ng-disabled="kategoriBarangForm.$invalid"/>
+    <button type="button" ng-click="delete()" ng-show="update">Hapus</button>
+    <button type="button" ng-click="back()">Kembali</button>
+</form>

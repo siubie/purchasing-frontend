@@ -4,6 +4,7 @@ angular.module('kategoriBarangControllers', [])
 .controller('kategoriBarangController', ['$scope', '$window', '$state', '$stateParams', 'kategoriBarangFactory',
 function($scope, $window, $state, $stateParams, kategoriBarangFactory) {
 	$scope.sort = "kategori";
+	$scope.kategoriBarangs = kategoriBarangFactory.query();
 	$scope.kategoriBarang = new kategoriBarangFactory();
 	$scope.create = function() {
 		$scope.kategoriBarang.$save(function() {
@@ -19,7 +20,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory) {
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if ( confirmDelete )
 		{
-			if ( kategoriBarang ) { 
+			if ( kategoriBarang ) {
 				kategoriBarang.$delete();
 				for (var i in $scope.kategoriBarangs) {
 					if ($scope.kategoriBarangs [i] === kategoriBarang) {
@@ -37,10 +38,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory) {
 		};
 	};
 	$scope.find = function() {
-		$scope.kategoriBarangs = kategoriBarangFactory.query();
-	};
-	$scope.findOne = function() {
-		$scope.kategoriBarang = kategoriBarangFactory.get({ 
+		$scope.kategoriBarang = kategoriBarangFactory.get({
 			id: $stateParams.id
 		});
 	};

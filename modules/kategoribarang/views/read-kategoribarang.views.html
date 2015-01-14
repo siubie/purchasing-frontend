@@ -1,18 +1,16 @@
-<div ng-init="findOne()">
-	<h3>Detail Kategori Barang</h3>
-	<br/>
-	<table class="table-bordered table-condensed">
-		<tr>
-			<td>Kode Kategori Barang</td>
-			<td ng-bind="kategoriBarang.kdKategori"></td>
-		</tr>
-		<tr>
-			<td>Kategori Barang</td>
-			<td ng-bind="kategoriBarang.kategori"></td>
-		</tr>
-	</table>
-	<br/>
-	<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kdKategori})">Edit</button>
-	<button type="button" ng-click="delete()">Hapus</button>
-	<button type="button" ng-click="back()">Kembali</button>
-</div>
+<h3>Detail Kategori Barang</h3>
+<br/>
+<table class="table-bordered table-condensed" ng-init="find()">
+	<tr>
+		<td>Kode Kategori Barang</td>
+		<td ng-bind="kategoriBarang.kdKategori"></td>
+	</tr>
+	<tr>
+		<td>Kategori Barang</td>
+		<td ng-bind="kategoriBarang.kategori"></td>
+	</tr>
+</table>
+<br/>
+<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kdKategori})">Edit</button>
+<button type="button" ng-click="delete()">Hapus</button>
+<button type="button" ng-click="back()">Kembali</button>

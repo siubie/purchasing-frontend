@@ -6,6 +6,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGud
 	$scope.sort = "namaBarang";
 	$scope.kategoriBarangs = kategoriBarangFactory.query();
 	$scope.satuanGudangs = satuanGudangFactory.query();
+	$scope.barangs = barangFactory.query();
 	$scope.barang = new barangFactory();
 	$scope.create = function() {
 		$scope.barang.$save(function() {
@@ -21,7 +22,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGud
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if ( confirmDelete )
 		{
-			if ( barang ) { 
+			if ( barang ) {
 				barang.$delete();
 				for (var i in $scope.barangs) {
 					if ($scope.barangs [i] === barang) {
@@ -30,7 +31,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGud
 				};
 			} else {
 				$scope.barang.$delete(function() {
-					$state.go('listBarangState');			
+					$state.go('listBarangState');
 				});
 			}
 		}
@@ -39,10 +40,7 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGud
 		};
 	};
 	$scope.find = function() {
-		$scope.barangs = barangFactory.query();
-	};
-	$scope.findOne = function() {
-		$scope.barang = barangFactory.get({ 
+		$scope.barang = barangFactory.get({
 			id: $stateParams.id,
 		});
 	};

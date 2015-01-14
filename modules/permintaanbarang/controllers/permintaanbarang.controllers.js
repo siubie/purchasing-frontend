@@ -15,6 +15,7 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 		})
 	});
 	$scope.permintaanBarangs = permintaanBarangFactory.query();
+	$scope.today = $filter('date')(new Date(), 'dd MMMM yyyy');
 	$scope.create = function() {
 		$scope.permintaanBarang.$save(function() {
 			$state.go('listPermintaanBarangState');
@@ -29,7 +30,7 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if ( confirmDelete )
 		{
-			if ( permintaanBarang ) { 
+			if ( permintaanBarang ) {
 				permintaanBarang.$delete();
 				for (var i in $scope.permintaanBarangs) {
 					if ($scope.permintaanBarangs [i] === permintaanBarang) {
@@ -38,7 +39,7 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 				};
 			} else {
 				$scope.permintaanBarang.$delete(function() {
-					$state.go('listPermintaanBarangState');			
+					$state.go('listPermintaanBarangState');
 				});
 			}
 		}

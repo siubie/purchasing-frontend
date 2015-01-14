@@ -11,7 +11,7 @@ angular.module('purchasingApp', [
 	'barangRoutes', 'barangControllers', 'barangServices',
 	'permintaanBarangRoutes', 'permintaanBarangControllers', 'permintaanBarangServices'
 ]);
-	
+
 angular.module('purchasingRoutes', []).config(function($urlRouterProvider) {
 	$urlRouterProvider.otherwise('/permintaanbarang/');
 });
