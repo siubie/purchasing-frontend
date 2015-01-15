@@ -2,6 +2,8 @@
 
 angular.module('purchasingApp', [
 	'ngResource',
+	'ngSanitize',
+	'ui.select',
 	'ui.router',
 	'ui.bootstrap.datepicker',
 	'purchasingRoutes',

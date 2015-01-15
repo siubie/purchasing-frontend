@@ -21,7 +21,7 @@
 					init-date="permintaanBarang.tglPermintaan"
 					datepicker-popup="dd MMMM yyyy"
 					is-open="openedTglPermintaan"
-					min-date="today"
+					min-date="permintaanBarang.tglPermintaan"
 					startingDay="1"
 					current-text="Sekarang"
 					clear-text="Hapus"
@@ -81,9 +81,12 @@
 					</tr>
 					<tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.lineItemsSppList">
 						<td>
-							<select name="barang" ng-model="detailBarang.barang" ng-options="barang.namaBarang for barang in barangs | orderBy: 'barang.namaBarang' track by barang.namaBarang" required>
-								<option value="">-- Pilih Barang --</option>
-							</select>
+							<ui-select ng-model="detailBarang.barang" theme="bootstrap">
+								<ui-select-match placeholder="Nama Barang...">{{$select.selected.namaBarang}}</ui-select-match>
+								<ui-select-choices repeat="barang in barangs | filter: $select.search">
+									<div ng-bind-html="barang.namaBarang | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select>
 							<span ng-show="detailBarangForm.barang.$error.required">*</span>
 						</td>
 						<td>
@@ -97,7 +100,7 @@
 								init-date="detailBarang.tglButuh"
 								datepicker-popup="dd MMMM yyyy"
 								is-open="detailBarang.openedTglButuh"
-								min-date="today"
+								min-date="detailBarang.tglButuh"
 								startingDay="1"
 								current-text="Sekarang"
 								clear-text="Hapus"

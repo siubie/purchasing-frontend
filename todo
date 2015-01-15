@@ -1,6 +1,5 @@
 perbaiki satu list barang SPP tidak boleh ada duplikat barang
-pilih periode menggunakan bulan tahun datepicker
 buat frame baru sebelah kanan
 ubah model jadi kosong jika data referensi dihapus
-perbaiki edit tanggal error jika tanggal permintaan/butuh sudah terlewat
-perbaiki datepicker-options untuk tglPermintaan dan tglButuh
+cek ulang option di datepicker
+ui-select di pilih barang permintaan barang
