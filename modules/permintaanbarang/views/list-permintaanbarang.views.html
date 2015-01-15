@@ -21,7 +21,7 @@
 			<th><a href="" ng-click="sort='periode';reverse=!reverse">Periode</a></th>
 			<th>Pilihan</th>
 		</tr>
-		<tr ng-repeat="permintaanBarang in permintaanBarangs | filter:query | orderBy:sort">
+		<tr ng-repeat="permintaanBarang in permintaanBarangs | filter:query | orderBy:sort:reverse">
 			<td ng-bind="permintaanBarang.noSpp"></td>
 			<td ng-bind="permintaanBarang.tglPermintaan | date:'longDate'"></td>
 			<td>
