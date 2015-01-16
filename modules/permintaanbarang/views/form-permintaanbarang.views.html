@@ -27,9 +27,10 @@
 					clear-text="Hapus"
 					close-text="Tutup"
 					required
+					ng-disabled="!status"
 				/>
 				<span>
-					<button type="button" ng-click="openCalendar($event,'openedTglPermintaan')">Edit</button>
+					<button type="button" ng-click="openCalendar($event,'openedTglPermintaan')" ng-disabled="!status">Edit</button>
 				</span>
 				<span ng-show="permintaanBarangForm.tglPermintaan.$error.required">*</span>
 			</td>
@@ -53,10 +54,13 @@
 				<input type="text"
 					name="periode"
 					ng-model="permintaanBarang.periode"
-					init-date="permintaanBarang.periode"
 					datepicker-mode="'month'"
 					datepicker-popup="MMMM yyyy"
-					datepicker-options="{minMode:'month',maxMode:'year'}"
+					datepicker-options="{
+						minMode:'month',
+						maxMode:'year'
+					}"
+					init-date="permintaanBarang.periode"
 					is-open="openedPeriode"
 					current-text="Sekarang"
 					clear-text="Hapus"
@@ -81,13 +85,14 @@
 					</tr>
 					<tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.lineItemsSppList">
 						<td>
-							<ui-select ng-model="detailBarang.barang" theme="bootstrap">
+							<ui-select name="barang" ng-model="detailBarang.barang" theme="bootstrap" required>
 								<ui-select-match placeholder="Nama Barang...">{{$select.selected.namaBarang}}</ui-select-match>
 								<ui-select-choices repeat="barang in barangs | filter: $select.search">
 									<div ng-bind-html="barang.namaBarang | highlight: $select.search"></div>
 								</ui-select-choices>
+								<span ng-show="detailBarangForm.barang.$error.required">*</span>
 							</ui-select>
-							<span ng-show="detailBarangForm.barang.$error.required">*</span>
+
 						</td>
 						<td>
 							<input type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
@@ -100,7 +105,7 @@
 								init-date="detailBarang.tglButuh"
 								datepicker-popup="dd MMMM yyyy"
 								is-open="detailBarang.openedTglButuh"
-								min-date="detailBarang.tglButuh"
+								min-date="permintaanBarang.tglPermintaan"
 								startingDay="1"
 								current-text="Sekarang"
 								clear-text="Hapus"
