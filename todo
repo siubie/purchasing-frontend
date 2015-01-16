@@ -1,3 +1,6 @@
 perbaiki satu list barang SPP tidak boleh ada duplikat barang
 buat frame baru sebelah kanan
 ubah model jadi kosong jika data referensi dihapus
+ambil tanggal dari server
+buat grid setiap module
+buat modal untuk create read update

@@ -1,6 +1,6 @@
 <h3>
-	<div ng-if="status">Tambah Permintaan Barang</div>
-	<div ng-if="!status">Edit Permintaan Barang</div>
+	<span ng-if="status">Tambah Permintaan Barang</span>
+	<span ng-if="!status">Edit Permintaan Barang</span>
 </h3>
 <br/>
 <form name="permintaanBarangForm" ng-init="status==true ? null : find()">
@@ -8,32 +8,13 @@
 		<tr>
 			<td>Nomor Permintaan Barang</td>
 			<td>
-				<input type="text" name="noSpp" ng-model="permintaanBarang.noSpp" ng-disabled="!status" required/>
-				<span ng-show="permintaanBarangForm.noSpp.$error.required && status">*</span>
+				<input type="text" name="noSpp" ng-model="permintaanBarang.noSpp" ng-if="status" ng-disabled="!status" required/>
+				<span ng-if="!status" ng-bind="permintaanBarang.noSpp"></span>
 			</td>
 		</tr>
 		<tr>
 			<td>Tanggal Permintaan</td>
-			<td>
-				<input type="text"
-					name="tglPermintaan"
-					ng-model="permintaanBarang.tglPermintaan"
-					init-date="permintaanBarang.tglPermintaan"
-					datepicker-popup="dd MMMM yyyy"
-					is-open="openedTglPermintaan"
-					min-date="permintaanBarang.tglPermintaan"
-					startingDay="1"
-					current-text="Sekarang"
-					clear-text="Hapus"
-					close-text="Tutup"
-					required
-					ng-disabled="!status"
-				/>
-				<span>
-					<button type="button" ng-click="openCalendar($event,'openedTglPermintaan')" ng-disabled="!status">Edit</button>
-				</span>
-				<span ng-show="permintaanBarangForm.tglPermintaan.$error.required">*</span>
-			</td>
+			<td ng-bind="permintaanBarang.tglPermintaan | date:'dd MMMM yyyy'"></td>
 		</tr>
 		<tr>
 			<td>Permintaan Emergency</td>
@@ -45,13 +26,13 @@
 				<select name="departemen" ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens | orderBy: 'departemen.departemen' track by departemen.departemen" required>
 					<option value="">-- Pilih Peminta --</option>
 				</select>
-				<span ng-show="permintaanBarangForm.departemen.$error.required">*</span>
 			</td>
 		</tr>
 		<tr>
 			<td>Periode</td>
 			<td>
-				<input type="text"
+				<span ng-bind="permintaanBarang.periode | date: 'MMMM yyyy'"></span>
+				<span
 					name="periode"
 					ng-model="permintaanBarang.periode"
 					datepicker-mode="'month'"
@@ -68,9 +49,8 @@
 					required
 				/>
 				<span>
-					<button type="button" ng-click="openCalendar($event,'openedPeriode')">Edit</button>
+					<button type="button" ng-click="openCalendar($event,'openedPeriode')"><span class="glyphicon glyphicon-calendar"></span></button>
 				</span>
-				<span ng-show="permintaanBarangForm.periode.$error.required">*</span>
 			</td>
 		</tr>
 		<tr>
@@ -85,22 +65,20 @@
 					</tr>
 					<tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.lineItemsSppList">
 						<td>
-							<ui-select name="barang" ng-model="detailBarang.barang" theme="bootstrap" required>
+							<ui-select name="barang" ng-model="detailBarang.barang" required>
 								<ui-select-match placeholder="Nama Barang...">{{$select.selected.namaBarang}}</ui-select-match>
 								<ui-select-choices repeat="barang in barangs | filter: $select.search">
 									<div ng-bind-html="barang.namaBarang | highlight: $select.search"></div>
 								</ui-select-choices>
-								<span ng-show="detailBarangForm.barang.$error.required">*</span>
 							</ui-select>
 
 						</td>
 						<td>
-							<input type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
-							<span ng-show="detailBarangForm.jumlah.$error.required">*</span>
+							<input class="form-control" type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
 						</td>
 						<td>
-							<input type="text"
-								name="tglButuh"
+							<span ng-bind="detailBarang.tglButuh | date:'dd MMMM yyyy'"></span>
+							<span
 								ng-model="detailBarang.tglButuh"
 								init-date="detailBarang.tglButuh"
 								datepicker-popup="dd MMMM yyyy"
@@ -113,14 +91,13 @@
 								required
 							/>
 							<span>
-								<button type="button" ng-click="openTglButuh($event, detailBarang)">Edit</button>
+								<button type="button" ng-click="openTglButuh($event, detailBarang)"><span class="glyphicon glyphicon-calendar"></span></button>
 							</span>
-							<span ng-show="detailBarangForm.tglButuh.$error.required">*</span>
 						</td>
-						<td><button type="button" ng-click="removeDetail($index)">Hapus</button></td>
+						<td><button type="button" ng-click="removeDetail($index)"><span class="glyphicon glyphicon-minus"></span></button></td>
 					</tr>
 				</table>
-				<button type="button" ng-click="addDetail()">Tambah Barang</button>
+				<button type="button" ng-click="addDetail()"><span class="glyphicon glyphicon-plus"></span></button></button>
 			</td>
 		</tr>
 	</table>

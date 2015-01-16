@@ -1,22 +1,20 @@
 'use strict';
 
 angular.module('permintaanBarangControllers', [])
-.controller('permintaanBarangController', ['$scope', '$filter', '$window', '$state', '$stateParams', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
-function($scope, $filter, $window, $state, $stateParams, departemenFactory, barangFactory, permintaanBarangFactory) {
+.controller('permintaanBarangController', ['$scope', '$http', '$window', '$state', '$stateParams', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
+function($scope, $http, $window, $state, $stateParams, departemenFactory, barangFactory, permintaanBarangFactory, dateFactory) {
 	$scope.sort = "noSpp";
 	$scope.departemens = departemenFactory.query();
 	$scope.barangs = barangFactory.query();
 	$scope.permintaanBarang = new permintaanBarangFactory({
-		tglPermintaan: $filter('date')(new Date(), 'dd MMMM yyyy'),
+		tglPermintaan: new Date(),
 		jenis: false,
-		periode: $filter('date')(new Date(), 'MMMM yyyy'),
+		periode: new Date(),
 		lineItemsSppList: new Array({
-			jumlah: 1,
-			tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
+			tglButuh: new Date()
 		})
 	});
 	$scope.permintaanBarangs = permintaanBarangFactory.query();
-	$scope.today = $filter('date')(new Date(), 'dd MMMM yyyy'),
 	$scope.status = $state.$current.data;
 	$scope.create = function() {
 		$scope.permintaanBarang.$save(function() {
@@ -54,8 +52,7 @@ function($scope, $filter, $window, $state, $stateParams, departemenFactory, bara
 	};
 	$scope.addDetail = function () {
 		$scope.permintaanBarang.lineItemsSppList.push({
-            jumlah: 1,
-			tglButuh: $filter('date')(new Date(), 'dd MMMM yyyy')
+			tglButuh: new Date()
 		});
 	};
 	$scope.removeDetail = function(index) {
