@@ -28,9 +28,9 @@
 			<td ng-bind="barang.namaBarang"></td>
 			<td ng-bind="barang.alias"></td>
 			<td ng-bind="barang.satuan.satuan"></td>
-			<td ng-bind="barang.deskripsi"></td>
+			<td><span ng-bind="barang.deskripsi | limitTo:'40'"></span><span ng-if="barang.deskripsi.length >= 40">.....</span></td>
 			<td>
-				<button type="button" ui-sref="readBarangState({id:barang.kdBarang})">Detail</button>
+				<button type="button" ng-click="openDetail(barang)">Detail</button>
 				<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>
 				<button type="button" ng-click="delete(barang)">Hapus</button>
 			</td>

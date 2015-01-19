@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('barangControllers', [])
-.controller('barangController', ['$scope', '$window', '$state', '$stateParams', 'kategoriBarangFactory', 'satuanGudangFactory', 'barangFactory',
-function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGudangFactory, barangFactory) {
+.controller('barangController', ['$scope', '$window', '$state', '$stateParams', '$modal', 'kategoriBarangFactory', 'satuanGudangFactory', 'barangFactory',
+function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory, satuanGudangFactory, barangFactory) {
 	$scope.sort = "namaBarang";
 	$scope.kategoriBarangs = kategoriBarangFactory.query();
 	$scope.satuanGudangs = satuanGudangFactory.query();
@@ -47,5 +47,16 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory, satuanGud
 	};
 	$scope.back = function() {
 		$state.go('listBarangState');
+	};
+	$scope.openDetail = function (barang) {
+		$scope.barang = barang;
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/barang/views/read-barang.views.html',
+			backdrop: 'static',
+			scope: $scope
+		});
+	};
+	$scope.closeDetail = function(){
+		$scope.modalInstance.dismiss();
 	};
 }]);

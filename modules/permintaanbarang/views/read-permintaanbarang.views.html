@@ -1,4 +1,4 @@
-<div ng-init="find()">
+<div class="modal-body">
 	<h3>Detail Permintaan Barang</h3>
 	<br/>
 	<table class="table-bordered table-condensed">
@@ -44,7 +44,5 @@
 		</tr>
 	</table>
 	<br/>
-	<button type="button" ui-sref="updateBarangState({id:permintaanBarang.kdBarang})">Edit</button>
-	<button type="button" ng-click="delete()">Hapus</button>
-	<button type="button" ng-click="back()">Kembali</button>
+	<button type="button" ng-click="closeDetail()">Kembali</button>
 </div>

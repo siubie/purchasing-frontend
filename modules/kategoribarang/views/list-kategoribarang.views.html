@@ -22,7 +22,7 @@
 			<td ng-bind="kategoriBarang.kdKategori"></td>
 			<td ng-bind="kategoriBarang.kategori"></td>
 			<td>
-				<button type="button" ui-sref="readKategoriBarangState({id:kategoriBarang.kdKategori})">Detail</button>
+				<button type="button" ng-click="openDetail(kategoriBarang)">Detail</button>
 				<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kdKategori})">Edit</button>
 				<button type="button" ng-click="delete(kategoriBarang)">Hapus</button>
 			</td>

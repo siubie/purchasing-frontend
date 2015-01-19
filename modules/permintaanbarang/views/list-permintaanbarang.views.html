@@ -31,7 +31,7 @@
 			<td ng-bind="permintaanBarang.departemen.departemen"></td>
 			<td ng-bind="permintaanBarang.periode | date:'MMMM yyyy'"></td>
 			<td>
-				<button type="button" ui-sref="readPermintaanBarangState({id:permintaanBarang.noSpp})">Detail</button>
+				<button type="button" ng-click="openDetail(permintaanBarang)">Detail</button>
 				<button type="button" ui-sref="updatePermintaanBarangState({id:permintaanBarang.noSpp})">Edit</button>
 				<button type="button" ng-click="delete(permintaanBarang)">Hapus</button>
 			</td>

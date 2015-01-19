@@ -14,11 +14,6 @@ angular.module('kategoriBarangRoutes', [])
 		controller: 'kategoriBarangController',
 		data: true
 	})
-	.state('readKategoriBarangState', {
-		url: '/kategoribarang/:id/',
-		templateUrl: 'modules/kategoribarang/views/read-kategoribarang.views.html',
-		controller: 'kategoriBarangController'
-	})
 	.state('updateKategoriBarangState', {
 		url: '/kategoribarang/:id/update',
 		templateUrl: 'modules/kategoribarang/views/form-kategoribarang.views.html',

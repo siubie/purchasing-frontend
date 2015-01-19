@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('kategoriBarangControllers', [])
-.controller('kategoriBarangController', ['$scope', '$window', '$state', '$stateParams', 'kategoriBarangFactory',
-function($scope, $window, $state, $stateParams, kategoriBarangFactory) {
+.controller('kategoriBarangController', ['$scope', '$window', '$state', '$stateParams', '$modal', 'kategoriBarangFactory',
+function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory) {
 	$scope.sort = "kategori";
 	$scope.kategoriBarangs = kategoriBarangFactory.query();
 	$scope.kategoriBarang = new kategoriBarangFactory();
@@ -46,4 +46,16 @@ function($scope, $window, $state, $stateParams, kategoriBarangFactory) {
 	$scope.back = function() {
 		$state.go('listKategoriBarangState');
 	};
+	$scope.openDetail = function (kategoriBarang) {
+		$scope.kategoriBarang = kategoriBarang;
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/kategoribarang/views/read-kategoribarang.views.html',
+			size: 'md',
+			backdrop: 'static',
+			scope: $scope
+		});
+	};
+	$scope.closeDetail = function(){
+		$scope.modalInstance.dismiss();
+	}
 }]);

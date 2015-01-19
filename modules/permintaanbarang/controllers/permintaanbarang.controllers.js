@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('permintaanBarangControllers', [])
-.controller('permintaanBarangController', ['$scope', '$http', '$window', '$state', '$stateParams', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
-function($scope, $http, $window, $state, $stateParams, departemenFactory, barangFactory, permintaanBarangFactory, dateFactory) {
+.controller('permintaanBarangController', ['$scope', '$http', '$window', '$state', '$stateParams', '$modal', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
+function($scope, $http, $window, $state, $stateParams, $modal, departemenFactory, barangFactory, permintaanBarangFactory, dateFactory) {
 	$scope.sort = "noSpp";
 	$scope.departemens = departemenFactory.query();
 	$scope.barangs = barangFactory.query();
@@ -70,5 +70,16 @@ function($scope, $http, $window, $state, $stateParams, departemenFactory, barang
 		$event.preventDefault();
 		$event.stopPropagation();
 		detailBarang.openedTglButuh = true;
+	};
+	$scope.openDetail = function (permintaanBarang) {
+		$scope.permintaanBarang = permintaanBarang;
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/permintaanbarang/views/read-permintaanbarang.views.html',
+			backdrop: 'static',
+			scope: $scope
+		});
+	};
+	$scope.closeDetail = function(){
+		$scope.modalInstance.dismiss();
 	};
 }]);
