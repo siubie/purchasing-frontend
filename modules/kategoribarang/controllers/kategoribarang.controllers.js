@@ -57,5 +57,5 @@ function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory) {
 	};
 	$scope.closeDetail = function(){
 		$scope.modalInstance.dismiss();
-	}
+	};
 }]);
