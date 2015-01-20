@@ -14,24 +14,24 @@
 	<br/>
 	<table class="table-striped table-hover table-bordered table-condensed" ng-init>
 		<tr>
-			<th><a href="" ng-click="sort='kdBarang';reverse=!reverse">Kode Barang</a></th>
-			<th><a href="" ng-click="sort='kategori.kategori';reverse=!reverse">Kategori Barang</a></th>
-			<th><a href="" ng-click="sort='namaBarang';reverse=!reverse">Nama Barang</a></th>
+			<th><a href="" ng-click="sort='kode';reverse=!reverse">Kode Barang</a></th>
+			<th><a href="" ng-click="sort='kategori';reverse=!reverse">Kategori Barang</a></th>
+			<th><a href="" ng-click="sort='nama';reverse=!reverse">Nama Barang</a></th>
 			<th><a href="" ng-click="sort='alias';reverse=!reverse">Nama Alias</a></th>
 			<th><a href="" ng-click="sort='satuan.satuan';reverse=!reverse">Satuan Gudang</a></th>
 			<th><a href="" ng-click="sort='deskripsi';reverse=!reverse">Deskripsi</a></th>
 			<th>Pilihan</th>
 		</tr>
 		<tr ng-repeat="barang in barangs | filter:query | orderBy:sort:reverse">
-			<td ng-bind="barang.kdBarang"></td>
-			<td ng-bind="barang.kategori.kategori"></td>
-			<td ng-bind="barang.namaBarang"></td>
+			<td ng-bind="barang.kode"></td>
+			<td ng-bind="barang.kategori"></td>
+			<td ng-bind="barang.nama"></td>
 			<td ng-bind="barang.alias"></td>
 			<td ng-bind="barang.satuan.satuan"></td>
 			<td><span ng-bind="barang.deskripsi | limitTo:'40'"></span><span ng-if="barang.deskripsi.length >= 40">.....</span></td>
 			<td>
 				<button type="button" ng-click="openDetail(barang)">Detail</button>
-				<button type="button" ui-sref="updateBarangState({id:barang.kdBarang})">Edit</button>
+				<button type="button" ui-sref="updateBarangState({id:barang.kode})">Edit</button>
 				<button type="button" ng-click="delete(barang)">Hapus</button>
 			</td>
 		</tr>

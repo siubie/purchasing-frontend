@@ -3,6 +3,7 @@
 angular.module('purchasingApp', [
 	'ngResource',
 	'ngSanitize',
+	'ngTable',
 	'ui.select',
 	'ui.router',
 	'ui.bootstrap.transition',

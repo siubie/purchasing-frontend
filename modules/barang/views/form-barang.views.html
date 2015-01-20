@@ -8,24 +8,21 @@
         <tr>
             <td>Kode Barang</td>
             <td>
-                <input type="text" name="kdBarang" ng-model="barang.kdBarang" ng-disabled="!status" required/>
-                <span ng-show="barangForm.kdBarang.$error.required && status">*</span>
+                <input type="text" name="kode" ng-model="barang.kode" ng-disabled="!status" required/>
             </td>
         </tr>
         <tr>
             <td>Kategori Barang</td>
-            <td>{{barang.kategori}}<br/>
-                <select name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori' track by kategoriBarang.kategori" required>
-                    <option value="" ng-init="barang.kategori=''">-- Kategori Barang --</option>
+            <td>
+                <select name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori'" required>
+                    <option value="">-- Kategori Barang --</option>
                 </select>
-                <span ng-show="barangForm.kategori.$error.required">*</span>
             </td>
         </tr>
         <tr>
             <td>Nama Barang</td>
             <td>
-                <input type="text" name="namaBarang" ng-model="barang.namaBarang" required/>
-                <span ng-show="barangForm.namaBarang.$error.required">*</span>
+                <input type="text" name="nama" ng-model="barang.nama" required/>
             </td>
         </tr>
         <tr>

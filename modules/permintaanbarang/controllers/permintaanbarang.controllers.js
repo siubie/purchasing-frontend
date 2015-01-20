@@ -3,15 +3,15 @@
 angular.module('permintaanBarangControllers', [])
 .controller('permintaanBarangController', ['$scope', '$http', '$window', '$state', '$stateParams', '$modal', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
 function($scope, $http, $window, $state, $stateParams, $modal, departemenFactory, barangFactory, permintaanBarangFactory, dateFactory) {
-	$scope.sort = "noSpp";
+	$scope.sort = "nomor";
 	$scope.departemens = departemenFactory.query();
 	$scope.barangs = barangFactory.query();
 	$scope.permintaanBarang = new permintaanBarangFactory({
-		tglPermintaan: new Date(),
+		tanggal: new Date(),
 		jenis: false,
 		periode: new Date(),
-		lineItemsSppList: new Array({
-			tglButuh: new Date()
+		sppItemsList: new Array({
+			tanggalButuh: new Date()
 		})
 	});
 	$scope.permintaanBarangs = permintaanBarangFactory.query();
@@ -51,12 +51,12 @@ function($scope, $http, $window, $state, $stateParams, $modal, departemenFactory
 		$scope.permintaanBarang = permintaanBarangFactory.get({ id: $stateParams.id	});
 	};
 	$scope.addDetail = function () {
-		$scope.permintaanBarang.lineItemsSppList.push({
-			tglButuh: new Date()
+		$scope.permintaanBarang.sppItemsList.push({
+			tanggalButuh: new Date()
 		});
 	};
 	$scope.removeDetail = function(index) {
-		$scope.permintaanBarang.lineItemsSppList.splice(index, 1);
+		$scope.permintaanBarang.sppItemsList.splice(index, 1);
 	};
 	$scope.back = function() {
 		$state.go('listPermintaanBarangState');
@@ -66,10 +66,10 @@ function($scope, $http, $window, $state, $stateParams, $modal, departemenFactory
 		$event.stopPropagation();
 		$scope[opened] = true;
 	};
-	$scope.openTglButuh = function($event, detailBarang) {
+	$scope.opentanggalButuh = function($event, detailBarang) {
 		$event.preventDefault();
 		$event.stopPropagation();
-		detailBarang.openedTglButuh = true;
+		detailBarang.openedTanggalButuh = true;
 	};
 	$scope.openDetail = function (permintaanBarang) {
 		$scope.permintaanBarang = permintaanBarang;

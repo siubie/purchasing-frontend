@@ -3,7 +3,7 @@
 angular.module('barangControllers', [])
 .controller('barangController', ['$scope', '$window', '$state', '$stateParams', '$modal', 'kategoriBarangFactory', 'satuanGudangFactory', 'barangFactory',
 function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory, satuanGudangFactory, barangFactory) {
-	$scope.sort = "namaBarang";
+	$scope.sort = "nama";
 	$scope.kategoriBarangs = kategoriBarangFactory.query();
 	$scope.satuanGudangs = satuanGudangFactory.query();
 	$scope.barangs = barangFactory.query();
