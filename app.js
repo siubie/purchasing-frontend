@@ -6,6 +6,7 @@ angular.module('purchasingApp', [
 	'ngTable',
 	'ui.select',
 	'ui.router',
+	'ui.bootstrap.pagination',
 	'ui.bootstrap.transition',
 	'ui.bootstrap.modal',
 	'ui.bootstrap.datepicker',
@@ -18,5 +19,5 @@ angular.module('purchasingApp', [
 ]);
 
 angular.module('purchasingRoutes', []).config(function($urlRouterProvider) {
-	$urlRouterProvider.otherwise('/permintaanbarang/');
+	$urlRouterProvider.otherwise('/kategoribarang/');
 });
