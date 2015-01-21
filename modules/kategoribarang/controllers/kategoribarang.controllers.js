@@ -63,6 +63,11 @@ function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory) {
 			kategoriBarang.selected=$scope.selectedAll;
 		});
 	};
+	$scope.uncheckAll = function(selected){
+		if(!selected){
+			$scope.selectedAll=false;
+		};
+	};
 	$scope.deleteSelected = function(){
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if (confirmDelete){
