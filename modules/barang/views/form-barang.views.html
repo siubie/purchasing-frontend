@@ -36,7 +36,7 @@ barang : {{barang}}
         <tr>
             <td>Satuan Gudang</td>
             <td>
-                <select name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy:'satuan' track by satuanGudang.satuan" required/>
+                <select name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy:'satuan'" required/>
                     <option value="">-- Satuan Gudang --</option>
                 </select>
                 <span ng-show="barangForm.satuan.$error.required">*</span>

@@ -27,7 +27,7 @@
 			<td ng-bind="barang.kategori"></td>
 			<td ng-bind="barang.nama"></td>
 			<td ng-bind="barang.alias"></td>
-			<td ng-bind="barang.satuan.satuan"></td>
+			<td ng-bind="barang.satuan"></td>
 			<td><span ng-bind="barang.deskripsi | limitTo:'40'"></span><span ng-if="barang.deskripsi.length >= 40">.....</span></td>
 			<td>
 				<button type="button" ng-click="openDetail(barang)">Detail</button>
