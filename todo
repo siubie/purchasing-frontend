@@ -1,5 +1,6 @@
 perbaiki satu list barang SPP tidak boleh ada duplikat barang
-buat frame baru sebelah kanan
 ubah model jadi kosong jika data referensi dihapus
-ambil tanggal dari server
-buat grid setiap module
+tabel dan pagination di barang dan spp
+grid di setiap modul
+splice setelah delete success
+action untuk selected

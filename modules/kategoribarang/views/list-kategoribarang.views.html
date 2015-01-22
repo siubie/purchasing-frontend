@@ -13,8 +13,7 @@
 		</tr>
 	</table>
 	<br/>
-	<!-- <div ng-bind="kategoriBarangs | filter:{selected:true} | json"></div>
-	<br/> -->
+	<!-- <div ng-bind="kategoriBarangs | filter:{selected:true} | json"></div><br/> -->
 	<table class="table-striped table-bordered table-hover table-condensed" ng-init="currentPage=1">
 		<tr>
 			<th rowspan="2"><input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=false" ng-change="checkAll()"></th>
@@ -26,7 +25,7 @@
 			<td><input type="text" ng-model="search.kode"/></td>
 			<td><input type="text" ng-model="search.kategori"/></td>
 		</tr>
-		<tr ng-repeat="kategoriBarang in kategoriBarangs.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage) | filter:search | orderBy:sort:reverse">
+		<tr ng-repeat="kategoriBarang in filtered = (kategoriBarangs | filter:search:false) | orderBy:sort:reverse | startFrom:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage ">
 			<td><input type="checkbox" ng-model="kategoriBarang.selected" ng-change="uncheckAll(kategoriBarang.selected)"></td>
 			<td ng-bind="kategoriBarang.kode"></td>
 			<td ng-bind="kategoriBarang.kategori"></td>
@@ -40,7 +39,7 @@
 	<div>
 		<pagination
 			class="pagination-sm"
-			total-items="kategoriBarangs.length"
+			total-items="filtered.length"
 			ng-model="currentPage"
 			items-per-page="itemsPerPage"
 			max-size="5"

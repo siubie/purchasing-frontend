@@ -59,7 +59,7 @@ function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory) {
 		$scope.modalInstance.dismiss();
 	};
 	$scope.checkAll = function(){
-		angular.forEach($scope.kategoriBarangs, function(kategoriBarang){
+		angular.forEach($scope.filtered, function(kategoriBarang){
 			kategoriBarang.selected=$scope.selectedAll;
 		});
 	};
@@ -71,9 +71,14 @@ function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory) {
 	$scope.deleteSelected = function(){
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if (confirmDelete){
-			var i = $scope.kategoriBarangs.length
+			var i = $scope.kategoriBarangs.length;
 			while (i--) {
 				if ($scope.kategoriBarangs[i].selected){
+					// var status = $scope.kategoriBarangs[i].$delete();
+					// console.log("status : ",status);
+					// status.$promise.then(function (result){
+						// console.log("result : ",result);
+					// })
 					$scope.kategoriBarangs[i].$delete();
 					$scope.kategoriBarangs.splice(i, 1);
 				};
