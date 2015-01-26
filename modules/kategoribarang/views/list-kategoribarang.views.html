@@ -1,6 +1,7 @@
+<span ng-init="load()"></span>
 <h3>Master Kategori Barang</h3>
 <br/>
-<button type="button" ui-sref="createKategoriBarangState">Tambah Kategori Barang</button>
+<button type="button" ng-click="openCreate()">Tambah Kategori Barang</button>
 <button type="button" ng-click="deleteSelected()">Hapus Pilihan</button>
 <br/>
 <br/>
@@ -14,6 +15,7 @@
 	</table>
 	<br/>
 	<!-- <div ng-bind="kategoriBarangs | filter:{selected:true} | json"></div><br/> -->
+	<!-- <div ng-repeat="kategoriBarang in kategoriBarangs">{{$index}} : {{kategoriBarang | json}}</div> -->
 	<table class="table-striped table-bordered table-hover table-condensed" ng-init="currentPage=1">
 		<tr>
 			<th rowspan="2"><input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=false" ng-change="checkAll()"></th>
@@ -27,11 +29,11 @@
 		</tr>
 		<tr ng-repeat="kategoriBarang in filtered = (kategoriBarangs | filter:search:false) | orderBy:sort:reverse | startFrom:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage ">
 			<td><input type="checkbox" ng-model="kategoriBarang.selected" ng-change="uncheckAll(kategoriBarang.selected)"></td>
-			<td ng-bind="kategoriBarang.kode"></td>
-			<td ng-bind="kategoriBarang.kategori"></td>
+			<td ng-bind="::kategoriBarang.kode"></td>
+			<td ng-bind="::kategoriBarang.kategori"></td>
 			<td>
-				<button type="button" ng-click="openDetail(kategoriBarang)">Detail</button>
-				<button type="button" ui-sref="updateKategoriBarangState({id:kategoriBarang.kode})">Edit</button>
+				<button type="button" ng-click="openRead(kategoriBarang)">Detail</button>
+				<button type="button" ng-click="openUpdate(kategoriBarang)">Edit</button>
 				<button type="button" ng-click="delete(kategoriBarang)">Hapus</button>
 			</td>
 		</tr>

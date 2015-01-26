@@ -4,3 +4,6 @@ tabel dan pagination di barang dan spp
 grid di setiap modul
 splice setelah delete success
 action untuk selected
+unit test
+hindari $scope di dalam method
+buat directive untuk setiap duplikat proses
