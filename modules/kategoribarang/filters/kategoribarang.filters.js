@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('kategoriBarangFilters', [])
+angular.module('kategoriBarang.filters', [])
 .filter('startFrom', function() {
     return function(input, start) {
         start = +start;

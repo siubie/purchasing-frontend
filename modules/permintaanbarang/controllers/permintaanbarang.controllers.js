@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('permintaanBarangControllers', [])
+angular.module('permintaanBarang.controllers', [])
 .controller('permintaanBarangController', ['$scope', '$http', '$window', '$state', '$stateParams', '$modal', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
 function($scope, $http, $window, $state, $stateParams, $modal, departemenFactory, barangFactory, permintaanBarangFactory, dateFactory) {
 	$scope.sort = "nomor";

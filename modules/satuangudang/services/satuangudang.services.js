@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('satuanGudangServices', [])
+angular.module('satuanGudang.services', [])
 .factory('satuanGudangFactory', ['$resource', function($resource) {
 	return $resource('http://104.155.237.40:3000/purchasing/satuangudang/:id', {}, {
 		'get': {method:'GET', params:{id: '@satuan'}},

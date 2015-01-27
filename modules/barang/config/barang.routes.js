@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('barangRoutes', [])
+angular.module('barang.routes', [])
 .config(function($stateProvider) {
 	$stateProvider
 	.state('listBarangState', {

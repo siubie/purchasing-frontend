@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('permintaanBarangRoutes', [])
+angular.module('permintaanBarang.routes', [])
 .config(function($stateProvider) {
 	$stateProvider
 	.state('listPermintaanBarangState', {

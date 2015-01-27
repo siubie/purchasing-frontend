@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('purchasingApp', [
 	'ngAnimate',
 	'ngResource',
@@ -12,14 +10,15 @@ angular.module('purchasingApp', [
 	'ui.bootstrap.datepicker',
 	'ui.bootstrap.progressbar',
 	'angular-loading-bar',
-	'purchasingRoutes',
-	'departemenServices',
-	'satuanGudangServices',
-	'kategoriBarangRoutes', 'kategoriBarangControllers', 'kategoriBarangServices', 'kategoriBarangFilters',
-	'barangRoutes', 'barangControllers', 'barangServices',
-	'permintaanBarangRoutes', 'permintaanBarangControllers', 'permintaanBarangServices'
+	'purchasing.routes',
+	'kategoriBarang',
+	'departemen',
+	'satuanGudang',
+	'permintaanBarang',
+	'barang',
 ]);
 
-angular.module('purchasingRoutes', []).config(function($urlRouterProvider) {
+angular.module('purchasing.routes', [])
+.config(function($urlRouterProvider) {
 	$urlRouterProvider.otherwise('/kategoribarang/');
 });

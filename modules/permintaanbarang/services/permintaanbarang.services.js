@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('permintaanBarangServices', [])
+angular.module('permintaanBarang.services', [])
 .factory('permintaanBarangFactory', ['$resource', function($resource) {
 	return $resource('http://104.155.237.40:3000/purchasing/permintaanbarang/:id', {}, {
 		'get': {method:'GET', params:{id: '@nomor'}},

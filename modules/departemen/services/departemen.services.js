@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('departemenServices', [])
+angular.module('departemen.services', [])
 .factory('departemenFactory', ['$resource', function($resource) {
 	return $resource('http://104.155.237.40:3000/purchasing/departemen/:id', {}, {
 		'get': {method:'GET', params:{id: '@idDept'}},
