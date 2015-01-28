@@ -2,3 +2,8 @@ input.ng-dirty.ng-invalid {
     color: white;
     background-color: grey
 }
+
+.scroll{
+    height: 290px;
+    overflow: auto
+}

@@ -2,16 +2,16 @@
 	<h3>Detail Kategori Barang</h3>
 	<table class="table-bordered table-condensed">
 		<tr>
-			<td>Kode Kategori Barang</td>
+			<td>Kode</td>
 			<td ng-bind="kategoriBarang.kode"></td>
 		</tr>
 		<tr>
-			<td>Kategori Barang</td>
+			<td>Kategori</td>
 			<td ng-bind="kategoriBarang.kategori"></td>
 		</tr>
 	</table>
 	<br/>
-	<button type="button" ng-click="openUpdate(kategoriBarang)">Edit</button>
-	<button type="button" ng-click="delete(kategoriBarang)">Hapus</button>
-	<button type="button" ng-click="close()">Kembali</button>
+	<button class="btn btn-default" type="button" ng-click="openUpdate(kategoriBarang)">Edit</button>
+	<button class="btn btn-default" type="button" ng-click="delete(kategoriBarang)">Hapus</button>
+	<button class="btn btn-default" type="button" ng-click="close()">Kembali</button>
 </div>
