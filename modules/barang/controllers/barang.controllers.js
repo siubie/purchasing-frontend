@@ -1,60 +1,126 @@
-angular.module('barang.controllers', [])
-.controller('barangController', ['$scope', '$window', '$state', '$stateParams', '$modal', 'kategoriBarangFactory', 'satuanGudangFactory', 'barangFactory',
-function($scope, $window, $state, $stateParams, $modal, kategoriBarangFactory, satuanGudangFactory, barangFactory) {
-	$scope.sort = "nama";
-	$scope.kategoriBarangs = kategoriBarangFactory.query();
-	$scope.satuanGudangs = satuanGudangFactory.query();
-	$scope.barangs = barangFactory.query();
+angular.module('barang.controllers',[])
+.controller('barangController', ['$scope', '$window', '$state', '$modal', '$filter', 'barangFactory', 'kategoriBarangFactory',
+function($scope, $window, $state, $modal, $filter, barangFactory, kategoriBarangFactory) {
+	$scope.Math = window.Math;
+	$scope.sort = "kode";
 	$scope.barang = new barangFactory();
-	$scope.status = $state.$current.data;
-	$scope.create = function() {
-		$scope.barang.$save(function() {
-			$state.go('listBarangState');
+	$scope.load = function(){
+		$scope.kategoriBarangs = kategoriBarangFactory.query();
+		$scope.barangs = barangFactory.query();
+	};
+	$scope.create = function(){
+		$scope.barang.$save(function(){
+			$scope.load();
+			$scope.close();
 		});
 	};
-	$scope.update = function() {
-		$scope.barang.$update(function() {
-			$state.go('listBarangState');
+	$scope.update = function(){
+		$scope.barang.$update(function(){
+			$scope.load();
+			$scope.close();
 		});
 	};
 	$scope.delete = function(barang) {
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if ( confirmDelete )
 		{
-			if ( barang ) {
-				barang.$delete();
-				for (var i in $scope.barangs) {
-					if ($scope.barangs [i] === barang) {
-						$scope.barangs.splice(i, 1);
-					};
-				};
-			} else {
-				$scope.barang.$delete(function() {
-					$state.go('listBarangState');
-				});
-			}
+			barang.$delete(function(){
+				$scope.load();
+				$scope.close();
+			});
 		}
-		else {
-			$state.go('listBarangState');
-		};
 	};
-	$scope.find = function() {
-		$scope.barang = barangFactory.get({
-			id: $stateParams.id,
-		});
+	$scope.close = function(){
+		if ($scope.modalInstance)
+		{
+			$scope.modalInstance.dismiss();
+		}
 	};
-	$scope.back = function() {
-		$state.go('listBarangState');
-	};
-	$scope.openDetail = function (barang) {
-		$scope.barang = barang;
+	$scope.openCreate = function(){
+		$scope.close();
+		$scope.status = true;
+		$scope.barang = new barangFactory();
 		$scope.modalInstance = $modal.open({
-			templateUrl: 'modules/barang/views/read-barang.views.html',
+			templateUrl: 'modules/barang/views/form-barang.views.html',
+			size: 'md',
 			backdrop: 'static',
 			scope: $scope
 		});
 	};
-	$scope.closeDetail = function(){
-		$scope.modalInstance.dismiss();
+	$scope.openRead = function(barang){
+		$scope.close();
+		$scope.barang = angular.copy(barang);
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/barang/views/read-barang.views.html',
+			size: 'md',
+			backdrop: 'static',
+			scope: $scope
+		});
 	};
+	$scope.openUpdate = function(barang){
+		$scope.close();
+		$scope.status = false;
+		$scope.barangOld = angular.copy(barang);
+		$scope.barang = angular.copy(barang);
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/barang/views/form-barang.views.html',
+			size: 'md',
+			backdrop: 'static',
+			scope: $scope
+		});
+	};
+	$scope.checkDisplayed = function(){
+		angular.forEach($scope.displayed, function(barang){
+			barang.selected=$scope.selectedAll;
+		});
+	};
+	$scope.uncheckDisplayed = function(selected){
+		if(!selected){
+			$scope.selectedAll=false;
+		}
+	};
+	$scope.uncheckAll = function(){
+		angular.forEach($scope.selected, function(barang){
+			barang.selected=false;
+		});
+	};
+	$scope.deleteSelected = function(){
+		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
+		if (confirmDelete){
+			var spliceSelected = function(i){
+				$scope.barangs.splice(i, 1);
+			};
+			var i = $scope.selected.length;
+			while (i--){
+				if ($scope.selected[i].selected){
+					$scope.selected[i].$delete(spliceSelected(i));
+				}
+			}
+		}
+	};
+	$scope.$watch('barangs',function(){
+		$scope.selected = $filter('filter')($scope.barangs, {selected:'true'});
+	},true);
+	$scope.$watchCollection('search',function(){
+		$scope.currentPage=1;
+	});
+	$scope.$watchCollection('displayed',function(){
+		if($scope.selectedAll){
+			$scope.selectedAll = false;
+		}
+	});
+	$scope.$watch('displayed',function(){
+		$scope.selectedAll = true;
+		angular.forEach($scope.displayed, function(barang){
+			if(!barang.selected){
+				$scope.selectedAll = false;
+			}
+		});
+	},true);
+	$scope.$watch('currentPage',function(){
+		if($scope.currentPage>$scope.maxPage)
+		{
+			$scope.currentPage=$scope.maxPage;
+		}
+	});
 }]);

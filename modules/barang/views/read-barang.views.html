@@ -1,25 +1,25 @@
 <div class="modal-body">
+	<button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()"><span class="glyphicon glyphicon-remove"></span></button>
 	<h3>Detail Barang</h3>
-	<br/>
 	<table class="table-bordered table-condensed">
 		<tr>
-			<td>Kode Barang</td>
+			<td>Kode</td>
 			<td ng-bind="barang.kode"></td>
 		</tr>
 		<tr>
-			<td>Kategori Barang</td>
+			<td>Kategori</td>
 			<td ng-bind="barang.kategori"></td>
 		</tr>
 		<tr>
-			<td>Nama Barang</td>
+			<td>Nama</td>
 			<td ng-bind="barang.nama"></td>
 		</tr>
 		<tr>
-			<td>Nama Alias</td>
+			<td>Alias</td>
 			<td ng-bind="barang.alias"></td>
 		</tr>
 		<tr>
-			<td>Satuan Gudang</td>
+			<td>Satuan</td>
 			<td ng-bind="barang.satuan"></td>
 		</tr>
 		<tr>
@@ -28,5 +28,12 @@
 		</tr>
 	</table>
 	<br/>
-	<button type="button" ng-click="closeDetail()">Kembali</button>
+	<button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(barang)" ng-disabled="barangForm.$invalid">
+		<span class="glyphicon glyphicon-floppy-disk"></span>
+		<span> Ubah</span>
+	</button>
+	<button class="btn btn-default btn-sm" type="button" ng-click="delete(barang)" ng-show="!status">
+		<span class="glyphicon glyphicon-trash"></span>
+		<span> Hapus</span>
+	</button>
 </div>
