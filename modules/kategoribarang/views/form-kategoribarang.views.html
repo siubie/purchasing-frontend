@@ -1,28 +1,23 @@
 <div class="modal-body">
-    <h3>
-        <div ng-if="status">Tambah Kategori Barang</div>
-        <div ng-if="!status">Edit Kategori Barang</div>
-    </h3>
+    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()"><span class="glyphicon glyphicon-remove"></span></button>
+    <div ng-show="status"><h3>Tambah Kategori Barang</h3></div>
+    <div ng-show="!status"><h3>Ubat Kategori Barang</h3></div>
     <form name="kategoriBarangForm">
-        <table class="table-bordered table-condensed">
-            <tr>
-                <td>Kode</td>
-                <td>
-                    <input type="text" name="kode" ng-model="kategoriBarang.kode" ng-disabled="!status" required/>
-                    <span ng-show="kategoriBarangForm.kode.$error.required && status">*</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Kategori</td>
-                <td>
-                    <input type="text" name="kategori" ng-model="kategoriBarang.kategori" required/>
-                    <span ng-show="kategoriBarangForm.kategori.$error.required">*</span>
-                </td>
-            </tr>
-        </table>
-        <br/>
-        <input class="btn btn-default" type="submit" value="Simpan" ng-click="status==true ? create() : update()" ng-disabled="kategoriBarangForm.$invalid"/>
-        <button class="btn btn-default" type="button" ng-click="delete(kategoriBarang)" ng-show="!status">Hapus</button>
-        <button class="btn btn-default" type="button" ng-click="close()">Kembali</button>
+        <div class="form-group">
+            <label for="kode">Kode</label>
+            <input type="text" class="form-control" id="kode" name="kode" placeholder="Masukkan Kode.." ng-model="kategoriBarang.kode" ng-disabled="!status" required/>
+        </div>
+        <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <input type="text" class="form-control" id="kode" name="kategori" placeholder="Masukkan Kategori.." ng-model="kategoriBarang.kategori" required/>
+        </div>
+        <button class="btn btn-default btn-sm" type="submit" ng-click="status==true ? create() : update()" ng-disabled="kategoriBarangForm.$invalid">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            <span> Simpan</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="delete(kategoriBarang)" ng-show="!status">
+            <span class="glyphicon glyphicon-trash"></span>
+            <span> Hapus</span>
+        </button>
     </form>
 </div>

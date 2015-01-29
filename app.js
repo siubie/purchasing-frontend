@@ -5,7 +5,6 @@ angular.module('purchasingApp', [
 	'ngSanitize',
 	'ui.select',
 	'ui.router',
-	'ui.bootstrap.pagination',
 	'ui.bootstrap.transition',
 	'ui.bootstrap.modal',
 	'ui.bootstrap.datepicker',
