@@ -3,11 +3,6 @@
     background-color: grey
 }*/
 
-.scroll{
-    height: 290px;
-    overflow: auto
-}
-
 body{
-    padding-top: 70px
+    padding-top: 50px
 }
