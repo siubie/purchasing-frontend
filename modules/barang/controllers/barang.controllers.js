@@ -1,11 +1,12 @@
 angular.module('barang.controllers',[])
-.controller('barangController', ['$scope', '$window', '$state', '$modal', '$filter', 'barangFactory', 'kategoriBarangFactory',
-function($scope, $window, $state, $modal, $filter, barangFactory, kategoriBarangFactory) {
+.controller('barangController', ['$scope', '$window', '$state', '$modal', '$filter', 'satuanGudangFactory', 'kategoriBarangFactory', 'barangFactory',
+function($scope, $window, $state, $modal, $filter, satuanGudangFactory, kategoriBarangFactory, barangFactory) {
 	$scope.Math = window.Math;
 	$scope.sort = "kode";
 	$scope.barang = new barangFactory();
 	$scope.load = function(){
 		$scope.kategoriBarangs = kategoriBarangFactory.query();
+		$scope.satuanGudangs = satuanGudangFactory.query();
 		$scope.barangs = barangFactory.query();
 	};
 	$scope.create = function(){
@@ -117,10 +118,4 @@ function($scope, $window, $state, $modal, $filter, barangFactory, kategoriBarang
 			}
 		});
 	},true);
-	$scope.$watch('currentPage',function(){
-		if($scope.currentPage>$scope.maxPage)
-		{
-			$scope.currentPage=$scope.maxPage;
-		}
-	});
 }]);

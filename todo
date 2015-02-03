@@ -3,6 +3,5 @@ ubah model jadi kosong jika data referensi dihapus
 unit test
 hindari $scope di dalam method
 buat directive untuk setiap duplikat proses
-clear all filter
 bug centang all ketika filtered kosong
 modal jadi 2 kolom
