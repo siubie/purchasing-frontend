@@ -15,9 +15,10 @@ angular.module('purchasingApp', [
 	'satuanGudang',
 	'permintaanBarang',
 	'barang',
+	'fyGrid'
 ]);
 
 angular.module('purchasing.routes', [])
 .config(function($urlRouterProvider) {
-	$urlRouterProvider.otherwise('/barang/');
+	$urlRouterProvider.otherwise('/permintaanbarang/');
 });

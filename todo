@@ -1,7 +1,4 @@
 perbaiki satu list barang SPP tidak boleh ada duplikat barang
-ubah model jadi kosong jika data referensi dihapus
 unit test
 hindari $scope di dalam method
-buat directive untuk setiap duplikat proses
-bug centang all ketika filtered kosong
 modal jadi 2 kolom

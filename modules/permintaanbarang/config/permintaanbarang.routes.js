@@ -1,21 +1,9 @@
 angular.module('permintaanBarang.routes', [])
 .config(function($stateProvider) {
 	$stateProvider
-	.state('listPermintaanBarangState', {
+	.state('gridPermintaanBarangState', {
 		url: '/permintaanbarang/',
-		templateUrl: 'modules/permintaanbarang/views/list-permintaanbarang.views.html',
+		templateUrl: 'modules/permintaanbarang/views/grid-permintaanbarang.views.html',
 		controller: 'permintaanBarangController'
-	})
-	.state('createPermintaanBarangState', {
-		url: '/permintaanbarang/create',
-		templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
-		controller: 'permintaanBarangController',
-		data: true
-	})
-	.state('updatePermintaanBarangState', {
-		url: '/permintaanbarang/:id/update',
-		templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
-		controller: 'permintaanBarangController',
-		data: false
 	});
 });

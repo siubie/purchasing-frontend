@@ -1,83 +1,98 @@
-angular.module('permintaanBarang.controllers', [])
-.controller('permintaanBarangController', ['$scope', '$http', '$window', '$state', '$stateParams', '$modal', 'departemenFactory', 'barangFactory', 'permintaanBarangFactory',
-function($scope, $http, $window, $state, $stateParams, $modal, departemenFactory, barangFactory, permintaanBarangFactory, dateFactory) {
+angular.module('permintaanBarang.controllers',[])
+.controller('permintaanBarangController', ['$scope', '$window', '$state', '$modal', '$filter', 'barangFactory', 'permintaanBarangFactory',
+function($scope, $window, $state, $modal, $filter, barangFactory, permintaanBarangFactory) {
+	$scope.fields = [
+		{"name":"nomor","header":"Nomor","type":"string"},
+		{"name":"tanggal","header":"Tanggal","type":"date","filter":"longDate"},
+		{"name":"jenis","header":"Jenis","type":"jenis"},
+		{"name":"departemen.departemen","header":"Peminta","type":"string"},
+		{"name":"periode","header":"Periode","type":"date","filter":"MMMM yyyy"}
+	];
+	$scope.Math = window.Math;
 	$scope.sort = "nomor";
-	$scope.departemens = departemenFactory.query();
-	$scope.barangs = barangFactory.query();
-	$scope.permintaanBarang = new permintaanBarangFactory({
-		tanggal: new Date(),
-		jenis: false,
-		periode: new Date(),
-		sppItemsList: new Array({
-			tanggalButuh: new Date()
-		})
-	});
-	$scope.permintaanBarangs = permintaanBarangFactory.query();
-	$scope.status = $state.$current.data;
-	$scope.create = function() {
-		$scope.permintaanBarang.$save(function() {
-			$state.go('listPermintaanBarangState');
+	$scope.reverse = true;
+	$scope.load = function(){
+		$scope.barangs = barangFactory.query();
+		$scope.permintaanBarangs = permintaanBarangFactory.query();
+		$scope.permintaanBarang = new permintaanBarangFactory({
+			tanggal: new Date(),
+			jenis: false,
+			periode: new Date(),
+			sppItemsList: new Array({
+				tanggalButuh: new Date()
+			})
+		});
+		$scope.items = $scope.permintaanBarangs;
+	};
+	$scope.create = function(){
+		$scope.permintaanBarang.$save(function(){
+			$scope.load();
+			$scope.close();
 		});
 	};
-	$scope.update = function() {
-		$scope.permintaanBarang.$update(function() {
-			$state.go('listPermintaanBarangState');
+	$scope.update = function(){
+		$scope.permintaanBarang.$update(function(){
+			$scope.load();
+			$scope.close();
 		});
 	};
 	$scope.delete = function(permintaanBarang) {
 		var confirmDelete = $window.confirm('Apakah Anda Yakin?');
 		if ( confirmDelete )
 		{
-			if ( permintaanBarang ) {
-				permintaanBarang.$delete();
-				for (var i in $scope.permintaanBarangs) {
-					if ($scope.permintaanBarangs [i] === permintaanBarang) {
-						$scope.permintaanBarangs.splice(i, 1);
-					};
-				};
-			} else {
-				$scope.permintaanBarang.$delete(function() {
-					$state.go('listPermintaanBarangState');
-				});
-			}
+			permintaanBarang.$delete(function(){
+				$scope.load();
+				$scope.close();
+			});
 		}
-		else {
-			$state.go('listPermintaanBarangState');
-		};
 	};
-	$scope.find = function() {
-		$scope.permintaanBarang = permintaanBarangFactory.get({ id: $stateParams.id	});
+	$scope.close = function(){
+		if ($scope.modalInstance)
+		{
+			$scope.modalInstance.dismiss();
+		}
 	};
-	$scope.addDetail = function () {
-		$scope.permintaanBarang.sppItemsList.push({
-			tanggalButuh: new Date()
+	$scope.openCreate = function(){
+		$scope.close();
+		$scope.status = true;
+		$scope.permintaanBarang = new permintaanBarangFactory({
+			tanggal: new Date(),
+			jenis: false,
+			periode: new Date(),
+			sppItemsList: new Array({
+				tanggalButuh: new Date()
+			})
 		});
-	};
-	$scope.removeDetail = function(index) {
-		$scope.permintaanBarang.sppItemsList.splice(index, 1);
-	};
-	$scope.back = function() {
-		$state.go('listPermintaanBarangState');
-	};
-	$scope.openCalendar = function($event, opened) {
-		$event.preventDefault();
-		$event.stopPropagation();
-		$scope[opened] = true;
-	};
-	$scope.opentanggalButuh = function($event, detailBarang) {
-		$event.preventDefault();
-		$event.stopPropagation();
-		detailBarang.openedTanggalButuh = true;
-	};
-	$scope.openDetail = function (permintaanBarang) {
-		$scope.permintaanBarang = permintaanBarang;
 		$scope.modalInstance = $modal.open({
-			templateUrl: 'modules/permintaanbarang/views/read-permintaanbarang.views.html',
+			templateUrl: 'modules/permintaanBarang/views/form-permintaanBarang.views.html',
+			size: 'lg',
 			backdrop: 'static',
 			scope: $scope
 		});
 	};
-	$scope.closeDetail = function(){
-		$scope.modalInstance.dismiss();
+	$scope.openRead = function(permintaanBarang){
+		$scope.close();
+		$scope.permintaanBarang = angular.copy(permintaanBarang);
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/permintaanBarang/views/detail-permintaanBarang.views.html',
+			size: 'lg',
+			backdrop: 'static',
+			scope: $scope
+		});
+	};
+	$scope.openUpdate = function(permintaanBarang){
+		$scope.close();
+		$scope.status = false;
+		$scope.permintaanBarangOld = angular.copy(permintaanBarang);
+		$scope.permintaanBarang = angular.copy(permintaanBarang);
+		$scope.modalInstance = $modal.open({
+			templateUrl: 'modules/permintaanBarang/views/form-permintaanBarang.views.html',
+			size: 'lg',
+			backdrop: 'static',
+			scope: $scope
+		});
+	};
+	$scope.log = function(){
+		console.log("clicked");
 	};
 }]);
