@@ -1,32 +1,32 @@
 {
-  "name": "purchasing",
-  "version": "0.0.0",
-  "description": "purchasing front end",
-  "main": "index.html",
-  "keywords": [
-    "purchasing"
-  ],
-  "authors": [
-    "disyam"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "angular": "^1.3.8",
-    "angular-i18n": "^1.3.8",
-    "angular-ui-router": "^0.2.13",
-    "angular-ui-bootstrap": "^0.12.0",
-    "angular-resource": "^1.3.8",
-    "bootstrap": "^3.3.1",
-    "angular-ui-select": "^0.9.6",
-    "angular-sanitize": "^1.3.9",
-    "angular-loading-bar": "^0.6.0",
-    "angular-animate": "^1.3.10"
-  }
+    "name": "purchasing",
+    "version": "0.0.0",
+    "description": "purchasing front end",
+    "main": "index.html",
+    "keywords": [
+        "purchasing"
+    ],
+    "authors": [
+        "disyam"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "angular": "^1.3.8",
+        "angular-i18n": "^1.3.8",
+        "angular-ui-router": "^0.2.13",
+        "angular-ui-bootstrap": "^0.12.0",
+        "angular-resource": "^1.3.8",
+        "bootstrap": "^3.3.1",
+        "angular-ui-select": "^0.9.6",
+        "angular-sanitize": "^1.3.9",
+        "angular-loading-bar": "^0.6.0",
+        "angular-animate": "^1.3.10"
+    }
 }

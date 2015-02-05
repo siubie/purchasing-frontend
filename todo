@@ -1,4 +1,8 @@
-perbaiki satu list barang SPP tidak boleh ada duplikat barang
 unit test
 hindari $scope di dalam method
-modal jadi 2 kolom
+
+perbaiki satu list barang SPP tidak boleh ada duplikat barang
+kecilkan semua form jadi sm
+otomatis tambah detail barang
+cek label for, id, name di setiap input
+cek filter periode jalan lebih dari 1x di 1 data

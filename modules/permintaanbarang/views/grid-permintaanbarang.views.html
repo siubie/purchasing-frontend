@@ -1,4 +1,7 @@
 <div ng-init=load()>
-	<h4>Transaksi Permintaan Barang</h4>
-	<fy-grid></fy-grid>
+    <span ng-repeat="permintaanBarang in permintaanBarangs">permintaanBarang : {{permintaanBarang | json}}
+        <br/>
+    </span>
+    <h4>Transaksi Permintaan Barang</h4>
+    <fy-grid></fy-grid>
 </div>

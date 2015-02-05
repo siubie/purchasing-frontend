@@ -1,33 +1,39 @@
 <div class="modal-body">
-    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()"><span class="glyphicon glyphicon-remove"></span></button>
-    <div ng-show="status"><h3>Tambah Barang</h3></div>
-    <div ng-show="!status"><h3>Ubah Barang</h3></div>
+    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <div ng-show="status">
+        <h3>Tambah Barang</h3>
+    </div>
+    <div ng-show="!status">
+        <h3>Ubah Barang</h3>
+    </div>
     <form name="barangForm" class=row>
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-6 input-group-sm">
             <label for="kode">Kode</label>
             <input type="text" class="form-control" id="kode" name="kode" placeholder="Masukkan Kode.." ng-model="barang.kode" ng-disabled="!status" required/>
         </div>
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-6 input-group-sm">
             <label for="kategori">Kategori</label>
             <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori'" required>
                 <option value="">-- Pilih Kategori --</option>
             </select>
         </div>
-        <div class="form-group col-xs-12">
+        <div class="form-group col-xs-12 input-group-sm">
             <label for="nama">Nama</label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="barang.nama" required/>
         </div>
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-6 input-group-sm">
             <label for="alias">Alias</label>
-            <input type="text" class="form-control" id="alias" name="alias" placeholder="Masukkan Alias.." ng-model="barang.alias"/>
+            <input type="text" class="form-control" id="alias" name="alias" placeholder="Masukkan Alias.." ng-model="barang.alias" />
         </div>
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-6 input-group-sm">
             <label for="satuan">Satuan</label>
             <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy: 'satuan'" required>
                 <option value="">-- Pilih Kategori --</option>
             </select>
         </div>
-        <div class="form-group col-xs-12">
+        <div class="form-group col-xs-12 input-group-sm">
             <label for="deskripsi">Deskripsi</label>
             <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="Masukkan Deskripsi.." ng-model="barang.deskripsi"></textarea>
         </div>

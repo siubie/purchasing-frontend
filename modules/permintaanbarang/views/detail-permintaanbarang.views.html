@@ -1,39 +1,41 @@
 <div class="modal-body">
-	<button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()"><span class="glyphicon glyphicon-remove"></span></button>
-	<h3>Detail Barang</h3>
-	<table class="table-bordered table-condensed">
-		<tr>
-			<td>Kode</td>
-			<td ng-bind="permintaanBarang.kode"></td>
-		</tr>
-		<tr>
-			<td>Kategori</td>
-			<td ng-bind="permintaanBarang.kategori"></td>
-		</tr>
-		<tr>
-			<td>Nama</td>
-			<td ng-bind="permintaanBarang.nama"></td>
-		</tr>
-		<tr>
-			<td>Alias</td>
-			<td ng-bind="permintaanBarang.alias"></td>
-		</tr>
-		<tr>
-			<td>Satuan</td>
-			<td ng-bind="permintaanBarang.satuan"></td>
-		</tr>
-		<tr>
-			<td>Deskripsi</td>
-			<td ng-bind="permintaanBarang.deskripsi"></td>
-		</tr>
-	</table>
-	<br/>
-	<button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-disabled="permintaanBarangForm.$invalid">
-		<span class="glyphicon glyphicon-floppy-disk"></span>
-		<span> Ubah</span>
-	</button>
-	<button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-show="!status">
-		<span class="glyphicon glyphicon-trash"></span>
-		<span> Hapus</span>
-	</button>
+    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <h3>Detail Barang</h3>
+    <table class="table-bordered table-condensed">
+        <tr>
+            <td>Kode</td>
+            <td ng-bind="permintaanBarang.kode"></td>
+        </tr>
+        <tr>
+            <td>Kategori</td>
+            <td ng-bind="permintaanBarang.kategori"></td>
+        </tr>
+        <tr>
+            <td>Nama</td>
+            <td ng-bind="permintaanBarang.nama"></td>
+        </tr>
+        <tr>
+            <td>Alias</td>
+            <td ng-bind="permintaanBarang.alias"></td>
+        </tr>
+        <tr>
+            <td>Satuan</td>
+            <td ng-bind="permintaanBarang.satuan"></td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td ng-bind="permintaanBarang.deskripsi"></td>
+        </tr>
+    </table>
+    <br/>
+    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-disabled="permintaanBarangForm.$invalid">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span> Ubah</span>
+    </button>
+    <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-show="!status">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span> Hapus</span>
+    </button>
 </div>

@@ -1,49 +1,97 @@
 <div class="modal-body">
-    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()"><span class="glyphicon glyphicon-remove"></span></button>
-    <div ng-show="status"><h3>Tambah Permintaan Barang</h3></div>
-    <div ng-show="!status"><h3>Ubah Permintaan Barang</h3></div>
+    {{permintaanBarang|json}}
+    <!-- <span ng-repeat="detailBarang in permintaanBarang.sppItemsList">{{detailBarang|json}}<br/></span> -->
+    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <div ng-show="status">
+        <h3>Tambah Permintaan Barang</h3>
+    </div>
+    <div ng-show="!status">
+        <h3>Ubah Permintaan Barang</h3>
+    </div>
     <form name="permintaanBarangForm" class="row">
-        <div class="form-group col-xs-4">
+        <div class="form-group col-xs-6 input-group-sm">
             <label for="nomor">Nomor</label>
             <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="permintaanBarang.nomor" ng-disabled="!status" required/>
         </div>
-        <div class="form-group col-xs-4">
-            <label for="Tanggal">Tanggal&nbsp;:&nbsp;<span ng-bind="permintaanBarang.tanggal | date:'dd MMMM yyyy'"></span></label>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="jenis">Emergency&nbsp;:&nbsp;<input type="checkbox" ng-model="permintaanBarang.jenis" required/></label>
-        </div>
-        <div class="form-group col-xs-4n">
-            <label for="satuan">Satuan</label>
-            <select class="form-control" id="satuan" name="satuan" ng-model="permintaanBarang.satuan" ng-options="satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy: 'satuan'" required>
-                <option value="">-- Pilih Kategori --</option>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="departemen">Peminta</label>
+            <select class="form-control" id="departemen" name="departemen" ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens|orderBy: 'departemen.departemen' track by departemen.departemen" required>
+                <option value="">-- Pilih Departemen --</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="nama">Nama</label>
-            <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="permintaanBarang.nama" required/>
+        <div class="form-group col-xs-6">
+            <label for="periode">Periode&nbsp;:&nbsp;</label>
+            <span ng-bind="permintaanBarang.periode|periodeFilter|date: 'MMMM yyyy' "></span>
+            <span ng-model="timestamp.periode" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{
+
+                        minMode:'month',
+
+                        maxMode:'year'
+
+                    }" init-date="timestamp.tanggal" min-date="timestamp.tanggal" is-open="$parent.openedPeriode" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+            </span>
+            <span>
+                <button class="btn btn-default btn-sm" type="button" ng-click="openCalendar($event)">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </button>
+            </span>
         </div>
-        <div class="form-group">
-            <label for="alias">Alias</label>
-            <input type="text" class="form-control" id="alias" name="alias" placeholder="Masukkan Alias.." ng-model="permintaanBarang.alias"/>
-        </divalias
-        <div class="form-group">
-            <label for="satuan">Satuan</label>
-            <select class="form-control" id="satuan" name="satuan" ng-model="permintaanBarang.satuan" ng-options="satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy: 'satuan'" required>
-                <option value="">-- Pilih Kategori --</option>
-            </select>
+        <div class="form-group col-xs-6">
+            <label for="jenis">Emergency&nbsp;:&nbsp;
+                <input type="checkbox" id="jenis" ng-model="permintaanBarang.jenis" />
+            </label>
         </div>
-        <div class="form-group">
-            <label for="deskripsi">Deskripsi</label>
-            <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="Masukkan Deskripsi.." ng-model="permintaanBarang.deskripsi"></textarea>
+        <div class="form-group col-xs-12">
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <th class="text-center" colspan=4>Detail Barang</th>
+                </tr>
+                <tr>
+                    <th class="text-center">Nama Barang</th>
+                    <th class="text-center">Jumlah</th>
+                    <th class="text-center">Tanggal Butuh</th>
+                    <th class="text-center">Pilihan</th>
+                </tr>
+                <tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.sppItemsList">
+                    <td class="input-group-sm">
+                        <input type="text" placeholder="Masukkan Nama Barang..." ng-model="detailBarang.barang" typeahead="barang as barang.nama for barang in barangs|filter:$viewValue|limitTo:8" class="form-control">
+                    </td>
+                    <td class="input-group-sm">
+                        <input class="form-control text-center" type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
+                    </td>
+                    <td class="text-center">
+                        <span ng-bind="detailBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
+                        <span ng-model="timestamp.tanggalButuh[$index]" init-date="timestamp.tanggalButuh[$index]" datepicker-popup="dd MMMM yyyy" is-open="openedTanggalButuh[$index]" min-date="timestamp.tanggal" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                        </span>
+                        <span>
+                            <button class="btn btn-default btn-sm" type="button" ng-click="openTanggalButuh($event, $index)">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </button>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-default btn-sm" type="button" ng-click="removeDetail($index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <button class="btn btn-default btn-sm" type="button" ng-click="addDetail()">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Detail</button>
         </div>
-        <button class="btn btn-default btn-sm" type="submit" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-            <span> Simpan</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-show="!status">
-            <span class="glyphicon glyphicon-trash"></span>
-            <span> Hapus</span>
-        </button>
+        <br/>
+        <br/>
+        <div class="col-xs-12">
+            <button class="btn btn-default btn-sm" type="submit" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span> Simpan</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-show="!status">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span> Hapus</span>
+            </button>
+        </div>
     </form>
 </div>
