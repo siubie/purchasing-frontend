@@ -1,4 +1,5 @@
 angular.module('permintaanBarang.controllers', []).controller('permintaanBarangController', ['$scope', '$window', '$state', '$modal', '$filter', 'barangFactory', 'departemenFactory', 'permintaanBarangFactory', function($scope, $window, $state, $modal, $filter, barangFactory, departemenFactory, permintaanBarangFactory) {
+    $scope.module = "permintaanBarang";
     $scope.fields = [{
         "name": "nomor",
         "header": "Nomor",
@@ -33,6 +34,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             status: 'RECEIVED',
             sppItemsList: new Array({
                 tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd'),
+                jumlah: 1,
                 status: 'RECEIVED'
             })
         });
@@ -107,6 +109,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     $scope.addDetail = function() {
         $scope.permintaanBarang.sppItemsList.push({
             tanggalButuh: $filter('date')($scope.periodeTimestamp, 'yyyy-MM-dd'),
+            jumlah: 1,
             status: 'RECEIVED'
         });
     };

@@ -22,7 +22,6 @@ angular.module('fyGrid', [])
                 $scope.deleteSelected = function() {
                     var confirmDelete = $window.confirm('Apakah Anda Yakin?');
                     if (confirmDelete) {
-                        console.log($scope.selected);
                         var spliceSelected = function(i) {
                             $scope.items.splice(i, 1);
                         };
@@ -55,6 +54,18 @@ angular.module('fyGrid', [])
                         }
                     });
                 }, true);
+                $scope.$watch('expandedAll', function() {
+                    angular.forEach($scope.displayed, function(item) {
+                        if ($scope.expandedAll) {
+                            item.expanded = true
+                        } else {
+                            item.expanded = false
+                        }
+                    });
+                });
+                $scope.log = function(log) {
+                    console.log(log);
+                }
             }
         };
     })

@@ -23,7 +23,6 @@
         <div class="form-group col-xs-6 input-group-sm">
             <label for="periode">Periode:&nbsp;</label>
             <span ng-bind="permintaanBarang.periode | periodeFilter | date: 'MMMM yyyy'"></span>
-            <!-- <span ng-bind="permintaanBarang.periode"></span> -->
             <span ng-model="$parent.periodeTimestamp" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="$parent.openedPeriode"
             current-text="Sekarang" clear-text="Hapus" close-text="Tutup"></span>
             <span>
@@ -41,7 +40,7 @@
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan=5>Detail Barang</th>
+                    <th class="text-center" colspan=5>Item Barang</th>
                 </tr>
                 <tr>
                     <th class="text-center">Nama Barang</th>
@@ -79,7 +78,7 @@
             </table>
             <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
                 <span class="glyphicon glyphicon-plus"></span>
-                <span>&nbsp;&nbsp;Tambah Detail</span>
+                <span>&nbsp;&nbsp;Tambah Item</span>
             </button>
         </div>
         <br/>

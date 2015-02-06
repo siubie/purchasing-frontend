@@ -1,4 +1,5 @@
 angular.module('barang.controllers', []).controller('barangController', ['$scope', '$window', '$state', '$modal', '$filter', 'satuanGudangFactory', 'kategoriBarangFactory', 'barangFactory', function($scope, $window, $state, $modal, $filter, satuanGudangFactory, kategoriBarangFactory, barangFactory) {
+    $scope.module = "barang";
     $scope.fields = [{
         "name": "kode",
         "type": "string",
