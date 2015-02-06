@@ -76,7 +76,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         $scope.status = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/permintaanBarang/views/form-permintaanBarang.views.html',
+            templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
             scope: $scope
@@ -86,7 +86,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         $scope.close();
         $scope.permintaanBarang = angular.copy(permintaanBarang);
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/permintaanBarang/views/detail-permintaanBarang.views.html',
+            templateUrl: 'modules/permintaanbarang/views/detail-permintaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
             scope: $scope
@@ -98,7 +98,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         // $scope.permintaanBarangOld = angular.copy(permintaanBarang);
         $scope.permintaanBarang = angular.copy(permintaanBarang);
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/permintaanBarang/views/form-permintaanBarang.views.html',
+            templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
             scope: $scope
