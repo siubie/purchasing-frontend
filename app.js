@@ -10,6 +10,7 @@ angular.module('purchasingApp', [
     'ui.bootstrap.datepicker',
     'ui.bootstrap.dropdown',
     'ui.bootstrap.typeahead',
+    'ui.bootstrap.popover',
     'purchasing.routes',
     'kategoriBarang',
     'departemen',
@@ -20,5 +21,5 @@ angular.module('purchasingApp', [
 ]);
 
 angular.module('purchasing.routes', []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise('/permintaanbarang/');
+    $urlRouterProvider.otherwise('/barang/');
 });

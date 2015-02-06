@@ -1,35 +1,74 @@
 <div class="modal-body">
-    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()">
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Barang</h3>
-    <table class="table-bordered table-condensed">
+    <h3>Detail Permintaan Barang</h3>
+    <table class="table table-bordered table-condensed">
         <tr>
-            <td>Kode</td>
-            <td ng-bind="permintaanBarang.kode"></td>
+            <td class="col-xs-6">
+                <strong>Nomor Permintaan Barang</strong>
+            </td>
+            <td class="col-xs-6" ng-bind="permintaanBarang.nomor"></td>
         </tr>
         <tr>
-            <td>Kategori</td>
-            <td ng-bind="permintaanBarang.kategori"></td>
+            <td>
+                <strong>Tanggal Permintaan</strong>
+            </td>
+            <td ng-bind="permintaanBarang.tanggal | date:'longDate'"></td>
         </tr>
         <tr>
-            <td>Nama</td>
-            <td ng-bind="permintaanBarang.nama"></td>
+            <td>
+                <strong>Jenis Permintaan</strong>
+            </td>
+            <td>
+                <div ng-if="permintaanBarang.jenis">EMERGENCY</div>
+                <div ng-if="!permintaanBarang.jenis">RUTIN</div>
+            </td>
         </tr>
         <tr>
-            <td>Alias</td>
-            <td ng-bind="permintaanBarang.alias"></td>
+            <td>
+                <strong>Peminta</strong>
+            </td>
+            <td ng-bind="permintaanBarang.departemen.departemen"></td>
         </tr>
         <tr>
-            <td>Satuan</td>
-            <td ng-bind="permintaanBarang.satuan"></td>
+            <td>
+                <strong>Periode</strong>
+            </td>
+            <td ng-bind="permintaanBarang.periode | periodeFilter | date:'MMMM yyyy'"></td>
         </tr>
         <tr>
-            <td>Deskripsi</td>
-            <td ng-bind="permintaanBarang.deskripsi"></td>
+            <td>
+                <strong>Status</strong>
+            </td>
+            <td ng-bind="permintaanBarang.status"></td>
+        </tr>
+        <tr>
+            <td colspan=2>
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <th colspan=6 class="text-center">Detail Barang</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Nama Barang</th>
+                        <th class="text-center">Jumlah</th>
+                        <th class="text-center">Tanggal Butuh</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Sisa</th>
+                        <th class="text-center">Keterangan</th>
+                    </tr>
+                    <tr ng-repeat="detail in permintaanBarang.sppItemsList">
+                        <td ng-bind="detail.barang.nama"></td>
+                        <td ng-bind="detail.jumlah"></td>
+                        <td ng-bind="detail.tanggalButuh | date:'longDate'"></td>
+                        <td ng-bind="detail.status"></td>
+                        <td ng-bind="detail.sisa"></td>
+                        <td ng-bind="detail.keterangan"></td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
-    <br/>
     <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-disabled="permintaanBarangForm.$invalid">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span> Ubah</span>

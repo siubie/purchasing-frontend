@@ -1,0 +1,37 @@
+[
+    '{{repeat(100, 100)}}', {
+        kode: 'kode{{index()}}',
+        kategori: '{{random("ACC", "KOM", "BNG")}}',
+        nama: 'nama{{index()}}',
+        alias: 'alias{{index()}}',
+        satuan: '{{random("SET", "UNIT","PCS")}}',
+        deskripsi: 'deskripsi{{index()}}'
+    }
+]
+
+[
+    '{{repeat(50, 50)}}', {
+        nomor: 'nomor{{index()}}',
+        tanggal: '{{date(new Date(),new Date(2016,1,1),"YYYY-MM-dd")}}',
+        periode: function(n) {
+            return n.integer(1, 12) + '-' + n.integer(2015, 2020);
+        },
+        jenis: '{{bool()}}',
+        departemen: {
+            kode: 'kode{{index()}}',
+            departemen: 'departemen{{index()}}'
+        },
+        sppItemsList: [
+            '{{repeat(1, 10)}}', {
+                barang: {
+                    kode: 'kode{{index()}}',
+                    kategori: 'kategori{{index()}}',
+                    nama: 'nama{{index()}}',
+                    satuan: 'satuan{{index()}}'
+                },
+                jumlah: '{{integer(50, 100)}}',
+                tanggalButuh: '{{date(new Date(),new Date(2016,1,1),"YYYY-MM-dd")}}'
+            }
+        ]
+    }
+]

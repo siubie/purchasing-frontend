@@ -1,7 +1,6 @@
 <div class="modal-body">
-    {{permintaanBarang|json}}
-    <!-- <span ng-repeat="detailBarang in permintaanBarang.sppItemsList">{{detailBarang|json}}<br/></span> -->
-    <button class="btn btn-default btn-sm pull-right" type="button" ng-click="close()">
+    <!-- {{periodeTimestamp|json}} -->
+    <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="status">
@@ -10,7 +9,7 @@
     <div ng-show="!status">
         <h3>Ubah Permintaan Barang</h3>
     </div>
-    <form name="permintaanBarangForm" class="row">
+    <form class="row" name="permintaanBarangForm">
         <div class="form-group col-xs-6 input-group-sm">
             <label for="nomor">Nomor</label>
             <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="permintaanBarang.nomor" ng-disabled="!status" required/>
@@ -21,38 +20,35 @@
                 <option value="">-- Pilih Departemen --</option>
             </select>
         </div>
-        <div class="form-group col-xs-6">
-            <label for="periode">Periode&nbsp;:&nbsp;</label>
-            <span ng-bind="permintaanBarang.periode|periodeFilter|date: 'MMMM yyyy' "></span>
-            <span ng-model="timestamp.periode" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{
-
-                        minMode:'month',
-
-                        maxMode:'year'
-
-                    }" init-date="timestamp.tanggal" min-date="timestamp.tanggal" is-open="$parent.openedPeriode" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
-            </span>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="periode">Periode:&nbsp;</label>
+            <span ng-bind="permintaanBarang.periode | periodeFilter | date: 'MMMM yyyy'"></span>
+            <!-- <span ng-bind="permintaanBarang.periode"></span> -->
+            <span ng-model="$parent.periodeTimestamp" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="$parent.openedPeriode"
+            current-text="Sekarang" clear-text="Hapus" close-text="Tutup"></span>
             <span>
                 <button class="btn btn-default btn-sm" type="button" ng-click="openCalendar($event)">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </button>
             </span>
         </div>
-        <div class="form-group col-xs-6">
-            <label for="jenis">Emergency&nbsp;:&nbsp;
-                <input type="checkbox" id="jenis" ng-model="permintaanBarang.jenis" />
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="jenis">
+                <span>Emergency:&nbsp;</span>
+                <input type="checkbox" id="jenis" name="jenis" ng-model="permintaanBarang.jenis" />
             </label>
         </div>
-        <div class="form-group col-xs-12">
+        <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan=4>Detail Barang</th>
+                    <th class="text-center" colspan=5>Detail Barang</th>
                 </tr>
                 <tr>
                     <th class="text-center">Nama Barang</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Tanggal Butuh</th>
-                    <th class="text-center">Pilihan</th>
+                    <th class="text-center">Keterangan</th>
+                    <th></th>
                 </tr>
                 <tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.sppItemsList">
                     <td class="input-group-sm">
@@ -63,34 +59,39 @@
                     </td>
                     <td class="text-center">
                         <span ng-bind="detailBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
-                        <span ng-model="timestamp.tanggalButuh[$index]" init-date="timestamp.tanggalButuh[$index]" datepicker-popup="dd MMMM yyyy" is-open="openedTanggalButuh[$index]" min-date="timestamp.tanggal" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                        <span ng-model="detailBarang.tanggalButuh" init-date="detailBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="openedTanggalButuh[$index]" min-date="periodeTimestamp" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
                         </span>
                         <span>
-                            <button class="btn btn-default btn-sm" type="button" ng-click="openTanggalButuh($event, $index)">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </button>
                         </span>
                     </td>
-                    <td class="text-center">
-                        <button class="btn btn-default btn-sm" type="button" ng-click="removeDetail($index)">
+                    <td class="input-group-sm">
+                        <textarea class="form-control" ng-model="detailBarang.keterangan"></textarea>
+                    </td>
+                    <td class="input-group-sm">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </td>
                 </tr>
             </table>
-            <button class="btn btn-default btn-sm" type="button" ng-click="addDetail()">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Detail</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span>&nbsp;&nbsp;Tambah Detail</span>
+            </button>
         </div>
         <br/>
         <br/>
         <div class="col-xs-12">
-            <button class="btn btn-default btn-sm" type="submit" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid||!permintaanBarang.sppItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
-                <span> Simpan</span>
+                <span>&nbsp;&nbsp;Simpan</span>
             </button>
-            <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-show="!status">
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete(permintaanBarang)" ng-show="!status">
                 <span class="glyphicon glyphicon-trash"></span>
-                <span> Hapus</span>
+                <span>&nbsp;&nbsp;Hapus</span>
             </button>
         </div>
     </form>

@@ -19,20 +19,19 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
         "name": "satuan",
         "type": "string",
         "header": "Satuan"
-    }, {
-        "name": "deskripsi",
-        "type": "string",
-        "header": "Deskripsi"
     }];
     $scope.Math = window.Math;
     $scope.sort = "kode";
     $scope.reverse = false;
-    $scope.barang = new barangFactory();
+    $scope.new = function() {
+        $scope.barang = new barangFactory();
+    };
     $scope.load = function() {
         $scope.kategoriBarangs = kategoriBarangFactory.query();
         $scope.satuanGudangs = satuanGudangFactory.query();
         $scope.barangs = barangFactory.query();
         $scope.items = $scope.barangs;
+        $scope.new();
     };
     $scope.create = function() {
         $scope.barang.$save(function() {
@@ -63,7 +62,7 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
     $scope.openCreate = function() {
         $scope.close();
         $scope.status = true;
-        $scope.barang = new barangFactory();
+        $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/barang/views/form-barang.views.html',
             size: 'md',

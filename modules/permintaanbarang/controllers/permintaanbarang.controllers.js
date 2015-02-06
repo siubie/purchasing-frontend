@@ -24,18 +24,16 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     $scope.Math = window.Math;
     $scope.sort = "nomor";
     $scope.reverse = true;
-    $scope.timestamp = new Object({
-        tanggal: new Date(),
-        periode: new Date(),
-        tanggalButuh: []
-    });
+    $scope.periodeTimestamp = new Date();
     $scope.new = function() {
         $scope.permintaanBarang = new permintaanBarangFactory({
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
             jenis: false,
-            periode: $filter('date')(new Date(), 'MM-yyyy'),
+            periode: $filter('date')($scope.periodeTimestamp, 'MM-yyyy'),
+            status: 'RECEIVED',
             sppItemsList: new Array({
-                tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd')
+                tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd'),
+                status: 'RECEIVED'
             })
         });
     };
@@ -108,7 +106,8 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     };
     $scope.addDetail = function() {
         $scope.permintaanBarang.sppItemsList.push({
-            tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd')
+            tanggalButuh: $filter('date')($scope.periodeTimestamp, 'yyyy-MM-dd'),
+            status: 'RECEIVED'
         });
     };
     $scope.removeDetail = function(index) {
@@ -124,14 +123,19 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         $event.stopPropagation();
         $scope.openedTanggalButuh[index] = true;
     };
-    $scope.$watch('timestamp.periode', function() {
-        // console.log($scope.timestamp.periode);
-        $scope.permintaanBarang.periode = $filter('date')($scope.timestamp.periode, 'MM-yyyy');
-    });
-    $scope.$watchCollection('timestamp.tanggalButuh', function() {
-        angular.forEach($scope.timestamp.tanggalButuh, function(tanggalButuh, i) {
-            // console.log($scope.timestamp.tanggalButuh[i]);
-            $scope.permintaanBarang.sppItemsList[i].tanggalButuh = $filter('date')(tanggalButuh, 'yyyy-MM-dd');
+    $scope.i = 0;
+    $scope.$watch('periodeTimestamp', function() {
+        $scope.permintaanBarang.periode = $filter('date')($scope.periodeTimestamp, 'MM-yyyy');
+        if (($filter('date')($scope.periodeTimestamp, 'yyyyMMdd')) < ($filter('date')(new Date(), 'yyyyMMdd'))) {
+            $scope.periodeTimestamp = new Date();
+        }
+        angular.forEach($scope.permintaanBarang.sppItemsList, function(detailBarang) {
+            detailBarang.tanggalButuh = $filter('date')($scope.periodeTimestamp, 'yyyy-MM-dd');
         });
     });
+    $scope.$watchCollection('permintaanBarang.sppItemsList', function() {
+        angular.forEach($scope.permintaanBarang.sppItemsList, function(detailBarang) {
+            detailBarang.tanggalButuh = $filter('date')(detailBarang.tanggalButuh, 'yyyy-MM-dd');
+        });
+    }, true);
 }]);

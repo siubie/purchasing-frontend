@@ -1,8 +1,12 @@
+technique
 unit test
 hindari $scope di dalam method
 
+feature
 perbaiki satu list barang SPP tidak boleh ada duplikat barang
-kecilkan semua form jadi sm
 otomatis tambah detail barang
 cek label for, id, name di setiap input
+popover
+
+bug
 cek filter periode jalan lebih dari 1x di 1 data
