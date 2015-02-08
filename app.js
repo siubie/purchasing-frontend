@@ -2,8 +2,6 @@ angular.module('purchasingApp', [
     'angular-loading-bar',
     'ngAnimate',
     'ngResource',
-    'ngSanitize',
-    'ui.select',
     'ui.router',
     'ui.bootstrap.transition',
     'ui.bootstrap.modal',
