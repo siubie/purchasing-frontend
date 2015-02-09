@@ -57,15 +57,15 @@ angular.module('fyGrid', [])
                 $scope.$watch('expandedAll', function() {
                     angular.forEach($scope.displayed, function(item) {
                         if ($scope.expandedAll) {
-                            item.expanded = true
+                            item.expanded = true;
                         } else {
-                            item.expanded = false
+                            item.expanded = false;
                         }
                     });
                 });
                 $scope.log = function(log) {
                     console.log(log);
-                }
+                };
             }
         };
     })

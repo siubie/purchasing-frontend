@@ -1,0 +1,41 @@
+<div class="modal-body">
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <h3>Detail Supplier</h3>
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <td>
+                <strong>Kode</strong>
+            </td>
+            <td ng-bind="supplier.kode"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Nama</strong>
+            </td>
+            <td ng-bind="supplier.nama"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Alamat</strong>
+            </td>
+            <td ng-bind="supplier.alamat"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Telepon</strong>
+            </td>
+            <td ng-bind="supplier.nomorTelepon"></td>
+        </tr>
+    </table>
+    <br/>
+    <button type="button" class="btn btn-default btn-sm" ng-click="openUpdate(supplier)" ng-disabled="supplierForm.$invalid">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span> Ubah</span>
+    </button>
+    <button type="button" class="btn btn-default btn-sm" ng-click="delete(supplier)" ng-show="!status">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span> Hapus</span>
+    </button>
+</div>

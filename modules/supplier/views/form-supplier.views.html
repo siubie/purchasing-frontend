@@ -1,0 +1,40 @@
+<div class="modal-body">
+    <!-- {{supplier|json}} -->
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <div ng-show="status">
+        <h3>Tambah Supplier</h3>
+    </div>
+    <div ng-show="!status">
+        <h3>Ubah Supplier</h3>
+    </div>
+    <form name="supplierForm" class=row>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="kode">Kode</label>
+            <input type="text" class="form-control" id="kode" name="kode" placeholder="Masukkan Kode.." ng-model="supplier.kode" ng-disabled="!status" required/>
+        </div>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="nama">Nama</label>
+            <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="supplier.nama" required/>
+        </div>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="alamat">Alamat</label>
+            <textarea class="form-control" id="alamat" name="alamat" placeholder="Masukkan Alamat.." ng-model="supplier.alamat" required></textarea>
+        </div>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="nomorTelepon">Nomor Telepon</label>
+            <input type="text" class="form-control" id="nomorTelepon" name="nomorTelepon" placeholder="Masukkan Nomor Telepon.." ng-model="supplier.nomorTelepon" required/>
+        </div>
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="status==true ? create() : update()" ng-disabled="supplierForm.$invalid">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span>&nbsp;&nbsp;Simpan</span>
+            </button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete(supplier)" ng-show="!status">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;&nbsp;Hapus</span>
+            </button>
+        </div>
+    </form>
+</div>

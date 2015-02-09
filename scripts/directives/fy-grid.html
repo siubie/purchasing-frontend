@@ -45,7 +45,7 @@
                 <th class="text-center">
                     <input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=false" ng-change="checkDisplayed()">
                 </th>
-                <th class="text-center" ng-show="module=='permintaanBarang'">
+                <th class="text-center" ng-if="module=='permintaanBarang'">
                     <span class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-plus" ng-show="!expandedAll" ng-click="expandedAll=true"></span>
                         <span class="glyphicon glyphicon-minus" ng-show="expandedAll" ng-click="expandedAll=false"></span>
@@ -65,7 +65,7 @@
                 <td class="text-center">
                     <input type="checkbox" ng-model="item.selected" ng-change="uncheckDisplayed(item.selected)">
                 </td>
-                <td class="text-center" ng-show="module=='permintaanBarang'">
+                <td class="text-center" ng-if="module=='permintaanBarang'">
                     <span class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-plus" ng-show="!item.expanded" ng-click="item.expanded=true;log(item.expanded);"></span>
                         <span class="glyphicon glyphicon-minus" ng-show="item.expanded" ng-click="item.expanded=false;log(item.expanded)"></span>
@@ -99,14 +99,12 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-show="item.expanded">
+            <tr ng-if="module=='permintaanBarang'" ng-show="item.expanded">
                 <td></td>
                 <td colspan="7">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
-                            <th class="text-center">
-                                <input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=false" ng-change="checkAllDetail()">
-                            </th>
+                            <th></th>
                             <th class="text-center">Nama Barang</th>
                             <th class="text-center">Jumlah</th>
                             <th class="text-center">Tanggal Butuh</th>
