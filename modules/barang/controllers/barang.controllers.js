@@ -20,10 +20,23 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
         "name": "satuan",
         "type": "string",
         "header": "Satuan"
+    }, {
+        "name": "spesifikasi",
+        "type": "string",
+        "header": "Spesifikasi",
+        "optional": "true"
+    }, {
+        "name": "deskripsi",
+        "type": "string",
+        "header": "Deskripsi",
+        "optional": "true"
     }];
     $scope.Math = window.Math;
-    $scope.sort = "kode";
-    $scope.reverse = false;
+    $scope.sort = {
+        "field": "kode",
+        "order": false
+    };
+    $scope.status = true;
     $scope.new = function() {
         $scope.barang = new barangFactory();
     };
@@ -34,6 +47,7 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
         $scope.items = $scope.barangs;
         $scope.new();
     };
+    $scope.load();
     $scope.create = function() {
         $scope.barang.$save(function() {
             $scope.load();
@@ -62,7 +76,6 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
     };
     $scope.openCreate = function() {
         $scope.close();
-        $scope.status = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/barang/views/form-barang.views.html',
@@ -92,5 +105,15 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
             backdrop: 'static',
             scope: $scope
         });
+    };
+    $scope.createPermintaanBarang = function() {
+        $scope.close();
+        $scope.modalInstance = $modal.open({
+            templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
+            size: 'lg',
+            backdrop: 'static',
+            controller: 'permintaanBarangController'
+        });
+        $scope.close();
     };
 }]);

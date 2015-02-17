@@ -23,31 +23,43 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         "type": "periode"
     }];
     $scope.Math = window.Math;
-    $scope.sort = "nomor";
-    $scope.reverse = true;
+    $scope.sort = {
+        "field": "nomor",
+        "order": true
+    };
+    $scope.status = true;
     $scope.periodeTimestamp = new Date();
     $scope.new = function() {
         $scope.permintaanBarang = new permintaanBarangFactory({
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
             jenis: false,
             periode: $filter('date')($scope.periodeTimestamp, 'MM-yyyy'),
-            status: 'RECEIVED',
-            sppItemsList: new Array({
-                tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd'),
-                jumlah: 1,
-                status: 'RECEIVED'
-            })
+            status: "RECEIVED",
+            sppItemsList: []
         });
+        if (!!localStorage.barangCart) {
+            $scope.barangCart = JSON.parse(localStorage.barangCart);
+            angular.forEach($scope.barangCart, function(itemBarangCart) {
+                $scope.permintaanBarang.sppItemsList.push({
+                    barang: itemBarangCart,
+                    tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd'),
+                    jumlah: 1,
+                    status: "RECEIVED"
+                });
+            });
+        }
     };
+    $scope.new();
     $scope.load = function() {
         $scope.barangs = barangFactory.query();
         $scope.departemens = departemenFactory.query();
         $scope.permintaanBarangs = permintaanBarangFactory.query();
-        $scope.new();
         $scope.items = $scope.permintaanBarangs;
     };
+    $scope.load();
     $scope.openedTanggalButuh = [];
     $scope.create = function() {
+        console.log($scope.permintaanBarang);
         $scope.permintaanBarang.$save(function() {
             $scope.load();
             $scope.close();
@@ -75,7 +87,6 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     };
     $scope.openCreate = function() {
         $scope.close();
-        $scope.status = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
@@ -97,7 +108,6 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     $scope.openUpdate = function(permintaanBarang) {
         $scope.close();
         $scope.status = false;
-        // $scope.permintaanBarangOld = angular.copy(permintaanBarang);
         $scope.permintaanBarang = angular.copy(permintaanBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
@@ -106,13 +116,13 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             scope: $scope
         });
     };
-    $scope.addDetail = function() {
-        $scope.permintaanBarang.sppItemsList.push({
-            tanggalButuh: $filter('date')($scope.periodeTimestamp, 'yyyy-MM-dd'),
-            jumlah: 1,
-            status: 'RECEIVED'
-        });
-    };
+    // $scope.addDetail = function() {
+    //     $scope.permintaanBarang.sppItemsList.push({
+    //         tanggalButuh: $filter('date')($scope.periodeTimestamp, 'yyyy-MM-dd'),
+    //         jumlah: 1,
+    //         status: 'RECEIVED'
+    //     });
+    // };
     $scope.removeDetail = function(index) {
         $scope.permintaanBarang.sppItemsList.splice(index, 1);
     };

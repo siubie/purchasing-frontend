@@ -1,5 +1,4 @@
 <div class="modal-body">
-    <!-- {{periodeTimestamp|json}} -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -23,7 +22,7 @@
         <div class="form-group col-xs-6 input-group-sm">
             <label for="periode">Periode:&nbsp;</label>
             <span ng-bind="permintaanBarang.periode | periodeFilter | date: 'MMMM yyyy'"></span>
-            <span ng-model="$parent.periodeTimestamp" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="$parent.openedPeriode"
+            <span ng-model="$parent.periodeTimestamp" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="openedPeriode"
             current-text="Sekarang" clear-text="Hapus" close-text="Tutup"></span>
             <span>
                 <button class="btn btn-default btn-sm" type="button" ng-click="openCalendar($event)">
@@ -49,10 +48,8 @@
                     <th class="text-center">Keterangan</th>
                     <th></th>
                 </tr>
-                <tr ng-form name="detailBarangForm" ng-repeat="detailBarang in permintaanBarang.sppItemsList">
-                    <td class="input-group-sm">
-                        <input type="text" placeholder="Masukkan Nama Barang..." ng-model="detailBarang.barang" typeahead="barang as barang.nama for barang in barangs|filter:$viewValue|limitTo:8" class="form-control">
-                    </td>
+                <tr ng-repeat="detailBarang in permintaanBarang.sppItemsList">
+                    <td class="text-center" ng-bind="detailBarang.barang.nama"></td>
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
                     </td>

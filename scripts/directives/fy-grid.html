@@ -1,5 +1,5 @@
 <div class="form-inline">
-    <!-- <span ng-repeat="item in items">{{item | json}}
+    <!-- <span ng-repeat="item in cart">{{item | json}}
         <br/>
     </span>
     <br/> -->
@@ -19,8 +19,26 @@
         <span class="glyphicon glyphicon-refresh"></span>
         <span>&nbsp;Refresh</span>
     </button>
-    <div class="pull-right" ng-show="!!items.length">
-        <div class="input-group input-group-sm">
+    <div class="pull-right">
+        <span class="input-group input-group-sm" dropdown>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+            </span>
+            <button type="button" class="form-control btn btn-default dropdown-toggle" ng-disabled="!cart.length" dropdown-toggle>
+                <span ng-bind="cart.length"></span>
+                <span>Barang&nbsp;</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href ng-click="detailCart()">Detail</a>
+                </li>
+                <li><a href ng-click="createPermintaanBarang()">Buat SPP</a>
+                </li>
+                <li><a href ng-click="clearCart()">Hapus</a>
+                </li>
+            </ul>
+        </span>
+        <div class="input-group input-group-sm" ng-show="!!items.length">
             <span class="input-group-addon" ng-show="!search.$">
                 <span class="glyphicon glyphicon-search"></span>
             </span>
@@ -51,16 +69,16 @@
                         <span class="glyphicon glyphicon-minus" ng-show="expandedAll" ng-click="expandedAll=false"></span>
                     </span>
                 </th>
-                <th ng-repeat="field in fields" class="text-center" ng-click="$parent.sort == field.name ? $parent.reverse =! $parent.reverse : null;  $parent.sort = field.name">
+                <th ng-repeat="field in fields" class="text-center" ng-click="sort.field==field.name?sort.order=!sort.order:null;sort.field=field.name" ng-if="!field.optional">
                     <span ng-bind="field.header"></span>
                     <span>&nbsp;</span>
-                    <span ng-show="$parent.sort=='{{field.name}}' && $parent.reverse == true" class="glyphicon glyphicon-triangle-bottom"></span>
-                    <span ng-show="$parent.sort=='{{field.name}}' && $parent.reverse == false" class="glyphicon glyphicon-triangle-top"></span>
+                    <span ng-show="sort.field=='{{field.name}}' && sort.order == true" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sort.field=='{{field.name}}' && sort.order == false" class="glyphicon glyphicon-triangle-top"></span>
                 </th>
                 <th class="text-center">Pilihan</th>
             </tr>
         </thead>
-        <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort: reverse | startFrom: (currentPage-1)*itemsPerPage | limitTo:itemsPerPage)">
+        <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (currentPage-1)*itemsPerPage | limitTo:itemsPerPage)">
             <tr>
                 <td class="text-center">
                     <input type="checkbox" ng-model="item.selected" ng-change="uncheckDisplayed(item.selected)">
@@ -71,9 +89,9 @@
                         <span class="glyphicon glyphicon-minus" ng-show="item.expanded" ng-click="item.expanded=false;log(item.expanded)"></span>
                     </span>
                 </td>
-                <td ng-repeat="field in fields">
-                    <span ng-if="field.type=='string'">
-                        <span ng-bind="item.{{field.name}}|limitTo:'30'"></span>
+                <td ng-repeat="field in fields" ng-if="!field.optional">
+                    <span ng-if=" field.type=='string' ">
+                        <span ng-bind="item.{{field.name}}|limitTo: '30' "></span>
                         <span ng-show="item.{{field.name}}.length>30">...</span>
                     </span>
                     <span ng-if="field.type=='date'">
@@ -133,13 +151,15 @@
             <span class="input-group input-group-sm" dropdown>
                 <button type="button" class="form-control btn btn-default dropdown-toggle" ng-disabled="!selected.length" dropdown-toggle>
                     <span ng-bind="selected.length"></span>
-                    <span>Data Dipilih&nbsp;</span>
+                    <span>Barang Dipilih&nbsp;</span>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href ng-click="uncheckAll()">Reset</a>
                     </li>
                     <li><a href ng-click="deleteSelected()">Hapus</a>
+                    </li>
+                    <li><a href ng-click="addToCart()">Add</a>
                     </li>
                 </ul>
             </span>
