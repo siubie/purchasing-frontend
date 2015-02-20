@@ -40,6 +40,12 @@ angular.module('fyGrid', [])
                         }
                     }
                 };
+                $scope.close = function() {
+                    if ($scope.modalInstance) {
+                        $scope.modalInstance.close();
+                        console.log("modal closed!!!");
+                    }
+                };
                 $scope.addToCart = function() {
                     if (typeof(Storage) != "undefined") {
                         angular.forEach($scope.selected, function(itemSelected) {

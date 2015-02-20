@@ -83,10 +83,11 @@
                 <td class="text-center">
                     <input type="checkbox" ng-model="item.selected" ng-change="uncheckDisplayed(item.selected)">
                 </td>
-                <td class="text-center" ng-if="module=='permintaanBarang'">
+                <td class="text-center" ng-if="module=='permintaanBarang'" ng-init="item.expanded=false">
+                    <span ng-bind="item.expanded"></span>
                     <span class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-plus" ng-show="!item.expanded" ng-click="item.expanded=true;log(item.expanded);"></span>
-                        <span class="glyphicon glyphicon-minus" ng-show="item.expanded" ng-click="item.expanded=false;log(item.expanded)"></span>
+                        <span class="glyphicon glyphicon-plus" ng-show="!item.expanded" ng-click="item.expanded=true;"></span>
+                        <span class="glyphicon glyphicon-minus" ng-show="item.expanded" ng-click="item.expanded=false;"></span>
                     </span>
                 </td>
                 <td ng-repeat="field in fields" ng-if="!field.optional">

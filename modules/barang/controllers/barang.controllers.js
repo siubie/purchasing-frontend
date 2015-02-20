@@ -69,11 +69,6 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
             });
         }
     };
-    $scope.close = function() {
-        if ($scope.modalInstance) {
-            $scope.modalInstance.dismiss();
-        }
-    };
     $scope.openCreate = function() {
         $scope.close();
         $scope.new();
@@ -112,7 +107,8 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
             templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
-            controller: 'permintaanBarangController'
+            controller: 'permintaanBarangController',
+            scope: $scope
         });
         $scope.close();
     };
