@@ -1,10 +1,11 @@
 <div class="form-inline">
-    <!-- <span ng-repeat="item in cart">{{item | json}}
+    <span ng-repeat="item in cart">
+        <span ng-bind="item|json"></span>
         <br/>
     </span>
-    <br/> -->
+    <br/>
     <span ng-show="!!items.length" class="input-group input-group-sm">
-        <select class="form-control" ng-model="itemsPerPage" ng-init="itemsPerPage=10" ng-change="currentPage=1">
+        <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -57,40 +58,43 @@
         <br/>
         <br/>
     </h5>
-    <table class="table table-striped table-bordered table-condensed" ng-init="currentPage=1" ng-show="currentPage>0 && currentPage<=maxPage">
+    <table class="table table-striped table-bordered table-condensed" ng-init="page.current=1" ng-show="page.current>0 && page.current<=page.max">
         <thead>
             <tr>
                 <th class="text-center">
-                    <input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=false" ng-change="checkDisplayed()">
+                    <input type="checkbox" ng-model="page.selectedAll" ng-change="checkDisplayed()">
                 </th>
                 <th class="text-center" ng-if="module=='permintaanBarang'">
-                    <span class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-plus" ng-show="!expandedAll" ng-click="expandedAll=true"></span>
-                        <span class="glyphicon glyphicon-minus" ng-show="expandedAll" ng-click="expandedAll=false"></span>
-                    </span>
+                    <button type="button" class="btn btn-default btn-xs" ng-show="!page.expandedAll" ng-click="page.expandedAll=true">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-xs" ng-show="page.expandedAll" ng-click="page.expandedAll=false">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
                 </th>
-                <th ng-repeat="field in fields" class="text-center" ng-click="sort.field==field.name?sort.order=!sort.order:null;sort.field=field.name" ng-if="!field.optional">
+                <th ng-repeat="field in fields" class="text-center" ng-click="sort.field==field.name?sort.order=!sort.order:null;sort.field=field.name">
                     <span ng-bind="field.header"></span>
                     <span>&nbsp;</span>
-                    <span ng-show="sort.field=='{{field.name}}' && sort.order == true" class="glyphicon glyphicon-triangle-bottom"></span>
-                    <span ng-show="sort.field=='{{field.name}}' && sort.order == false" class="glyphicon glyphicon-triangle-top"></span>
+                    <span ng-show="sort.field=='{{field.name}}' && sort.order" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sort.field=='{{field.name}}' && !sort.order" class="glyphicon glyphicon-triangle-top"></span>
                 </th>
                 <th class="text-center">Pilihan</th>
             </tr>
         </thead>
-        <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (currentPage-1)*itemsPerPage | limitTo:itemsPerPage)">
+        <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
             <tr>
                 <td class="text-center">
-                    <input type="checkbox" ng-model="item.selected" ng-change="uncheckDisplayed(item.selected)">
+                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)">
                 </td>
                 <td class="text-center" ng-if="module=='permintaanBarang'" ng-init="item.expanded=false">
-                    <span ng-bind="item.expanded"></span>
-                    <span class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-plus" ng-show="!item.expanded" ng-click="item.expanded=true;"></span>
-                        <span class="glyphicon glyphicon-minus" ng-show="item.expanded" ng-click="item.expanded=false;"></span>
-                    </span>
+                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded" ng-click="item.expanded=true">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded" ng-click="item.expanded=false">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
                 </td>
-                <td ng-repeat="field in fields" ng-if="!field.optional">
+                <td ng-repeat="field in fields">
                     <span ng-if=" field.type=='string' ">
                         <span ng-bind="item.{{field.name}}|limitTo: '30' "></span>
                         <span ng-show="item.{{field.name}}.length>30">...</span>
@@ -104,6 +108,10 @@
                     </span>
                     <span ng-if="field.type=='periode'">
                         <span ng-bind="item.{{field.name}}|periodeFilter|date:'MMMM yyyy'"></span>
+                    </span>
+                    <span ng-if="field.type=='ppn'">
+                        <span ng-if="item.ppn">YA</span>
+                        <span ng-if="!item.ppn">TIDAK</span>
                     </span>
                 </td>
                 <td class="text-center">
@@ -133,7 +141,7 @@
                         </tr>
                         <tr ng-repeat="detailBarang in item.sppItemsList">
                             <td class="text-center">
-                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="checkAllDetail()">
+                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null">
                             </td>
                             <td class="text-center" ng-bind="::detailBarang.barang.nama"></td>
                             <td class="text-center" ng-bind="::detailBarang.jumlah"></td>
@@ -169,34 +177,34 @@
             <form name="currentPageForm">
                 <span ng-show="!!displayed.length && currentPageForm.$valid">
                     <span>Menampilkan</span>
-                    <span ng-bind="((currentPage-1)*itemsPerPage+1)+'-'+((currentPage*itemsPerPage<filtered.length)?currentPage*itemsPerPage:filtered.length)"></span>
+                    <span ng-bind="((page.current-1)*page.items+1)+'-'+((page.current*page.items<filtered.length)?page.current*page.items:filtered.length)"></span>
                     <span>dari</span>
                     <span ng-bind="filtered.length"></span>
                     <span>data&nbsp;&nbsp;&nbsp;</span>
                 </span>
                 <span class="input-group input-group-sm">
                     <span class="input-group-btn">
-                        <button type="button" class="form-control btn btn-default" ng-click="currentPage=1" ng-disabled="currentPageForm.$invalid||currentPage==1">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current=1" ng-disabled="currentPageForm.$invalid||page.current==1">
                             <span class="glyphicon glyphicon-fast-backward"></span>
                         </button>
-                        <button type="button" class="form-control btn btn-default" ng-click="currentPage=(currentPage-1)" ng-disabled="currentPageForm.$invalid || currentPage == 1">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current=(page.current-1)" ng-disabled="currentPageForm.$invalid || page.current == 1">
                             <span class="glyphicon glyphicon-backward"></span>
                         </button>
                     </span>
                     <span>
-                        <input type="number" name="currentPage" class="form-control text-center" min="1" max="{{maxPage}}" ng-max="maxPage" ng-model="currentPage" required/>
+                        <input type="number" name="page.current" class="form-control text-center" min="1" max="{{page.max}}" ng-max="page.max" ng-model="page.current" required/>
                     </span>
                     <span class="input-group-addon">
                         <strong>
                             <span>dari</span>
-                            <span ng-bind="maxPage=(Math.ceil(filtered.length / itemsPerPage))"></span>
+                            <span ng-bind="page.max=(Math.ceil(filtered.length / page.items))"></span>
                         </strong>
                     </span>
                     <span class="input-group-btn">
-                        <button type="button" class="form-control btn btn-default" ng-click="currentPage = (currentPage+1)" ng-disabled="currentPageForm.$invalid||currentPage==maxPage">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current = (page.current+1)" ng-disabled="currentPageForm.$invalid||page.current==page.max">
                             <span class="glyphicon glyphicon-forward"></span>
                         </button>
-                        <button type="button" class="form-control btn btn-default" ng-click="currentPage = maxPage" ng-disabled="currentPageForm.$invalid || currentPage==maxPage">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current = page.max" ng-disabled="currentPageForm.$invalid || page.current==page.max">
                             <span class="glyphicon glyphicon-fast-forward"></span>
                         </button>
                     </span>

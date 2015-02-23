@@ -5,21 +5,80 @@ angular.module('fyGrid', [])
             templateUrl: 'scripts/directives/fy-grid.html',
             controller: function($scope, $filter, $window, $modal) {
                 $scope.cart = [];
-                if ($scope.module == "barang" && !!localStorage.barangCart) {
+                $scope.page = {
+                    current: 1,
+                    expandedAll: false,
+                    selectedAll: false
+                };
+                if ($scope.module == "barang") {
+                    $scope.detailFields = [{
+                        "name": "kode",
+                        "type": "string",
+                        "header": "Kode"
+                    }, {
+                        "name": "kategori",
+                        "type": "string",
+                        "header": "kategori"
+                    }, {
+                        "name": "nama",
+                        "type": "string",
+                        "header": "Nama"
+                    }, {
+                        "name": "alias",
+                        "type": "string",
+                        "header": "Alias"
+                    }, {
+                        "name": "satuan",
+                        "type": "string",
+                        "header": "Satuan"
+                    }, {
+                        "name": "spesifikasi",
+                        "type": "string",
+                        "header": "Spesifikasi",
+                    }];
+                }
+                if (!!localStorage.barangCart) {
                     $scope.cart = JSON.parse(localStorage.barangCart);
                 }
-                if ($scope.module == "permintaanBarang" && !!localStorage.permintaanBarangCart) {
-                    $scope.cart = JSON.parse(localStorage.permintaanBarangCart);
+                if ($scope.module == "permintaanBarang") {
+                    $scope.detailFields = [{
+                        "name": "spp",
+                        "type": "string",
+                        "header": "Nomor SPP"
+                    }, {
+                        "name": "barang.kode",
+                        "type": "string",
+                        "header": "Kode Barang"
+                    }, {
+                        "name": "barang.nama",
+                        "type": "string",
+                        "header": "Nama Barang"
+                    }, {
+                        "name": "qty",
+                        "type": "String",
+                        "header": "Jumlah SPP",
+                    }];
+                    if (!!localStorage.permintaanBarangCart) {
+                        $scope.cart = JSON.parse(localStorage.permintaanBarangCart);
+                    }
                 }
                 $scope.checkDisplayed = function() {
                     angular.forEach($scope.displayed, function(item) {
-                        item.selected = $scope.selectedAll;
+                        item.selected = $scope.page.selectedAll;
+                        if ($scope.module == "permintaanBarang") {
+                            angular.forEach(item.sppItemsList, function(detail) {
+                                detail.selected = $scope.page.selectedAll;
+                            });
+                        }
                     });
                 };
-                $scope.uncheckDisplayed = function(selected) {
+                $scope.checkItem = function(selected, item) {
                     if (!selected) {
-                        $scope.selectedAll = false;
+                        $scope.page.selectedAll = false;
                     }
+                    angular.forEach(item.sppItemsList, function(detail) {
+                        detail.selected = selected;
+                    });
                 };
                 $scope.uncheckAll = function() {
                     angular.forEach($scope.selected, function(item) {
@@ -50,23 +109,35 @@ angular.module('fyGrid', [])
                     if (typeof(Storage) != "undefined") {
                         angular.forEach($scope.selected, function(itemSelected) {
                             var duplicated = false;
-                            delete itemSelected.selected;
-                            if (!!$scope.cart.length) {
-                                angular.forEach($scope.cart, function(itemCart) {
-                                    if (itemCart.kode == itemSelected.kode) {
-                                        duplicated = true;
+                            if ($scope.module == "barang") {
+                                delete itemSelected.selected;
+                                if (!!$scope.cart.length) {
+                                    angular.forEach($scope.cart, function(itemCart) {
+                                        if (itemCart.kode == itemSelected.kode) {
+                                            duplicated = true;
+                                        }
+                                    });
+                                    if (!duplicated) {
+                                        $scope.cart.push(itemSelected);
                                     }
-                                });
-                                if (!duplicated) {
+                                } else {
                                     $scope.cart.push(itemSelected);
                                 }
-                            } else {
-                                $scope.cart.push(itemSelected);
-                            }
-                            if ($scope.module == "barang") {
                                 localStorage.setItem("barangCart", JSON.stringify($scope.cart));
                             }
                             if ($scope.module == "permintaanBarang") {
+                                if (!!$scope.cart.length) {
+                                    angular.forEach($scope.cart, function(itemCart) {
+                                        if ((itemCart.barang.kode == itemSelected.barang.kode) && (itemCart.spp == itemSelected.spp)) {
+                                            duplicated = true;
+                                        }
+                                    });
+                                    if (!duplicated) {
+                                        $scope.cart.push(itemSelected);
+                                    }
+                                } else {
+                                    $scope.cart.push(itemSelected);
+                                }
                                 localStorage.setItem("permintaanBarangCart", JSON.stringify($scope.cart));
                             }
                         });
@@ -85,7 +156,8 @@ angular.module('fyGrid', [])
                     var confirmDelete = $window.confirm('Apakah Anda Yakin?');
                     if (confirmDelete) {
                         $scope.cart = [];
-                        localStorage.setItem("barangCart", "");
+                        if ($scope.module == "barang") localStorage.setItem("barangCart", "");
+                        if ($scope.module == "permintaanBarang") localStorage.setItem("permintaanBarangCart", "");
                         if (!$scope.cart.length) {
                             $scope.close();
                         }
@@ -101,30 +173,54 @@ angular.module('fyGrid', [])
                         $scope.close();
                     }
                 };
-                $scope.$watch('items', function() {
-                    $scope.selected = $filter('filter')($scope.items, {
-                        selected: 'true'
-                    });
+                $scope.$watch("items", function() {
+                    if ($scope.module == "barang") {
+                        $scope.selected = $filter('filter')($scope.items, {
+                            selected: 'true'
+                        });
+                    }
+                    if ($scope.module == "permintaanBarang") {
+                        $scope.selected = [];
+                        angular.forEach($scope.items, function(item) {
+                            angular.forEach(item.sppItemsList, function(detail) {
+                                if (detail.selected) {
+                                    $scope.selected.push({
+                                        spp: item.nomor,
+                                        barang: detail.barang,
+                                        qty: detail.jumlah
+                                    });
+                                }
+                            });
+                        });
+                    }
                 }, true);
                 $scope.$watchCollection('search', function() {
                     $scope.currentPage = 1;
                 });
                 $scope.$watchCollection('displayed', function() {
-                    if ($scope.selectedAll) {
-                        $scope.selectedAll = false;
+                    if ($scope.page.selectedAll) {
+                        $scope.page.selectedAll = false;
                     }
                 });
                 $scope.$watch('displayed', function() {
-                    $scope.selectedAll = true;
+                    $scope.page.selectedAll = true;
                     angular.forEach($scope.displayed, function(item) {
                         if (!item.selected) {
-                            $scope.selectedAll = false;
+                            $scope.page.selectedAll = false;
+                        }
+                        if ($scope.module == "permintaanBarang") {
+                            item.selected = true;
+                            angular.forEach(item.sppItemsList, function(detail) {
+                                if (!detail.selected) {
+                                    item.selected = false;
+                                }
+                            });
                         }
                     });
                 }, true);
-                $scope.$watch('expandedAll', function() {
+                $scope.$watch('page.expandedAll', function() {
                     angular.forEach($scope.displayed, function(item) {
-                        if ($scope.expandedAll) {
+                        if ($scope.page.expandedAll) {
                             item.expanded = true;
                         } else {
                             item.expanded = false;

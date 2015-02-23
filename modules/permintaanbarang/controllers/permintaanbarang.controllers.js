@@ -30,7 +30,11 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     $scope.status = true;
     $scope.timestamp = {
         "periode": new Date()
-    }
+    };
+    $scope.opened = {
+        "periode": false,
+        "tanggalButuh": []
+    };
     $scope.new = function() {
         $scope.permintaanBarang = new permintaanBarangFactory({
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
@@ -59,11 +63,11 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         $scope.items = $scope.permintaanBarangs;
     };
     $scope.load();
-    $scope.openedTanggalButuh = [];
     $scope.create = function() {
         $scope.permintaanBarang.$save(function() {
             $scope.load();
             $scope.close();
+
         });
     };
     $scope.update = function() {
@@ -112,25 +116,18 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             scope: $scope
         });
     };
-    // $scope.addDetail = function() {
-    //     $scope.permintaanBarang.sppItemsList.push({
-    //         tanggalButuh: $filter('date')($scope.timestamp.periode, 'yyyy-MM-dd'),
-    //         jumlah: 1,
-    //         status: 'RECEIVED'
-    //     });
-    // };
     $scope.removeDetail = function(index) {
         $scope.permintaanBarang.sppItemsList.splice(index, 1);
     };
     $scope.openCalendar = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedPeriode = true;
+        $scope.opened.periode = true;
     };
     $scope.openTanggalButuh = function($event, index) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedTanggalButuh[index] = true;
+        $scope.opened.tanggalButuh[index] = true;
     };
     $scope.$watch('timestamp', function() {
         $scope.permintaanBarang.periode = $filter('date')($scope.timestamp.periode, 'MM-yyyy');

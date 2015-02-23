@@ -1,7 +1,7 @@
 <div class="modal-body">
-    <span ng-bind="permintaanBarang|json"></span>
+    <!-- <span ng-bind="permintaanBarang|json"></span>
     <br/>
-    <span ng-bind="timestamp.periode"></span>
+    <span ng-bind="timestamp.periode"></span> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -25,7 +25,7 @@
         <div class="form-group col-xs-6 input-group-sm">
             <label for="periode">Periode:&nbsp;</label>
             <span ng-bind="permintaanBarang.periode | periodeFilter | date: 'MMMM yyyy'"></span>
-            <span ng-model="timestamp.periode" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="openedPeriode" current-text="Sekarang"
+            <span ng-model="timestamp.periode" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="opened.periode" current-text="Sekarang"
             clear-text="Hapus" close-text="Tutup"></span>
             <span>
                 <button class="btn btn-default btn-sm" type="button" ng-click="openCalendar($event)">
@@ -58,7 +58,7 @@
                     </td>
                     <td class="text-center">
                         <span ng-bind="detailBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
-                        <span ng-model="detailBarang.tanggalButuh" init-date="detailBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="openedTanggalButuh[$index]" min-date="timestamp.periode" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                        <span ng-model="detailBarang.tanggalButuh" init-date="detailBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
                         </span>
                         <span>
                             <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
@@ -76,13 +76,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span>&nbsp;&nbsp;Tambah Item</span>
-            </button>
         </div>
-        <br/>
-        <br/>
         <div class="col-xs-12">
             <button type="submit" class="btn btn-default btn-sm" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid||!permintaanBarang.sppItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>

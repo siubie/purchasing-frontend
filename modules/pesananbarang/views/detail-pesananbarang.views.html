@@ -1,0 +1,66 @@
+<div class="modal-body">
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <h3>Detail Pesanan Barang</h3>
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <td class="col-xs-6">
+                <strong>Nomor Pesanan Barang</strong>
+            </td>
+            <td class="col-xs-6" ng-bind="pesananBarang.nomor"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Tanggal Pesanan</strong>
+            </td>
+            <td ng-bind="pesananBarang.tanggal | date:'longDate'"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Supplier</strong>
+            </td>
+            <td ng-bind="pesananBarang.supplier.nama"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>PPN</strong>
+            </td>
+            <td>
+                <div ng-if="pesananBarang.jenis">YA</div>
+                <div ng-if="!pesananBarang.jenis">TIDAK</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan=2>
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <th colspan=6 class="text-center">Detail Barang</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Nomor SPP</th>
+                        <th class="text-center">Nama Barang</th>
+                        <th class="text-center">Jumlah</th>
+                        <th class="text-center">Harga</th>
+                        <th class="text-center">Diskon</th>
+                    </tr>
+                    <tr ng-repeat="detail in pesananBarang.spItemsList">
+                        <td ng-bind="detail.spp"></td>
+                        <td ng-bind="detail.barang.nama"></td>
+                        <td ng-bind="detail.qty"></td>
+                        <td ng-bind="detail.harga"></td>
+                        <td ng-bind="detail.diskon"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(pesananBarang)" ng-disabled="pesananBarangForm.$invalid">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span> Ubah</span>
+    </button>
+    <button class="btn btn-default btn-sm" type="button" ng-click="delete(pesananBarang)" ng-show="!status">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span> Hapus</span>
+    </button>
+</div>

@@ -20,16 +20,6 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
         "name": "satuan",
         "type": "string",
         "header": "Satuan"
-    }, {
-        "name": "spesifikasi",
-        "type": "string",
-        "header": "Spesifikasi",
-        "optional": "true"
-    }, {
-        "name": "deskripsi",
-        "type": "string",
-        "header": "Deskripsi",
-        "optional": "true"
     }];
     $scope.Math = window.Math;
     $scope.sort = {
