@@ -71,10 +71,10 @@
     </table>
     <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-disabled="permintaanBarangForm.$invalid">
         <span class="glyphicon glyphicon-floppy-disk"></span>
-        <span> Ubah</span>
+        <span>&nbsp;Ubah</span>
     </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-show="!status">
-        <span class="glyphicon glyphicon-trash"></span>
-        <span> Hapus</span>
+    <button class="btn btn-default btn-sm" type="button" ng-click="reject(permintaanBarang)" ng-show="!newForm">
+        <span class="glyphicon glyphicon-remove"></span>
+        <span>&nbsp;Tolak</span>
     </button>
 </div>

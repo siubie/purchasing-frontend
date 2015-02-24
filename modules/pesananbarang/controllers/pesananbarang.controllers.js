@@ -23,24 +23,24 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         "field": "nomor",
         "order": true
     };
-    $scope.status = true;
+    $scope.newForm = true;
     $scope.new = function() {
         $scope.pesananBarang = new pesananBarangFactory({
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
             ppn: false,
             spItemsList: []
         });
-        // if (!!localStorage.permintaanBarangCart) {
-        //     $scope.barangCart = JSON.parse(localStorage.barangCart);
-        //     angular.forEach($scope.barangCart, function(itemBarangCart) {
-        //         $scope.pesananBarang.sppItemsList.push({
-        //             barang: itemBarangCart,
-        //             tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd'),
-        //             jumlah: 1,
-        //             status: "RECEIVED"
-        //         });
-        //     });
-        // }
+        if (!!localStorage.permintaanBarangCart) {
+            $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);
+            angular.forEach($scope.permintaanBarangCart, function(itemBarangCart) {
+                $scope.pesananBarang.spItemsList.push({
+                    spp: itemBarangCart.spp,
+                    barang: itemBarangCart.barang,
+                    qty: itemBarangCart.qty,
+                    diskon: 0
+                });
+            });
+        }
     };
     $scope.new();
     $scope.load = function() {
@@ -54,6 +54,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.pesananBarang.$save(function() {
             $scope.load();
             $scope.close();
+            $scope.clearCart();
         });
     };
     $scope.update = function() {
@@ -73,6 +74,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openCreate = function() {
         $scope.close();
+        $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
@@ -83,6 +85,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openRead = function(pesananBarang) {
         $scope.close();
+        $scope.newForm = false;
         $scope.pesananBarang = angular.copy(pesananBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/detail-pesananbarang.views.html',
@@ -93,7 +96,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openUpdate = function(pesananBarang) {
         $scope.close();
-        $scope.status = false;
+        $scope.newForm = false;
         $scope.pesananBarang = angular.copy(pesananBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',

@@ -57,7 +57,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
     };
     $scope.openCreate = function() {
         $scope.close();
-        $scope.status = true;
+        $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/form-supplier.views.html',
@@ -78,7 +78,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
     };
     $scope.openUpdate = function(supplier) {
         $scope.close();
-        $scope.status = false;
+        $scope.newForm = false;
         $scope.supplierOld = angular.copy(supplier);
         $scope.supplier = angular.copy(supplier);
         $scope.modalInstance = $modal.open({

@@ -1,9 +1,9 @@
 <div class="form-inline">
-    <span ng-repeat="item in cart">
+    <!-- <span ng-repeat="item in cart">
         <span ng-bind="item|json"></span>
         <br/>
     </span>
-    <br/>
+    <br/> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
             <option value="10">10</option>
@@ -20,7 +20,7 @@
         <span class="glyphicon glyphicon-refresh"></span>
         <span>&nbsp;Refresh</span>
     </button>
-    <div class="pull-right">
+    <span class="pull-right">
         <span class="input-group input-group-sm" dropdown>
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
@@ -33,13 +33,25 @@
             <ul class="dropdown-menu" role="menu">
                 <li><a href ng-click="detailCart()">Detail</a>
                 </li>
-                <li><a href ng-click="createPermintaanBarang()">Buat SPP</a>
+                <li ng-if="module=='barang'"><a href ng-click="openCreatePermintaanBarang()">Buat SPP</a>
+                </li>
+                <li ng-if="module=='permintaanBarang'"><a href ng-click="openCreatePesananBarang()">Buat SP</a>
                 </li>
                 <li><a href ng-click="clearCart()">Hapus</a>
                 </li>
             </ul>
         </span>
-        <div class="input-group input-group-sm" ng-show="!!items.length">
+        <span class="input-group input-group-sm" ng-if="module=='permintaanBarang'" ng-show="!!items.length">
+            <span class="input-group-addon">
+                <strong>Status</strong>
+            </span>
+            <select class="form-control" ng-model="search.status">
+                <option value="">Semua</option>
+                <option value="RECEIVED">Diterima</option>
+                <option value="REJECTED">Ditolak</option>
+            </select>
+        </span>
+        <span class="input-group input-group-sm" ng-show="!!items.length">
             <span class="input-group-addon" ng-show="!search.$">
                 <span class="glyphicon glyphicon-search"></span>
             </span>
@@ -47,8 +59,8 @@
                 <span class="glyphicon glyphicon-remove"></span>
             </span>
             <input type="text" class="form-control" ng-model="search.$" />
-        </div>
-    </div>
+        </span>
+    </span>
 </div>
 <br/>
 <h5 ng-show="!items.length">Data Kosong</h5>
@@ -115,14 +127,17 @@
                     </span>
                 </td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-default btn-xs" ng-click="openRead(item)">
+                    <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
                         <span class="glyphicon glyphicon-zoom-in"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-click="openUpdate(item)">
+                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)">
                         <span class="glyphicon glyphicon-edit"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-click="delete(item)">
+                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'">
                         <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(item)" ng-if="module=='permintaanBarang'">
+                        <span class="glyphicon glyphicon-remove"></span>
                     </button>
                 </td>
             </tr>

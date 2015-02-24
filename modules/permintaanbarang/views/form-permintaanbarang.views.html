@@ -5,16 +5,16 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <div ng-show="status">
+    <div ng-show="newForm">
         <h3>Tambah Permintaan Barang</h3>
     </div>
-    <div ng-show="!status">
+    <div ng-show="!newForm">
         <h3>Ubah Permintaan Barang</h3>
     </div>
     <form class="row" name="permintaanBarangForm">
         <div class="form-group col-xs-6 input-group-sm">
             <label for="nomor">Nomor</label>
-            <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="permintaanBarang.nomor" ng-disabled="!status" required/>
+            <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="permintaanBarang.nomor" ng-disabled="!newForm" required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="departemen">Peminta</label>
@@ -78,13 +78,13 @@
             </table>
         </div>
         <div class="col-xs-12">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="status==true ? create() : update()" ng-disabled="permintaanBarangForm.$invalid||!permintaanBarang.sppItemsList.length">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="permintaanBarangForm.$invalid||!permintaanBarang.sppItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
-                <span>&nbsp;&nbsp;Simpan</span>
+                <span>&nbsp;Simpan</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="delete(permintaanBarang)" ng-show="!status">
-                <span class="glyphicon glyphicon-trash"></span>
-                <span>&nbsp;&nbsp;Hapus</span>
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete(permintaanBarang)" ng-show="!newForm">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>&nbsp;Tolak</span>
             </button>
         </div>
     </form>

@@ -26,7 +26,6 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
         "field": "kode",
         "order": false
     };
-    $scope.status = true;
     $scope.new = function() {
         $scope.barang = new barangFactory();
     };
@@ -61,6 +60,7 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
     };
     $scope.openCreate = function() {
         $scope.close();
+        $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/barang/views/form-barang.views.html',
@@ -71,6 +71,7 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
     };
     $scope.openRead = function(barang) {
         $scope.close();
+        $scope.newForm = false;
         $scope.barang = angular.copy(barang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/barang/views/detail-barang.views.html',
@@ -81,7 +82,7 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
     };
     $scope.openUpdate = function(barang) {
         $scope.close();
-        $scope.status = false;
+        $scope.newForm = false;
         $scope.barangOld = angular.copy(barang);
         $scope.barang = angular.copy(barang);
         $scope.modalInstance = $modal.open({
@@ -92,6 +93,7 @@ angular.module('barang.controllers', []).controller('barangController', ['$scope
         });
     };
     $scope.createPermintaanBarang = function() {
+        $scope.newForm = true;
         $scope.close();
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',

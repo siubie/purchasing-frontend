@@ -10,6 +10,7 @@ angular.module('fyGrid', [])
                     expandedAll: false,
                     selectedAll: false
                 };
+                $scope.search = [];
                 if ($scope.module == "barang") {
                     $scope.detailFields = [{
                         "name": "kode",
@@ -36,9 +37,9 @@ angular.module('fyGrid', [])
                         "type": "string",
                         "header": "Spesifikasi",
                     }];
-                }
-                if (!!localStorage.barangCart) {
-                    $scope.cart = JSON.parse(localStorage.barangCart);
+                    if (!!localStorage.barangCart) {
+                        $scope.cart = JSON.parse(localStorage.barangCart);
+                    }
                 }
                 if ($scope.module == "permintaanBarang") {
                     $scope.detailFields = [{
@@ -60,6 +61,11 @@ angular.module('fyGrid', [])
                     }];
                     if (!!localStorage.permintaanBarangCart) {
                         $scope.cart = JSON.parse(localStorage.permintaanBarangCart);
+                    }
+                }
+                if ($scope.module == "pesananBarang") {
+                    if (!!localStorage.pesananBarangCart) {
+                        $scope.cart = JSON.parse(localStorage.pesananBarangCart);
                     }
                 }
                 $scope.checkDisplayed = function() {
