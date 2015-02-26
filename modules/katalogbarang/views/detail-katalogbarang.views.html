@@ -1,0 +1,52 @@
+<div class="modal-body">
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <h3>Detail Katalog Barang</h3>
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <td class="col-xs-6">
+                <strong>Nama Barang</strong>
+            </td>
+            <td class="col-xs-6" ng-bind="katalogBarang.barang.nama"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Peminta</strong>
+            </td>
+            <td ng-bind="katalogBarang.departemen.departemen"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Supplier</strong>
+            </td>
+            <td ng-bind="katalogBarang.supplier.nama"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Alias</strong>
+            </td>
+            <td ng-bind="katalogBarang.alias"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Harga</strong>
+            </td>
+            <td ng-bind="katalogBarang.harga"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Lead Time</strong>
+            </td>
+            <td ng-bind="katalogBarang.leadTime"></td>
+        </tr>
+    </table>
+    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(katalogBarang)" ng-disabled="katalogBarangForm.$invalid">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span>&nbsp;Ubah</span>
+    </button>
+    <button class="btn btn-default btn-sm" type="button" ng-click="delete(katalogBarang)">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span>&nbsp;Hapus</span>
+    </button>
+</div>

@@ -108,7 +108,7 @@ angular.module('fyGrid', [])
                 $scope.close = function() {
                     if ($scope.modalInstance) {
                         $scope.modalInstance.close();
-                        console.log("modal closed!!!");
+                        // console.log("modal closed!!!");
                     }
                 };
                 $scope.addToCart = function() {
