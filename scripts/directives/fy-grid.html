@@ -108,8 +108,8 @@
                 </td>
                 <td ng-repeat="field in fields">
                     <span ng-if=" field.type=='string' ">
-                        <span ng-bind="item.{{field.name}}|limitTo: '30' "></span>
-                        <span ng-show="item.{{field.name}}.length>30">...</span>
+                        <span ng-bind="::item.{{field.name}}|limitTo: '30' "></span>
+                        <span ng-show="::item.{{field.name}}.length>30">...</span>
                     </span>
                     <span ng-if="field.type=='date'">
                         <span ng-bind="item.{{field.name}}|date:field.filter"></span>

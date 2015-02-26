@@ -1,6 +1,6 @@
 <div class="modal-body">
-    <!-- {{barang|json}} -->
-    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+    {{barang|json}}
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
@@ -30,8 +30,8 @@
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="satuan">Satuan</label>
-            <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy: 'satuan'" required>
-                <option value="">-- Pilih Kategori --</option>
+            <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs | orderBy: 'satuan' track by satuanGudang.satuan" required>
+                <option value="">-- Pilih Satuan --</option>
             </select>
         </div>
         <div class="form-group col-xs-12 input-group-sm">

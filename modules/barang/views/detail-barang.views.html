@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <h3>Detail Barang</h3>
@@ -48,11 +48,11 @@
         </tr>
     </table>
     <br/>
-    <button type="button" class="btn btn-default btn-sm" ng-click="openUpdate(barang)" ng-disabled="barangForm.$invalid">
+    <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-disabled="barangForm.$invalid">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Ubah</span>
     </button>
-    <button type="button" class="btn btn-default btn-sm" ng-click="delete(barang)" ng-show="!newForm">
+    <button type="button" class="btn btn-default btn-sm" ng-click="delete(barang)">
         <span class="glyphicon glyphicon-trash"></span>
         <span>&nbsp;Hapus</span>
     </button>
