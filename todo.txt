@@ -3,11 +3,8 @@ unit test
 hindari $scope di dalam method
 
 feature
-perbaiki satu list barang SPP tidak boleh ada duplikat barang
-otomatis tambah detail barang
 cek label for, id, name di setiap input
-popover
-expand 
+
 
 bug
 cek filter periode jalan lebih dari 1x di 1 data

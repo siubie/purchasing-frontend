@@ -13,10 +13,6 @@ angular.module("barang.controllers", []).controller("barangController", function
             "type": "string",
             "header": "Nama"
         }, {
-            "name": "alias",
-            "type": "string",
-            "header": "Alias"
-        }, {
             "name": "satuan",
             "type": "string",
             "header": "Satuan"
@@ -65,21 +61,6 @@ angular.module("barang.controllers", []).controller("barangController", function
                 if (reason == "update") {
                     $scope.openUpdate(barang);
                 }
-            });
-        };
-        $scope.openUpdate = function(barang) {
-            $scope.close();
-            $scope.newForm = false;
-            $scope.barangOld = angular.copy(barang);
-            $scope.barang = angular.copy(barang);
-            $scope.modalInstance = $modal.open({
-                templateUrl: "modules/barang/views/form-barang.views.html",
-                size: "md",
-                backdrop: "static",
-                controller: "createBarangController"
-            });
-            modalInstance.result.then(function() {
-                $scope.load();
             });
         };
         $scope.openUpdate = function(barang) {

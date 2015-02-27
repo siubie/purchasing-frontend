@@ -1,9 +1,4 @@
 <div class="form-inline">
-    <!-- <span ng-repeat="item in cart">
-        <span ng-bind="item|json"></span>
-        <br/>
-    </span>
-    <br/> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
             <option value="10">10</option>
@@ -76,7 +71,7 @@
                 <th class="text-center">
                     <input type="checkbox" ng-model="page.selectedAll" ng-change="checkDisplayed()">
                 </th>
-                <th class="text-center" ng-if="module=='permintaanBarang'">
+                <th class="text-center" ng-if="module=='barang'||module=='permintaanBarang'">
                     <button type="button" class="btn btn-default btn-xs" ng-show="!page.expandedAll" ng-click="page.expandedAll=true">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
@@ -98,6 +93,14 @@
                 <td class="text-center">
                     <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)">
                 </td>
+                <td class="text-center" ng-if="module=='barang'" ng-init="item.expanded=false">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.hargaSupplier.length" ng-click="item.expanded=true">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded&&!!item.hargaSupplier.length" ng-click="item.expanded=false">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                </td>
                 <td class="text-center" ng-if="module=='permintaanBarang'" ng-init="item.expanded=false">
                     <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded" ng-click="item.expanded=true">
                         <span class="glyphicon glyphicon-plus"></span>
@@ -107,23 +110,23 @@
                     </button>
                 </td>
                 <td ng-repeat="field in fields">
-                    <span ng-if=" field.type=='string' ">
-                        <span ng-bind="::item.{{field.name}}|limitTo: '30' "></span>
+                    <span ng-if=" field.type=='string'">
+                        <span ng-bind="::item.{{field.name}}|limitTo: '30'"></span>
                         <span ng-show="::item.{{field.name}}.length>30">...</span>
                     </span>
                     <span ng-if="field.type=='date'">
-                        <span ng-bind="item.{{field.name}}|date:field.filter"></span>
+                        <span ng-bind="::item.{{field.name}}|date:field.filter"></span>
                     </span>
                     <span ng-if="field.type=='jenis'">
-                        <span ng-if="item.jenis">EMERGENCY</span>
-                        <span ng-if="!item.jenis">RUTIN</span>
+                        <span ng-if="::item.jenis">EMERGENCY</span>
+                        <span ng-if="::!item.jenis">RUTIN</span>
                     </span>
                     <span ng-if="field.type=='periode'">
-                        <span ng-bind="item.{{field.name}}|periodeFilter|date:'MMMM yyyy'"></span>
+                        <span ng-bind="::item.{{field.name}}|periodeFilter|date:'MMMM yyyy'"></span>
                     </span>
                     <span ng-if="field.type=='ppn'">
-                        <span ng-if="item.ppn">YA</span>
-                        <span ng-if="!item.ppn">TIDAK</span>
+                        <span ng-if="::item.ppn">YA</span>
+                        <span ng-if="::!item.ppn">TIDAK</span>
                     </span>
                 </td>
                 <td class="text-center">
@@ -133,12 +136,33 @@
                     <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)">
                         <span class="glyphicon glyphicon-edit"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'||module=='katalogBarang'">
+                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
                     <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(item)" ng-if="module=='permintaanBarang'">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
+                </td>
+            </tr>
+            <tr ng-if="module=='barang'&&!!item.hargaSupplier.length" ng-show="item.expanded">
+                <td></td>
+                <td colspan="7">
+                    <table class="table table-condensed table-bordered table-table-striped">
+                        <tr>
+                            <th class="text-center">Supplier</th>
+                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Alias</th>
+                            <th class="text-center">Harga</th>
+                            <th class="text-center">Lead Time</th>
+                        </tr>
+                        <tr ng-repeat="detailHarga in item.hargaSupplier | orderBy:'tanggal':true">
+                            <td class="text-center" ng-bind="::detailHarga.supplier"></td>
+                            <td class="text-center" ng-bind="::detailHarga.tanggal|date:'dd MMMM yyyy'"></td>
+                            <td class="text-center" ng-bind="::detailHarga.alias"></td>
+                            <td class="text-center" ng-bind="::detailHarga.harga"></td>
+                            <td class="text-center" ng-bind="::detailHarga.leadTime"></td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
             <tr ng-if="module=='permintaanBarang'" ng-show="item.expanded">
