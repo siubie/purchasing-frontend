@@ -80,7 +80,7 @@ angular.module("barang.controllers", []).controller("barangController", function
                 $scope.load();
             });
         };
-        $scope.createPermintaanBarang = function() {
+        $scope.openCreatePermintaanBarang = function() {
             $scope.newForm = true;
             $scope.close();
             $scope.modalInstance = $modal.open({

@@ -17,6 +17,7 @@ angular.module("purchasingApp", [
     "barang",
     "supplier",
     "pesananBarang",
+    "penerimaanBarang",
     "fyGrid"
 ]);
 
