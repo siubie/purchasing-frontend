@@ -30,7 +30,7 @@ angular.module("penerimaanBarang.controllers", [])
         }];
         $scope.Math = window.Math;
         $scope.sort = {
-            "field": "nomor",
+            "field": "tanggal",
             "order": true
         };
         $scope.newForm = true;

@@ -92,8 +92,8 @@ angular.module('fyGrid', [])
                     });
                 };
                 $scope.deleteSelected = function() {
-                    var confirmDelete = $window.confirm('Apakah Anda Yakin?');
-                    if (confirmDelete) {
+                    var confirm = $window.confirm('Apakah Anda Yakin?');
+                    if (confirm) {
                         var spliceSelected = function(i) {
                             $scope.items.splice(i, 1);
                         };
@@ -158,8 +158,8 @@ angular.module('fyGrid', [])
                         scope: $scope
                     });
                 };
-                $scope.clearCart = function(confirm) {
-                    var confirmDelete = $window.confirm('Apakah Anda Yakin?');
+                $scope.clearCart = function() {
+                    var confirm = $window.confirm('Apakah Anda Yakin?');
                     if (confirm) {
                         $scope.cart = [];
                         if ($scope.module == "barang") localStorage.setItem("barangCart", "");
@@ -188,15 +188,17 @@ angular.module('fyGrid', [])
                     if ($scope.module == "permintaanBarang") {
                         $scope.selected = [];
                         angular.forEach($scope.items, function(item) {
-                            angular.forEach(item.sppItemsList, function(detail) {
-                                if (detail.selected) {
-                                    $scope.selected.push({
-                                        spp: item.nomor,
-                                        barang: detail.barang,
-                                        qty: detail.jumlah
-                                    });
-                                }
-                            });
+                            if (item.status == "APPROVED") {
+                                angular.forEach(item.sppItemsList, function(detail) {
+                                    if (detail.selected) {
+                                        $scope.selected.push({
+                                            spp: item.nomor,
+                                            barang: detail.barang,
+                                            qty: detail.jumlah
+                                        });
+                                    }
+                                });
+                            }
                         });
                     }
                 }, true);

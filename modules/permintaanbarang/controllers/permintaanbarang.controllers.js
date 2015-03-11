@@ -24,7 +24,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     }];
     $scope.Math = window.Math;
     $scope.sort = {
-        "field": "nomor",
+        "field": "tanggal",
         "order": true
     };
     $scope.timestamp = {

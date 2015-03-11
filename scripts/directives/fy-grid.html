@@ -16,7 +16,7 @@
         <span>&nbsp;Refresh</span>
     </button>
     <span class="pull-right">
-        <span class="input-group input-group-sm" dropdown ng-if="module=='barang'||module=='permintaanBarang '">
+        <span class="input-group input-group-sm" dropdown ng-if="module=='barang'||module=='permintaanBarang'">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
             </span>
@@ -94,7 +94,7 @@
         <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
             <tr>
                 <td class="text-center">
-                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)">
+                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='barang'" ng-init="item.expanded=false">
                     <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.hargaSupplier.length" ng-click="item.expanded=true">
@@ -191,7 +191,7 @@
                         </tr>
                         <tr ng-repeat="detailBarang in item.sppItemsList">
                             <td class="text-center">
-                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null">
+                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
                             </td>
                             <td class="text-center" ng-bind="::detailBarang.barang.nama"></td>
                             <td class="text-center" ng-bind="::detailBarang.jumlah"></td>
