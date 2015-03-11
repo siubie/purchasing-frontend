@@ -159,8 +159,8 @@ angular.module('fyGrid', [])
                     });
                 };
                 $scope.clearCart = function(confirm) {
-                    var confirmDelete = confirm ? $window.confirm('Apakah Anda Yakin?') : null;
-                    if ((confirmDelete && confirm) || (!confirm)) {
+                    var confirmDelete = $window.confirm('Apakah Anda Yakin?');
+                    if (confirm) {
                         $scope.cart = [];
                         if ($scope.module == "barang") localStorage.setItem("barangCart", "");
                         if ($scope.module == "permintaanBarang") localStorage.setItem("permintaanBarangCart", "");

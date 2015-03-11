@@ -6,15 +6,21 @@
     <table class="table table-bordered table-condensed">
         <tr>
             <td class="col-xs-6">
-                <strong>Nomor Pesanan Barang</strong>
+                <strong>Nomor Penerimaan Barang</strong>
             </td>
             <td class="col-xs-6" ng-bind="penerimaanBarang.nomor"></td>
         </tr>
         <tr>
             <td>
-                <strong>Tanggal Pesanan</strong>
+                <strong>Tanggal Dibuat</strong>
             </td>
-            <td ng-bind="penerimaanBarang.tanggal | date:'longDate'"></td>
+            <td ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Tanggal Dibuat</strong>
+            </td>
+            <td ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
         </tr>
         <tr>
             <td>

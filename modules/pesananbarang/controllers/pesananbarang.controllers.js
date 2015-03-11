@@ -72,17 +72,17 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             });
         }
     };
-    $scope.openCreate = function() {
-        $scope.close();
-        $scope.newForm = true;
-        $scope.new();
-        $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
-            size: 'lg',
-            backdrop: 'static',
-            scope: $scope
-        });
-    };
+    // $scope.openCreate = function() {
+    //     $scope.close();
+    //     $scope.newForm = true;
+    //     $scope.new();
+    //     $scope.modalInstance = $modal.open({
+    //         templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
+    //         size: 'lg',
+    //         backdrop: 'static',
+    //         scope: $scope
+    //     });
+    // };
     $scope.openRead = function(pesananBarang) {
         $scope.close();
         $scope.newForm = false;
@@ -103,6 +103,24 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             size: 'lg',
             backdrop: 'static',
             scope: $scope
+        });
+    };
+    $scope.openCreatePenerimaanBarang = function(pesananBarang) {
+        $scope.close();
+        $scope.newForm = true;
+        modalInstance = $modal.open({
+            templateUrl: 'modules/penerimaanbarang/views/form-penerimaanbarang.views.html',
+            size: 'lg',
+            backdrop: 'static',
+            controller: "createPenerimaanBarangController",
+            resolve: {
+                pesananBarang: function() {
+                    return pesananBarang;
+                }
+            }
+        });
+        modalInstance.result.then(function() {
+            $scope.load();
         });
     };
     $scope.removeDetail = function(index) {

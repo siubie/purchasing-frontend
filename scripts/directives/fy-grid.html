@@ -7,7 +7,7 @@
             <option value="100">100</option>
         </select>
     </span>
-    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()">
+    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()" ng-if="module=='barang'||module=='supplier'">
         <span class="glyphicon glyphicon-plus"></span>
         <span>&nbsp;Tambah</span>
     </button>
@@ -16,7 +16,7 @@
         <span>&nbsp;Refresh</span>
     </button>
     <span class="pull-right">
-        <span class="input-group input-group-sm" dropdown>
+        <span class="input-group input-group-sm" dropdown ng-if="module=='barang'||module=='permintaanBarang '">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
             </span>
@@ -32,7 +32,9 @@
                 </li>
                 <li ng-if="module=='permintaanBarang'"><a href ng-click="openCreatePesananBarang()">Buat SP</a>
                 </li>
-                <li><a href ng-click="clearCart(false)">Hapus</a>
+                <li ng-if="module=='pesananBarang'"><a href ng-click="openCreatePenerimaanBarang()">Buat SP</a>
+                </li>
+                <li><a href ng-click="clearCart()">Hapus</a>
                 </li>
             </ul>
         </span>
@@ -40,9 +42,10 @@
             <span class="input-group-addon">
                 <strong>Status</strong>
             </span>
-            <select class="form-control" ng-model="search.status">
+            <select class="form-control" ng-model="search.status" ng-init="search.status='RECEIVED'">
                 <option value="">Semua</option>
                 <option value="RECEIVED">Diterima</option>
+                <option value="APPROVED">Disetujui</option>
                 <option value="REJECTED">Ditolak</option>
             </select>
         </span>
@@ -133,14 +136,22 @@
                     <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
                         <span class="glyphicon glyphicon-zoom-in"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)">
+                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="!(module=='permintaanBarang'&&(item.status=='APPROVED'||item.status=='REJECTED'))">
                         <span class="glyphicon glyphicon-edit"></span>
                     </button>
                     <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(item)" ng-if="module=='permintaanBarang'">
-                        <span class="glyphicon glyphicon-remove"></span>
+                    <span ng-if="module=='permintaanBarang'&&item.status=='RECEIVED'">
+                        <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approve(item)">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(item)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </span>
+                    <button type="button" class="btn btn-default btn-xs" title="Buat LPB" ng-click="openCreatePenerimaanBarang(item)" ng-if="module=='pesananBarang'">
+                        <span class="glyphicon glyphicon-arrow-right"></span>
                     </button>
                 </td>
             </tr>
