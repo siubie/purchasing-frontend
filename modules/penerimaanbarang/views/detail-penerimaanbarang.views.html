@@ -18,9 +18,15 @@
         </tr>
         <tr>
             <td>
-                <strong>Tanggal Dibuat</strong>
+                <strong>Tanggal Kedatangan Barang</strong>
             </td>
-            <td ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
+            <td ng-bind="penerimaanBarang.tanggalDatang | date:'longDate'"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Nomor SP</strong>
+            </td>
+            <td ng-bind="penerimaanBarang.sp"></td>
         </tr>
         <tr>
             <td>
@@ -30,12 +36,9 @@
         </tr>
         <tr>
             <td>
-                <strong>PPN</strong>
+                <strong>Nomor Surat Jalan</strong>
             </td>
-            <td>
-                <div ng-if="penerimaanBarang.jenis">YA</div>
-                <div ng-if="!penerimaanBarang.jenis">TIDAK</div>
-            </td>
+            <td ng-bind="penerimaanBarang.nomorSj"></td>
         </tr>
         <tr>
             <td colspan=2>
@@ -48,14 +51,12 @@
                         <th class="text-center">Nama Barang</th>
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Harga</th>
-                        <th class="text-center">Diskon</th>
                     </tr>
-                    <tr ng-repeat="detail in penerimaanBarang.spItemsList">
-                        <td ng-bind="detail.spp"></td>
-                        <td ng-bind="detail.barang.nama"></td>
-                        <td ng-bind="detail.qty"></td>
-                        <td ng-bind="detail.harga"></td>
-                        <td ng-bind="detail.diskon"></td>
+                    <tr ng-repeat="detail in penerimaanBarang.lpbItemsList">
+                        <td class="text-center" ng-bind="detail.spp"></td>
+                        <td class="text-center" ng-bind="detail.barang.nama"></td>
+                        <td class="text-center" ng-bind="detail.qty"></td>
+                        <td class="text-center" ng-bind="detail.harga"></td>
                     </tr>
                 </table>
             </td>

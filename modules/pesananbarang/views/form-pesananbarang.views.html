@@ -1,6 +1,6 @@
 <div class="modal-body">
-    <span ng-bind="pesananBarang|json"></span>
-    <br/>
+    <!-- <span ng-bind="pesananBarang|json"></span>
+    <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -44,13 +44,18 @@
                     <td class="text-center" ng-bind="detailBarang.spp"></td>
                     <td class="text-center" ng-bind="detailBarang.barang.nama"></td>
                     <td class="input-group-sm">
-                        <input class="form-control" type="number" name="qty" ng-model="detailBarang.qty" min="1" required/>
+                        <input class="form-control text-center" type="number" name="qty" ng-model="detailBarang.qty" min="1" required/>
                     </td>
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="harga" ng-model="detailBarang.harga" min="1" required/>
                     </td>
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="diskon" ng-model="detailBarang.diskon" min="0" required/>
+                    </td>
+                    <td class="input-group-sm">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
                     </td>
                 </tr>
             </table>

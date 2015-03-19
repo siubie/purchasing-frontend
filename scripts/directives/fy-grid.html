@@ -1,4 +1,7 @@
 <div class="form-inline">
+    <!-- <span ng-bind="katalogBarangs|json"></span>
+    <br/>
+    <br/> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
             <option value="10">10</option>
@@ -155,8 +158,9 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-if="module=='barang'&&!!item.hargaSupplier.length" ng-show="item.expanded">
-                <td></td>
+            <!-- <tr ng-if="module=='barang'" ng-show="item.expanded&&!!katalogBarang.hargaSupplier.length" ng-init="getKatalog(item)">
+                <td>
+                </td>
                 <td colspan="7">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
@@ -166,22 +170,22 @@
                             <th class="text-center">Harga</th>
                             <th class="text-center">Lead Time</th>
                         </tr>
-                        <tr ng-repeat="detailHarga in item.hargaSupplier | orderBy:'tanggal':true">
+                        <tr ng-repeat="detailHarga in katalogBarang.hargaSupplier | orderBy: 'tanggal':true">
                             <td class="text-center" ng-bind="::detailHarga.supplier"></td>
-                            <td class="text-center" ng-bind="::detailHarga.tanggal|date:'dd MMMM yyyy'"></td>
+                            <td class="text-center" ng-bind="::detailHarga.tanggal|date: 'dd MMMM yyyy'"></td>
                             <td class="text-center" ng-bind="::detailHarga.alias"></td>
                             <td class="text-center" ng-bind="::detailHarga.harga"></td>
                             <td class="text-center" ng-bind="::detailHarga.leadTime"></td>
                         </tr>
                     </table>
                 </td>
-            </tr>
+            </tr> -->
             <tr ng-if="module=='permintaanBarang'" ng-show="item.expanded">
                 <td></td>
                 <td colspan="7">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
-                            <th></th>
+                            <th ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')"></th>
                             <th class="text-center">Nama Barang</th>
                             <th class="text-center">Jumlah</th>
                             <th class="text-center">Tanggal Butuh</th>
@@ -190,12 +194,12 @@
                             <th class="text-center">Keterangan</th>
                         </tr>
                         <tr ng-repeat="detailBarang in item.sppItemsList">
-                            <td class="text-center">
-                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
+                            <td class="text-center" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
+                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null">
                             </td>
                             <td class="text-center" ng-bind="::detailBarang.barang.nama"></td>
                             <td class="text-center" ng-bind="::detailBarang.jumlah"></td>
-                            <td class="text-center" ng-bind="::detailBarang.tanggalButuh|date:'dd MMMM yyyy'"></td>
+                            <td class="text-center" ng-bind="::detailBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
                             <td class="text-center" ng-bind="::detailBarang.status"></td>
                             <td class="text-center" ng-bind="::detailBarang.sisa"></td>
                             <td class="text-center" ng-bind="::detailBarang.keterangan"></td>
@@ -227,7 +231,7 @@
             <form name="currentPageForm">
                 <span ng-show="!!displayed.length && currentPageForm.$valid">
                     <span>Menampilkan</span>
-                    <span ng-bind="((page.current-1)*page.items+1)+'-'+((page.current*page.items<filtered.length)?page.current*page.items:filtered.length)"></span>
+                    <span ng-bind="((page.current-1)*page.items+1)+ '-'+((page.current*page.items<filtered.length)?page.current*page.items:filtered.length)"></span>
                     <span>dari</span>
                     <span ng-bind="filtered.length"></span>
                     <span>data&nbsp;&nbsp;&nbsp;</span>
@@ -237,7 +241,7 @@
                         <button type="button" class="form-control btn btn-default" ng-click="page.current=1" ng-disabled="currentPageForm.$invalid||page.current==1">
                             <span class="glyphicon glyphicon-fast-backward"></span>
                         </button>
-                        <button type="button" class="form-control btn btn-default" ng-click="page.current=(page.current-1)" ng-disabled="currentPageForm.$invalid || page.current == 1">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current=(page.current-1)" ng-disabled="currentPageForm.$invalid || page.current==1">
                             <span class="glyphicon glyphicon-backward"></span>
                         </button>
                     </span>
@@ -251,10 +255,10 @@
                         </strong>
                     </span>
                     <span class="input-group-btn">
-                        <button type="button" class="form-control btn btn-default" ng-click="page.current = (page.current+1)" ng-disabled="currentPageForm.$invalid||page.current==page.max">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current=( page.current+1)" ng-disabled="currentPageForm.$invalid||page.current==page.max">
                             <span class="glyphicon glyphicon-forward"></span>
                         </button>
-                        <button type="button" class="form-control btn btn-default" ng-click="page.current = page.max" ng-disabled="currentPageForm.$invalid || page.current==page.max">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current=page.max" ng-disabled="currentPageForm.$invalid || page.current==page.max">
                             <span class="glyphicon glyphicon-fast-forward"></span>
                         </button>
                     </span>

@@ -58,22 +58,26 @@
                         <th class="text-center">Keterangan</th>
                     </tr>
                     <tr ng-repeat="detail in permintaanBarang.sppItemsList">
-                        <td ng-bind="detail.barang.nama"></td>
-                        <td ng-bind="detail.jumlah"></td>
-                        <td ng-bind="detail.tanggalButuh | date:'longDate'"></td>
-                        <td ng-bind="detail.status"></td>
-                        <td ng-bind="detail.sisa"></td>
-                        <td ng-bind="detail.keterangan"></td>
+                        <td class="text-center" ng-bind="detail.barang.nama"></td>
+                        <td class="text-center" ng-bind="detail.jumlah"></td>
+                        <td class="text-center" ng-bind="detail.tanggalButuh | date:'longDate'"></td>
+                        <td class="text-center" ng-bind="detail.status"></td>
+                        <td class="text-center" ng-bind="detail.sisa"></td>
+                        <td class="text-center" ng-bind="detail.keterangan"></td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
-    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-disabled="permintaanBarangForm.$invalid">
+    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-if="permintaanBarang.status=='RECEIVED'" ng-disabled="permintaanBarangForm.$invalid">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Ubah</span>
     </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="reject(permintaanBarang)" ng-show="!newForm">
+    <button class="btn btn-default btn-sm" type="button" ng-click="approve(permintaanBarang)" ng-if="permintaanBarang.status=='RECEIVED'">
+        <span class="glyphicon glyphicon-ok"></span>
+        <span>&nbsp;Setujui</span>
+    </button>
+    <button class="btn btn-default btn-sm" type="button" ng-click="reject(permintaanBarang)" ng-if="permintaanBarang.status=='RECEIVED'">
         <span class="glyphicon glyphicon-remove"></span>
         <span>&nbsp;Tolak</span>
     </button>

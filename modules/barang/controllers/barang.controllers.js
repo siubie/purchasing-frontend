@@ -1,4 +1,4 @@
-angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, barangFactory) {
+angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, barangFactory, katalogBarangFactory) {
         $scope.module = "barang";
         $scope.fields = [{
             "name": "kode",
@@ -25,6 +25,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.load = function() {
             $scope.barangs = barangFactory.query();
             $scope.items = $scope.barangs;
+            $scope.katalogBarangs = katalogBarangFactory.query();
         };
         $scope.load();
         $scope.delete = function(barang) {
@@ -35,6 +36,16 @@ angular.module("barang.controllers", []).controller("barangController", function
                     $scope.close();
                 });
             }
+        };
+        $scope.getKatalog = function(barang) {
+            angular.forEach($scope.katalogBarangs, function(item) {
+                console.log(barang);
+                console.log(item);
+                if (item.barang.kode == barang.kode) {
+                    $scope.katalogBarangs = item;
+                    console.log($scope.katalogBarangs);
+                }
+            })
         };
         $scope.openCreate = function() {
             $scope.close();

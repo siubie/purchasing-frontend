@@ -54,7 +54,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.pesananBarang.$save(function() {
             $scope.load();
             $scope.close();
-            $scope.clearCart();
         });
     };
     $scope.update = function() {
@@ -124,6 +123,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
     };
     $scope.removeDetail = function(index) {
-        $scope.pesananBarang.sppItemsList.splice(index, 1);
+        $scope.pesananBarang.spItemsList.splice(index, 1);
     };
 }]);

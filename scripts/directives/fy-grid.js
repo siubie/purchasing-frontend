@@ -181,8 +181,18 @@ angular.module('fyGrid', [])
                 };
                 $scope.$watch("items", function() {
                     if ($scope.module == "barang") {
-                        $scope.selected = $filter('filter')($scope.items, {
-                            selected: 'true'
+                        $scope.selected = [];
+                        angular.forEach($scope.items, function(item) {
+                            if (item.selected) {
+                                $scope.selected.push({
+                                    kode: item.kode,
+                                    kategori: item.kategori,
+                                    nama: item.nama,
+                                    satuan: item.satuan,
+                                    spesifikasi: item.spesifikasi,
+                                    deskripsi: item.deskripsi
+                                });
+                            }
                         });
                     }
                     if ($scope.module == "permintaanBarang") {

@@ -66,7 +66,6 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         $scope.permintaanBarang.$save(function() {
             $scope.load();
             $scope.close();
-            $scope.clearCart();
         });
     };
     $scope.update = function() {
@@ -85,11 +84,14 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         }
     };
     $scope.approve = function(permintaanBarang) {
-        permintaanBarang.status = "APPROVED";
-        permintaanBarang.$update(function() {
-            $scope.load();
-            $scope.close();
-        });
+        var confirm = $window.confirm('Apakah Anda Yakin?');
+        if (confirm) {
+            permintaanBarang.status = "APPROVED";
+            permintaanBarang.$update(function() {
+                $scope.load();
+                $scope.close();
+            });
+        }
     };
     $scope.reject = function(permintaanBarang) {
         var confirm = $window.confirm('Apakah Anda Yakin?');
@@ -101,17 +103,6 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             });
         }
     };
-    // $scope.openCreate = function() {
-    //     $scope.close();
-    //     $scope.newForm = true;
-    //     $scope.new();
-    //     $scope.modalInstance = $modal.open({
-    //         templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
-    //         size: 'lg',
-    //         backdrop: 'static',
-    //         scope: $scope
-    //     });
-    // };
     $scope.openRead = function(permintaanBarang) {
         $scope.close();
         $scope.newForm = false;

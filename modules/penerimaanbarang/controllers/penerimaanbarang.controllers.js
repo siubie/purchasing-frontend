@@ -23,10 +23,6 @@ angular.module("penerimaanBarang.controllers", [])
             "name": "supplier.nama",
             "header": "Supplier",
             "type": "string"
-        }, {
-            "name": "nomorSj",
-            "header": "Nomor SJ",
-            "type": "string"
         }];
         $scope.Math = window.Math;
         $scope.sort = {
@@ -96,14 +92,41 @@ angular.module("penerimaanBarang.controllers", [])
     })
     .controller("createPenerimaanBarangController", function($scope, $filter, penerimaanBarangFactory, pesananBarang) {
         $scope.newForm = true;
-        $scope.penerimaanBarang = new penerimaanBarangFactory({
-            tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-            sp: pesananBarang.nomor,
-
-        });
+        $scope.opened = {
+            "tanggalDatang": false
+        };
+        $scope.new = function() {
+            $scope.penerimaanBarang = new penerimaanBarangFactory({
+                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
+                tanggalDatang: $filter("date")(new Date(), "yyyy-MM-dd"),
+                sp: pesananBarang.nomor,
+                supplier: pesananBarang.supplier,
+                lpbItemsList: []
+            });
+            angular.forEach(pesananBarang.spItemsList, function(detailBarang) {
+                $scope.penerimaanBarang.lpbItemsList.push({
+                    barang: detailBarang.barang,
+                    spp: detailBarang.spp,
+                    qty: detailBarang.qty,
+                    harga: detailBarang.harga
+                });
+            });
+        }
+        $scope.new();
         $scope.create = function() {
-            $scope.barang.$save(function() {
+            $scope.penerimaanBarang.$save(function() {
                 $scope.$close();
             });
         };
+        $scope.removeDetail = function(index) {
+            $scope.penerimaanBarang.lpbItemsList.splice(index, 1);
+        };
+        $scope.openCalendar = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.opened.tanggalDatang = true;
+        };
+        $scope.$watch('penerimaanBarang.tanggalDatang', function() {
+            $scope.penerimaanBarang.tanggalDatang = $filter('date')($scope.penerimaanBarang.tanggalDatang, 'yyyy-MM-dd');
+        });
     });

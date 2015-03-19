@@ -1,6 +1,6 @@
 <div class="modal-body">
-    <span ng-bind="penerimaanBarang|json"></span>
-    <br/>
+    <!-- <span ng-bind="penerimaanBarang|json"></span>
+    <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -15,27 +15,28 @@
             <label for="nomor">Nomor</label>
             <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="penerimaanBarang.nomor" ng-disabled="!newForm" required/>
         </div>
-        <div class="text-center">
-            <span ng-bind="detailBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
-            <span ng-model="detailBarang.tanggalButuh" init-date="detailBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="sp">Nomor SP</label>
+            <input type="text" class="form-control" id="sp" name="sp" ng-model="penerimaanBarang.sp" disabled required/>
+        </div>
+        <div class="form-group col-xs-12 input-group-sm">
+            <label for="periode">Tanggal Datang:&nbsp;</label>
+            <span ng-bind="penerimaanBarang.tanggalDatang|date:'dd MMMM yyyy'"></span>
+            <span ng-model="penerimaanBarang.tanggalDatang" init-date="penerimaanBarang.tanggalDatang" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalDatang" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
             </span>
             <span>
-                <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
+                <button type="button" class="btn btn-default btn-sm" ng-click="openCalendar($event)">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </button>
             </span>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="supplier">Supplier</label>
-            <select class="form-control" id="supplier" name="supplier" ng-model="penerimaanBarang.supplier" ng-options="supplier.nama for supplier in suppliers | orderBy: 'supplier.nama' track by supplier.nama" required>
-                <option value="">-- Pilih Supplier --</option>
-            </select>
+            <input type="text" class="form-control" id="supplier" name="supplier" ng-model="penerimaanBarang.supplier.nama" disabled required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
-            <label for="ppn">
-                <span>PPN:&nbsp;</span>
-                <input type="checkbox" id="ppn" name="ppn" ng-model="penerimaanBarang.ppn" />
-            </label>
+            <label for="nomorSj">Nomor Surat Jalan</label>
+            <input type="text" class="form-control" id="nomorSj" name="nomorSj" placeholder="Masukkan Nomor Surat Jalan.." ng-model="penerimaanBarang.nomorSj" required/>
         </div>
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
@@ -47,26 +48,27 @@
                     <th class="text-center">Nama Barang</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Harga</th>
-                    <th class="text-center">Diskon</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="detailBarang in penerimaanBarang.spItemsList">
+                <tr ng-repeat="detailBarang in penerimaanBarang.lpbItemsList">
                     <td class="text-center" ng-bind="detailBarang.spp"></td>
                     <td class="text-center" ng-bind="detailBarang.barang.nama"></td>
                     <td class="input-group-sm">
-                        <input class="form-control" type="number" name="qty" ng-model="detailBarang.qty" min="1" required/>
+                        <input class="form-control text-center" type="number" name="qty" ng-model="detailBarang.qty" min="1" required/>
                     </td>
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="harga" ng-model="detailBarang.harga" min="1" required/>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="diskon" ng-model="detailBarang.diskon" min="0" required/>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="col-xs-12">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penerimaanBarangForm.$invalid||!penerimaanBarang.spItemsList.length">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penerimaanBarangForm.$invalid||!penerimaanBarang.lpbItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
