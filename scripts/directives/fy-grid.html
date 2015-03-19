@@ -156,6 +156,9 @@
                     <button type="button" class="btn btn-default btn-xs" title="Buat LPB" ng-click="openCreatePenerimaanBarang(item)" ng-if="module=='pesananBarang'">
                         <span class="glyphicon glyphicon-arrow-right"></span>
                     </button>
+                    <button type="button" class="btn btn-default btn-xs" title="Buat Retur" ng-click="openCreateReturBarang(item)" ng-if="module=='penerimaanBarang'">
+                        <span class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
                 </td>
             </tr>
             <!-- <tr ng-if="module=='barang'" ng-show="item.expanded&&!!katalogBarang.hargaSupplier.length" ng-init="getKatalog(item)">

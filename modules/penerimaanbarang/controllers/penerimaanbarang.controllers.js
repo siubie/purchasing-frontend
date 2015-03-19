@@ -30,6 +30,9 @@ angular.module("penerimaanBarang.controllers", [])
             "order": true
         };
         $scope.newForm = true;
+        $scope.opened = {
+            "tanggalDatang": false
+        };
         $scope.new = function() {
             $scope.penerimaanBarang = new penerimaanBarangFactory({
                 tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
@@ -86,9 +89,35 @@ angular.module("penerimaanBarang.controllers", [])
                 scope: $scope
             });
         };
+        $scope.openCreateReturBarang = function(penerimaanBarang) {
+            $scope.close();
+            $scope.newForm = true;
+            modalInstance = $modal.open({
+                templateUrl: 'modules/returbarang/views/form-returbarang.views.html',
+                size: 'lg',
+                backdrop: 'static',
+                controller: "createReturBarangController",
+                resolve: {
+                    penerimaanBarang: function() {
+                        return penerimaanBarang;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+                $scope.load();
+            });
+        };
         $scope.removeDetail = function(index) {
             $scope.penerimaanBarang.lpbItemsList.splice(index, 1);
         };
+        $scope.openCalendar = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.opened.tanggalDatang = true;
+        };
+        $scope.$watch('penerimaanBarang.tanggalDatang', function() {
+            $scope.penerimaanBarang.tanggalDatang = $filter('date')($scope.penerimaanBarang.tanggalDatang, 'yyyy-MM-dd');
+        });
     })
     .controller("createPenerimaanBarangController", function($scope, $filter, penerimaanBarangFactory, pesananBarang) {
         $scope.newForm = true;
@@ -111,7 +140,7 @@ angular.module("penerimaanBarang.controllers", [])
                     harga: detailBarang.harga
                 });
             });
-        }
+        };
         $scope.new();
         $scope.create = function() {
             $scope.penerimaanBarang.$save(function() {

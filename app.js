@@ -10,18 +10,19 @@ angular.module("purchasingApp", [
     "ui.bootstrap.typeahead",
     "ui.bootstrap.popover",
     "purchasing.routes",
-    "kategoriBarang",
-    "departemen",
-    "satuanGudang",
-    "permintaanBarang",
     "barang",
+    "departemen",
     "katalogBarang",
-    "supplier",
-    "pesananBarang",
+    "kategoriBarang",
     "penerimaanBarang",
+    "permintaanBarang",
+    "pesananBarang",
+    "returBarang",
+    "satuanGudang",
+    "supplier",
     "fyGrid"
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/permintaanbarang/");
+    $urlRouterProvider.otherwise("/penerimaanbarang/");
 });

@@ -13,3 +13,7 @@ katalog barang
 kosongkan keranjang setelah selesai proses
 reset centang setelah add to cart
 prompt apakah ingin membuat lagi
+default satuan ketika edit barang
+jadikan satu kode barang yang sama dan concat kode SPPnya
+barang dipilih
+detail cart
