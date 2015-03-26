@@ -45,7 +45,7 @@ angular.module("barang.controllers", []).controller("barangController", function
                     $scope.katalogBarangs = item;
                     console.log($scope.katalogBarangs);
                 }
-            })
+            });
         };
         $scope.openCreate = function() {
             $scope.close();
@@ -62,7 +62,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.openRead = function(barang) {
             $scope.close();
             $scope.barang = barang;
-            modalInstance = $modal.open({
+            var modalInstance = $modal.open({
                 templateUrl: "modules/barang/views/detail-barang.views.html",
                 size: "md",
                 backdrop: "static",

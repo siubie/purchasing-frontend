@@ -15,6 +15,7 @@ angular.module("purchasingApp", [
     "katalogBarang",
     "kategoriBarang",
     "penerimaanBarang",
+    "penjualanWaste",
     "permintaanBarang",
     "pesananBarang",
     "returBarang",
@@ -24,5 +25,5 @@ angular.module("purchasingApp", [
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/penerimaanbarang/");
+    $urlRouterProvider.otherwise("/penjualanwaste/");
 });
