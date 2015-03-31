@@ -12,31 +12,6 @@ angular.module('fyGrid', [])
                 };
                 $scope.search = [];
                 if ($scope.module == "barang") {
-                    $scope.detailFields = [{
-                        "name": "kode",
-                        "type": "string",
-                        "header": "Kode"
-                    }, {
-                        "name": "kategori",
-                        "type": "string",
-                        "header": "kategori"
-                    }, {
-                        "name": "nama",
-                        "type": "string",
-                        "header": "Nama"
-                    }, {
-                        "name": "alias",
-                        "type": "string",
-                        "header": "Alias"
-                    }, {
-                        "name": "satuan",
-                        "type": "string",
-                        "header": "Satuan"
-                    }, {
-                        "name": "spesifikasi",
-                        "type": "string",
-                        "header": "Spesifikasi",
-                    }];
                     if (!!localStorage.barangCart) {
                         $scope.cart = JSON.parse(localStorage.barangCart);
                     }
@@ -66,6 +41,11 @@ angular.module('fyGrid', [])
                 if ($scope.module == "pesananBarang") {
                     if (!!localStorage.pesananBarangCart) {
                         $scope.cart = JSON.parse(localStorage.pesananBarangCart);
+                    }
+                }
+                if ($scope.module == "waste") {
+                    if (!!localStorage.wasteCart) {
+                        $scope.cart = JSON.parse(localStorage.wasteCart);
                     }
                 }
                 $scope.checkDisplayed = function() {
@@ -146,6 +126,22 @@ angular.module('fyGrid', [])
                                 }
                                 localStorage.setItem("permintaanBarangCart", JSON.stringify($scope.cart));
                             }
+                            if ($scope.module == "waste") {
+                                delete itemSelected.selected;
+                                if (!!$scope.cart.length) {
+                                    angular.forEach($scope.cart, function(itemCart) {
+                                        if (itemCart.kode == itemSelected.kode) {
+                                            duplicated = true;
+                                        }
+                                    });
+                                    if (!duplicated) {
+                                        $scope.cart.push(itemSelected);
+                                    }
+                                } else {
+                                    $scope.cart.push(itemSelected);
+                                }
+                                localStorage.setItem("wasteCart", JSON.stringify($scope.cart));
+                            }
                         });
                     }
                 };
@@ -164,6 +160,7 @@ angular.module('fyGrid', [])
                         $scope.cart = [];
                         if ($scope.module == "barang") localStorage.setItem("barangCart", "");
                         if ($scope.module == "permintaanBarang") localStorage.setItem("permintaanBarangCart", "");
+                        if ($scope.module == "waste") localStorage.setItem("wasteCart", "");
                         if (!$scope.cart.length) {
                             $scope.close();
                         }
@@ -211,6 +208,18 @@ angular.module('fyGrid', [])
                             }
                         });
                     }
+                    if ($scope.module == "waste") {
+                        $scope.selected = [];
+                        angular.forEach($scope.items, function(item) {
+                            if (item.selected) {
+                                $scope.selected.push({
+                                    kode: item.kode,
+                                    nama: item.nama,
+                                    satuan: item.satuan
+                                });
+                            }
+                        });
+                    }
                 }, true);
                 $scope.$watchCollection('search', function() {
                     $scope.currentPage = 1;
@@ -251,6 +260,9 @@ angular.module('fyGrid', [])
                     }
                     if ($scope.module == "permintaanBarang" && !!$scope.cart.length) {
                         localStorage.setItem("permintaanBarangCart", JSON.stringify($scope.cart));
+                    }
+                    if ($scope.module == "waste" && !!$scope.cart.length) {
+                        localStorage.setItem("wasteCart", JSON.stringify($scope.cart));
                     }
                 });
                 $scope.log = function(log) {

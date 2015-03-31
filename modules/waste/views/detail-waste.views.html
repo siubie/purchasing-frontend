@@ -1,0 +1,34 @@
+<div class="modal-body">
+    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    <h3>Master Waste</h3>
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <td class="col-xs-6">
+                <strong>Nomor Penjualan Waste</strong>
+            </td>
+            <td class="col-xs-6" ng-bind="waste.kode"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Nama</strong>
+            </td>
+            <td ng-bind="waste.nama"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Alamat</strong>
+            </td>
+            <td ng-bind="waste.satuan"></td>
+        </tr>
+    </table>
+    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(waste)" ng-disabled="wasteForm.$invalid">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span>&nbsp;Ubah</span>
+    </button>
+    <button class="btn btn-default btn-sm" type="button" ng-click="delete(waste)" ng-show="!newForm">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span>&nbsp;Hapus</span>
+    </button>
+</div>

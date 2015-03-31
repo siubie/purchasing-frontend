@@ -21,9 +21,10 @@ angular.module("purchasingApp", [
     "returBarang",
     "satuanGudang",
     "supplier",
+    "waste",
     "fyGrid"
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/penjualanwaste/");
+    $urlRouterProvider.otherwise("/waste/");
 });

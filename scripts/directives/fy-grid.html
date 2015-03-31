@@ -10,7 +10,7 @@
             <option value="100">100</option>
         </select>
     </span>
-    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()" ng-if="module=='barang'||module=='supplier'||module=='penjualanWaste'">
+    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()" ng-if="module=='barang'||module=='supplier'||module=='waste'">
         <span class="glyphicon glyphicon-plus"></span>
         <span>&nbsp;Tambah</span>
     </button>
@@ -19,7 +19,7 @@
         <span>&nbsp;Refresh</span>
     </button>
     <span class="pull-right">
-        <span class="input-group input-group-sm" dropdown ng-if="module=='barang'||module=='permintaanBarang'">
+        <span class="input-group input-group-sm" dropdown ng-if="module=='barang'||module=='permintaanBarang'||module=='waste'">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
             </span>
@@ -161,28 +161,6 @@
                     </button>
                 </td>
             </tr>
-            <!-- <tr ng-if="module=='barang'" ng-show="item.expanded&&!!katalogBarang.hargaSupplier.length" ng-init="getKatalog(item)">
-                <td>
-                </td>
-                <td colspan="7">
-                    <table class="table table-condensed table-bordered table-table-striped">
-                        <tr>
-                            <th class="text-center">Supplier</th>
-                            <th class="text-center">Tanggal</th>
-                            <th class="text-center">Alias</th>
-                            <th class="text-center">Harga</th>
-                            <th class="text-center">Lead Time</th>
-                        </tr>
-                        <tr ng-repeat="detailHarga in katalogBarang.hargaSupplier | orderBy: 'tanggal':true">
-                            <td class="text-center" ng-bind="::detailHarga.supplier"></td>
-                            <td class="text-center" ng-bind="::detailHarga.tanggal|date: 'dd MMMM yyyy'"></td>
-                            <td class="text-center" ng-bind="::detailHarga.alias"></td>
-                            <td class="text-center" ng-bind="::detailHarga.harga"></td>
-                            <td class="text-center" ng-bind="::detailHarga.leadTime"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr> -->
             <tr ng-if="module=='permintaanBarang'" ng-show="item.expanded">
                 <td></td>
                 <td colspan="7">
@@ -217,7 +195,7 @@
             <span class="input-group input-group-sm" dropdown>
                 <button type="button" class="form-control btn btn-default dropdown-toggle" ng-disabled="!selected.length" dropdown-toggle>
                     <span ng-bind="selected.length"></span>
-                    <span>Barang Dipilih&nbsp;</span>
+                    <span>Item Dipilih&nbsp;</span>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
