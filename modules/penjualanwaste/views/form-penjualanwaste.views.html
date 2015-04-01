@@ -36,13 +36,11 @@
                     <th></th>
                 </tr>
                 <tr ng-repeat="detailBarang in penjualanWaste.wasteItemsList">
-                    <td class="input-group-sm">
-                        <input class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="detailBarang.nama">
-                        </textarea>
+                    <td class="text-center">
+                        <span ng-bind="detailBarang.waste.nama"></span>
                     </td>
-                    <td class="input-group-sm">
-                        <input class="form-control" id="satuan" name="satuan" placeholder="Masukkan Satuan.." ng-model="detailBarang.satuan">
-                        </textarea>
+                    <td class="text-center">
+                        <span ng-bind="detailBarang.waste.satuan"></span>
                     </td>
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="jumlah" ng-model="detailBarang.jumlah" min="1" required/>
@@ -57,10 +55,6 @@
                     </td>
                 </tr>
             </table>
-            <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span>&nbsp;Tambah Item</span>
-            </button>
         </div>
         <div class="col-xs-12">
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penjualanWasteForm.$invalid||!penjualanWaste.wasteItemsList.length">

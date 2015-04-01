@@ -44,6 +44,19 @@ angular.module('fyGrid', [])
                     }
                 }
                 if ($scope.module == "waste") {
+                    $scope.detailFields = [{
+                        "name": "kode",
+                        "type": "string",
+                        "header": "Kode Waste"
+                    }, {
+                        "name": "nama",
+                        "type": "string",
+                        "header": "Nama Waste"
+                    }, {
+                        "name": "satuan",
+                        "type": "String",
+                        "header": "Satuan",
+                    }];
                     if (!!localStorage.wasteCart) {
                         $scope.cart = JSON.parse(localStorage.wasteCart);
                     }

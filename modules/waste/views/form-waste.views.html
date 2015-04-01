@@ -21,10 +21,12 @@
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="satuan">Satuan</label>
-            <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Masukkan Satuan.." ng-model="waste.satuan" required/>
+            <select class="form-control" id="satuan" name="satuan" ng-model="waste.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs" required>
+                <option value="">-- Pilih Satuan --</option>
+            </select>
         </div>
         <div class="col-xs-12">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="wasteForm.$invalid||!waste.wasteItemsList.length">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="wasteForm.$invalid">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>

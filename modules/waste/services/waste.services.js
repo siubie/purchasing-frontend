@@ -4,19 +4,19 @@ angular.module('waste.services', []).factory('wasteFactory', ['$resource', funct
         'get': {
             method: 'GET',
             params: {
-                id: '@nomor'
+                id: '@kode'
             }
         },
         'update': {
             method: 'PUT',
             params: {
-                id: '@nomor'
+                id: '@kode'
             }
         },
         'delete': {
             method: 'DELETE',
             params: {
-                id: '@nomor'
+                id: '@kode'
             }
         }
     });

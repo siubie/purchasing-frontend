@@ -35,7 +35,7 @@
                 </li>
                 <li ng-if="module=='permintaanBarang'"><a href ng-click="openCreatePesananBarang()">Buat SP</a>
                 </li>
-                <li ng-if="module=='pesananBarang'"><a href ng-click="openCreatePenerimaanBarang()">Buat SP</a>
+                <li ng-if="module=='waste'"><a href ng-click="openCreatePenjualanWaste()">Buat Penjualan Waste</a>
                 </li>
                 <li><a href ng-click="clearCart()">Hapus</a>
                 </li>
@@ -142,7 +142,7 @@
                     <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="!(module=='permintaanBarang'&&(item.status=='APPROVED'||item.status=='REJECTED'))">
                         <span class="glyphicon glyphicon-edit"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'">
+                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'||module=='waste'">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
                     <span ng-if="module=='permintaanBarang'&&item.status=='RECEIVED'">

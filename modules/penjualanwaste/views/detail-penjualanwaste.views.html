@@ -41,8 +41,8 @@
                         <th class="text-center">Harga</th>
                     </tr>
                     <tr ng-repeat="detail in penjualanWaste.wasteItemsList">
-                        <td class="text-center" ng-bind="detail.nama"></td>
-                        <td class="text-center" ng-bind="detail.satuan"></td>
+                        <td class="text-center" ng-bind="detail.waste.nama"></td>
+                        <td class="text-center" ng-bind="detail.waste.satuan"></td>
                         <td class="text-center" ng-bind="detail.jumlah"></td>
                         <td class="text-center" ng-bind="detail.harga"></td>
                     </tr>
