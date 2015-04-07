@@ -10,9 +10,9 @@
         <h3>Ubah Supplier</h3>
     </div>
     <form name="supplierForm" class=row>
-        <div class="form-group col-xs-6 input-group-sm">
-            <label for="kode">Kode</label>
-            <input type="text" class="form-control" id="kode" name="kode" placeholder="Masukkan Kode.." ng-model="supplier.kode" ng-disabled="!newForm" required/>
+        <div class="form-group col-xs-12" ng-if="!newForm">
+            <label for="kode">Kode:&nbsp;</label>
+            <span ng-bind="supplier.kode"></span>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="nama">Nama</label>

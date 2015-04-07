@@ -1,22 +1,25 @@
 angular.module('katalogBarang.services', []).factory('katalogBarangFactory', ['$resource', function($resource) {
-    return $resource('http://dev.disyam.com:3000/purchasing/katalogBarang/:id', {}, {
-        // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/katalogBarang/:id', {}, {
+    return $resource('http://dev.disyam.com:3000/purchasing/katalogbarang/:id1/:id2', {}, {
+        // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/lpb/:id', {}, {
         'get': {
             method: 'GET',
             params: {
-                id: '@barang.kode'
+                id1: '@barang.kode',
+                id2: '@supplier.kode'
             }
         },
         'update': {
             method: 'PUT',
             params: {
-                id: '@barang.kode'
+                id1: '@barang.kode',
+                id2: '@supplier.kode'
             }
         },
         'delete': {
             method: 'DELETE',
             params: {
-                id: '@barang.kode'
+                id1: '@barang.kode',
+                id2: '@supplier.kode'
             }
         }
     });

@@ -11,9 +11,30 @@ angular.module('fyGrid', [])
                     selectedAll: false
                 };
                 $scope.search = [];
-                if ($scope.module == "barang") {
-                    if (!!localStorage.barangCart) {
-                        $scope.cart = JSON.parse(localStorage.barangCart);
+                if ($scope.module == "katalogBarang") {
+                    $scope.detailFields = [{
+                        "name": "kode",
+                        "type": "string",
+                        "header": "Kode"
+                    }, {
+                        "name": "kategori",
+                        "type": "string",
+                        "header": "Kategori"
+                    }, {
+                        "name": "nama",
+                        "type": "string",
+                        "header": "Nama Barang"
+                    }, {
+                        "name": "satuan",
+                        "type": "string",
+                        "header": "Satuan",
+                    }, {
+                        "name": "alias",
+                        "type": "string",
+                        "header": "Alias",
+                    }];
+                    if (!!localStorage.katalogBarangCart) {
+                        $scope.cart = JSON.parse(localStorage.katalogBarangCart);
                     }
                 }
                 if ($scope.module == "permintaanBarang") {
@@ -36,11 +57,6 @@ angular.module('fyGrid', [])
                     }];
                     if (!!localStorage.permintaanBarangCart) {
                         $scope.cart = JSON.parse(localStorage.permintaanBarangCart);
-                    }
-                }
-                if ($scope.module == "pesananBarang") {
-                    if (!!localStorage.pesananBarangCart) {
-                        $scope.cart = JSON.parse(localStorage.pesananBarangCart);
                     }
                 }
                 if ($scope.module == "waste") {
@@ -80,23 +96,9 @@ angular.module('fyGrid', [])
                     });
                 };
                 $scope.uncheckAll = function() {
-                    angular.forEach($scope.selected, function(item) {
+                    angular.forEach($scope.items, function(item) {
                         item.selected = false;
                     });
-                };
-                $scope.deleteSelected = function() {
-                    var confirm = $window.confirm('Apakah Anda Yakin?');
-                    if (confirm) {
-                        var spliceSelected = function(i) {
-                            $scope.items.splice(i, 1);
-                        };
-                        var i = $scope.selected.length;
-                        while (i--) {
-                            if ($scope.selected[i].selected) {
-                                $scope.selected[i].$delete(spliceSelected(i));
-                            }
-                        }
-                    }
                 };
                 $scope.close = function() {
                     if ($scope.modalInstance) {
@@ -108,7 +110,7 @@ angular.module('fyGrid', [])
                     if (typeof(Storage) != "undefined") {
                         angular.forEach($scope.selected, function(itemSelected) {
                             var duplicated = false;
-                            if ($scope.module == "barang") {
+                            if ($scope.module == "katalogBarang") {
                                 delete itemSelected.selected;
                                 if (!!$scope.cart.length) {
                                     angular.forEach($scope.cart, function(itemCart) {
@@ -122,7 +124,7 @@ angular.module('fyGrid', [])
                                 } else {
                                     $scope.cart.push(itemSelected);
                                 }
-                                localStorage.setItem("barangCart", JSON.stringify($scope.cart));
+                                localStorage.setItem("katalogBarangCart", JSON.stringify($scope.cart));
                             }
                             if ($scope.module == "permintaanBarang") {
                                 if (!!$scope.cart.length) {
@@ -171,7 +173,7 @@ angular.module('fyGrid', [])
                     var confirm = $window.confirm('Apakah Anda Yakin?');
                     if (confirm) {
                         $scope.cart = [];
-                        if ($scope.module == "barang") localStorage.setItem("barangCart", "");
+                        if ($scope.module == "katalogBarang") localStorage.setItem("katalogBarangCart", "");
                         if ($scope.module == "permintaanBarang") localStorage.setItem("permintaanBarangCart", "");
                         if ($scope.module == "waste") localStorage.setItem("wasteCart", "");
                         if (!$scope.cart.length) {
@@ -180,33 +182,48 @@ angular.module('fyGrid', [])
                     }
                 };
                 $scope.deleteCartItem = function(data) {
-                    angular.forEach($scope.cart, function(item, i) {
-                        if (item == data) {
-                            $scope.cart.splice(i, 1);
+                    var confirm = $window.confirm('Apakah Anda Yakin?');
+                    if (confirm) {
+                        angular.forEach($scope.cart, function(item, i) {
+                            if (item == data) {
+                                $scope.cart.splice(i, 1);
+                            }
+                        });
+                        if (!$scope.cart.length) {
+                            $scope.close();
                         }
-                    });
-                    if (!$scope.cart.length) {
-                        $scope.close();
                     }
                 };
                 $scope.$watch("items", function() {
-                    if ($scope.module == "barang") {
-                        $scope.selected = [];
+                    $scope.selected = [];
+                    if ($scope.module == "katalogBarang") {
                         angular.forEach($scope.items, function(item) {
                             if (item.selected) {
+                                var harga = 0;
+                                if (!!item.hargaSupplier.length) {
+                                    var newest = new Date('1945-08-17');
+                                    angular.forEach(item.hargaSupplier, function(itemHarga) {
+                                        itemHarga.tanggal = new Date(itemHarga.tanggal);
+                                        if (itemHarga.tanggal > newest) {
+                                            harga = itemHarga.harga;
+                                            newest = itemHarga.tanggal;
+                                        }
+                                    });
+                                }
                                 $scope.selected.push({
-                                    kode: item.kode,
-                                    kategori: item.kategori,
-                                    nama: item.nama,
-                                    satuan: item.satuan,
-                                    spesifikasi: item.spesifikasi,
-                                    deskripsi: item.deskripsi
+                                    kode: item.barang.kode,
+                                    kategori: item.barang.kategori,
+                                    nama: item.barang.nama,
+                                    satuan: item.barang.satuan,
+                                    spesifikasi: item.barang.spesifikasi,
+                                    deskripsi: item.barang.deskripsi,
+                                    alias: item.alias,
+                                    harga: harga
                                 });
                             }
                         });
                     }
                     if ($scope.module == "permintaanBarang") {
-                        $scope.selected = [];
                         angular.forEach($scope.items, function(item) {
                             if (item.status == "APPROVED") {
                                 angular.forEach(item.sppItemsList, function(detail) {
@@ -222,7 +239,6 @@ angular.module('fyGrid', [])
                         });
                     }
                     if ($scope.module == "waste") {
-                        $scope.selected = [];
                         angular.forEach($scope.items, function(item) {
                             if (item.selected) {
                                 $scope.selected.push({

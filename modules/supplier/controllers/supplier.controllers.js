@@ -30,12 +30,14 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         $scope.new();
     };
     $scope.create = function() {
+        console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$save(function() {
             $scope.load();
             $scope.close();
         });
     };
     $scope.update = function() {
+        console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$update(function() {
             $scope.load();
             $scope.close();

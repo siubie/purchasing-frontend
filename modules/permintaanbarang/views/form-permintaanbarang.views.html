@@ -1,7 +1,6 @@
 <div class="modal-body">
-    <span ng-bind="permintaanBarang|json"></span>
-    <br/>
-    <span ng-bind="timestamp.periode"></span>
+    <!-- <span ng-bind="permintaanBarang|json"></span>
+    <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -11,18 +10,19 @@
     <div ng-show="!newForm">
         <h3>Ubah Permintaan Barang</h3>
     </div>
+    <br/>
     <form class="row" name="permintaanBarangForm">
-        <div class="form-group col-xs-6 input-group-sm">
-            <label for="nomor">Nomor</label>
-            <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="permintaanBarang.nomor" ng-disabled="!newForm" required/>
+        <div class="form-group col-xs-12" ng-if="!newForm">
+            <label for="nomor">Nomor:&nbsp;</label>
+            <span ng-bind="permintaanBarang.nomor"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-4 input-group-sm">
             <label for="departemen">Peminta</label>
             <select class="form-control" id="departemen" name="departemen" ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens|orderBy: 'departemen.departemen' track by departemen.departemen" required>
                 <option value="">-- Pilih Departemen --</option>
             </select>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-4 input-group-sm">
             <label for="periode">Periode:&nbsp;</label>
             <span ng-bind="permintaanBarang.periode | periodeFilter | date: 'MMMM yyyy'"></span>
             <span ng-model="timestamp.periode" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="opened.periode" current-text="Sekarang"
@@ -33,7 +33,7 @@
                 </button>
             </span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-4 input-group-sm">
             <label for="jenis">
                 <span>Emergency:&nbsp;</span>
                 <input type="checkbox" id="jenis" name="jenis" ng-model="permintaanBarang.jenis" />
@@ -45,7 +45,7 @@
                     <th class="text-center" colspan=5>Item Barang</th>
                 </tr>
                 <tr>
-                    <th class="text-center">Nama Barang</th>
+                    <th class="text-center">Nama</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Tanggal Butuh</th>
                     <th class="text-center">Keterangan</th>

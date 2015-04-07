@@ -11,9 +11,9 @@
         <h3>Ubah Penjualan Waste</h3>
     </div>
     <form class="row" name="penjualanWasteForm">
-        <div class="form-group col-xs-12 input-group-sm">
-            <label for="nomor">Nomor</label>
-            <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="penjualanWaste.nomor" ng-disabled="!newForm" required/>
+        <div class="form-group col-xs-12" ng-if="!newForm">
+            <label for="nomor">Nomor:&nbsp;</label>
+            <span ng-bind="penjualanWaste.nomor"></span>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="nama">Nama</label>

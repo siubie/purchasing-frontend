@@ -10,28 +10,29 @@
     <div ng-show="!newForm">
         <h3>Ubah Retur Barang</h3>
     </div>
+    <br/>
     <form class="row" name="returBarangForm">
-        <div class="form-group col-xs-12 input-group-sm">
-            <label for="nomor">Nomor</label>
-            <input type="text" class="form-control" id="nomor" name="nomor" placeholder="Masukkan Nomor.." ng-model="returBarang.nomor" ng-disabled="!newForm" required/>
+        <div class="form-group col-xs-12" ng-if="!newForm">
+            <label for="nomor">Nomor:&nbsp;</label>
+            <span ng-bind="returBarang.nomor"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-6">
             <label for="lpb">Nomor LPB:&nbsp;</label>
             <span ng-bind="returBarang.lpb"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-6">
             <label for="tanggalDatang">Tanggal Datang:&nbsp;</label>
             <span ng-bind="returBarang.tanggalDatang"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-6">
             <label for="sp">Nomor SP:&nbsp;</label>
             <span ng-bind="returBarang.sp"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-6">
             <label for="supplier">Supplier:&nbsp;</label>
             <span ng-bind="returBarang.supplier.nama"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-6">
             <label for="nomorSj">Nomor Surat Jalan:&nbsp;</label>
             <span ng-bind="returBarang.nomorSj"></span>
         </div>

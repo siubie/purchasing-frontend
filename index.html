@@ -31,8 +31,6 @@
     <script src="modules/departemen/services/departemen.services.js"></script>
     <script src="modules/satuangudang/satuangudang.modules.js"></script>
     <script src="modules/satuangudang/services/satuangudang.services.js"></script>
-    <script src="modules/katalogbarang/katalogbarang.modules.js"></script>
-    <script src="modules/katalogbarang/services/katalogbarang.services.js"></script>
     <script src="modules/barang/barang.modules.js"></script>
     <script src="modules/barang/config/barang.routes.js"></script>
     <script src="modules/barang/controllers/barang.controllers.js"></script>
@@ -65,6 +63,10 @@
     <script src="modules/waste/config/waste.routes.js"></script>
     <script src="modules/waste/controllers/waste.controllers.js"></script>
     <script src="modules/waste/services/waste.services.js"></script>
+    <script src="modules/katalogbarang/katalogbarang.modules.js"></script>
+    <script src="modules/katalogbarang/config/katalogbarang.routes.js"></script>
+    <script src="modules/katalogbarang/controllers/katalogbarang.controllers.js"></script>
+    <script src="modules/katalogbarang/services/katalogbarang.services.js"></script>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="css/main.css">
@@ -82,7 +84,7 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href role="button" class="dropdown-toggle" data-toggle="dropdown">
-                            <strong>Master </strong>
+                            <strong>Master&nbsp;</strong>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -90,13 +92,15 @@
                             </li>
                             <li><a ui-sref="gridSupplierState">Supplier</a>
                             </li>
+                            <li><a ui-sref="gridKatalogBarangState">Katalog Barang</a>
+                            </li>
                             <li><a ui-sref="gridWasteState">Waste</a>
                             </li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href role="button" class="dropdown-toggle" data-toggle="dropdown">
-                            <strong>Transaksi </strong>
+                            <strong>Transaksi&nbsp;</strong>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">

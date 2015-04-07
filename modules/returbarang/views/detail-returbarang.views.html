@@ -50,18 +50,16 @@
             <td colspan=2>
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=7 class="text-center">Detail Barang</th>
+                        <th colspan=7 class="text-center">Item Barang</th>
                     </tr>
                     <tr>
-                        <th class="text-center">Nomor SPP</th>
                         <th class="text-center">Nama Barang</th>
                         <th class="text-center">Jumlah Datang</th>
-                        <th class="text-center">Jumlah Datang</th>
+                        <th class="text-center">Jumlah Retur</th>
                         <th class="text-center">Harga</th>
                         <th class="text-center">Alasan</th>
                     </tr>
                     <tr ng-repeat="detail in returBarang.returItemsList">
-                        <td class="text-center" ng-bind="detail.spp"></td>
                         <td class="text-center" ng-bind="detail.barang.nama"></td>
                         <td class="text-center" ng-bind="detail.qtyDatang"></td>
                         <td class="text-center" ng-bind="detail.qtyRetur"></td>

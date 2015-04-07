@@ -25,12 +25,14 @@ angular.module("waste.controllers", []).controller("wasteController", function($
     };
     $scope.load();
     $scope.create = function() {
+        console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$save(function() {
             $scope.load();
             $scope.close();
         });
     };
     $scope.update = function() {
+        console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$update(function() {
             $scope.load();
             $scope.close();

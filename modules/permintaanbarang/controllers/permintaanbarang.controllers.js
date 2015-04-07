@@ -63,14 +63,14 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     };
     $scope.load();
     $scope.create = function() {
+        console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
         $scope.permintaanBarang.$save(function() {
-            $scope.load();
             $scope.close();
         });
     };
     $scope.update = function() {
+        console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
         $scope.permintaanBarang.$update(function() {
-            $scope.load();
             $scope.close();
         });
     };
@@ -78,7 +78,6 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         var confirm = $window.confirm('Apakah Anda Yakin?');
         if (confirm) {
             permintaanBarang.$delete(function() {
-                $scope.load();
                 $scope.close();
             });
         }
@@ -87,6 +86,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         var confirm = $window.confirm('Apakah Anda Yakin?');
         if (confirm) {
             permintaanBarang.status = "APPROVED";
+            console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
             permintaanBarang.$update(function() {
                 $scope.load();
                 $scope.close();
@@ -97,6 +97,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         var confirm = $window.confirm('Apakah Anda Yakin?');
         if (confirm) {
             permintaanBarang.status = "REJECTED";
+            console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
             permintaanBarang.$update(function() {
                 $scope.load();
                 $scope.close();
@@ -106,23 +107,31 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     $scope.openRead = function(permintaanBarang) {
         $scope.close();
         $scope.newForm = false;
-        $scope.permintaanBarang = angular.copy(permintaanBarang);
+        $scope.permintaanBarang = permintaanBarang;
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/permintaanbarang/views/detail-permintaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
             scope: $scope
         });
+        $scope.modalInstance.result.then({}, function(reason) {
+            if (reason == "update") {
+                $scope.openUpdate(permintaanBarang);
+            }
+        });
     };
     $scope.openUpdate = function(permintaanBarang) {
         $scope.close();
         $scope.newForm = false;
-        $scope.permintaanBarang = angular.copy(permintaanBarang);
+        $scope.permintaanBarang = permintaanBarang;
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/permintaanbarang/views/form-permintaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
             scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.load();
         });
     };
     $scope.removeDetail = function(index) {

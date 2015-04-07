@@ -21,9 +21,17 @@
             </td>
         </tr>
     </table>
-    <button type="button" class="btn btn-default btn-sm" ng-click="createPermintaanBarang()">
+    <button type="button" class="btn btn-default btn-sm" ng-if="module=='katalogBarang'" ng-click="openCreatePermintaanBarang()">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Buat SPP</span>
+    </button>
+    <button type="button" class="btn btn-default btn-sm" ng-if="module=='permintaanBarang'" ng-click="openCreatePesananBarang()">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span>&nbsp;Buat SP</span>
+    </button>
+    <button type="button" class="btn btn-default btn-sm" ng-if="module=='waste'" ng-click="openCreatePenjualanWaste()">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span>&nbsp;Buat Penjualan Waste</span>
     </button>
     <button type="button" class="btn btn-default btn-sm" ng-click="clearCart()">
         <span class="glyphicon glyphicon-trash"></span>

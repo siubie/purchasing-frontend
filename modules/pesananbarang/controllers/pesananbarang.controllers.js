@@ -51,14 +51,14 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.load();
     $scope.create = function() {
+        console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
         $scope.pesananBarang.$save(function() {
-            $scope.load();
             $scope.close();
         });
     };
     $scope.update = function() {
+        console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
         $scope.pesananBarang.$update(function() {
-            $scope.load();
             $scope.close();
         });
     };
@@ -71,17 +71,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             });
         }
     };
-    // $scope.openCreate = function() {
-    //     $scope.close();
-    //     $scope.newForm = true;
-    //     $scope.new();
-    //     $scope.modalInstance = $modal.open({
-    //         templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
-    //         size: 'lg',
-    //         backdrop: 'static',
-    //         scope: $scope
-    //     });
-    // };
     $scope.openRead = function(pesananBarang) {
         $scope.close();
         $scope.newForm = false;
@@ -91,6 +80,11 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             size: 'lg',
             backdrop: 'static',
             scope: $scope
+        });
+        $scope.modalInstance.result.then({}, function(reason) {
+            if (reason == "update") {
+                $scope.openUpdate(permintaanBarang);
+            }
         });
     };
     $scope.openUpdate = function(pesananBarang) {
@@ -103,23 +97,20 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             backdrop: 'static',
             scope: $scope
         });
+        $scope.modalInstance.result.then(function() {
+            $scope.load();
+        });
     };
     $scope.openCreatePenerimaanBarang = function(pesananBarang) {
         $scope.close();
         $scope.newForm = true;
-        modalInstance = $modal.open({
+        localStorage.setItem("pesananBarang", JSON.stringify(pesananBarang));
+        $scope.modalInstance = $modal.open({
             templateUrl: 'modules/penerimaanbarang/views/form-penerimaanbarang.views.html',
             size: 'lg',
             backdrop: 'static',
-            controller: "createPenerimaanBarangController",
-            resolve: {
-                pesananBarang: function() {
-                    return pesananBarang;
-                }
-            }
-        });
-        modalInstance.result.then(function() {
-            $scope.load();
+            controller: "penerimaanBarangController",
+            scope: $scope
         });
     };
     $scope.removeDetail = function(index) {

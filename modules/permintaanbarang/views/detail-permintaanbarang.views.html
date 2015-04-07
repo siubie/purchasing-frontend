@@ -6,19 +6,19 @@
     <table class="table table-bordered table-condensed">
         <tr>
             <td class="col-xs-6">
-                <strong>Nomor Permintaan Barang</strong>
+                <strong>Nomor</strong>
             </td>
             <td class="col-xs-6" ng-bind="permintaanBarang.nomor"></td>
         </tr>
         <tr>
             <td>
-                <strong>Tanggal Permintaan</strong>
+                <strong>Tanggal</strong>
             </td>
             <td ng-bind="permintaanBarang.tanggal | date:'longDate'"></td>
         </tr>
         <tr>
             <td>
-                <strong>Jenis Permintaan</strong>
+                <strong>Jenis</strong>
             </td>
             <td>
                 <div ng-if="permintaanBarang.jenis">EMERGENCY</div>
@@ -47,10 +47,10 @@
             <td colspan=2>
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=6 class="text-center">Detail Barang</th>
+                        <th colspan=6 class="text-center">Item Barang</th>
                     </tr>
                     <tr>
-                        <th class="text-center">Nama Barang</th>
+                        <th class="text-center">Nama</th>
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Tanggal Butuh</th>
                         <th class="text-center">Status</th>

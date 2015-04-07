@@ -44,11 +44,13 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
     };
     $scope.new();
     $scope.create = function() {
+        console.log("penjualanWaste : ", JSON.stringify($scope.penjualanWaste));
         $scope.penjualanWaste.$save(function() {
             $scope.close();
         });
     };
     $scope.update = function() {
+        console.log("penjualanWaste : ", JSON.stringify($scope.penjualanWaste));
         $scope.penjualanWaste.$update(function() {
             $scope.close();
         });
@@ -93,7 +95,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
     $scope.openUpdate = function(penjualanWaste) {
         $scope.close();
         $scope.newForm = false;
-        $scope.penjualanWaste = penjualanWaste
+        $scope.penjualanWaste = penjualanWaste;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",

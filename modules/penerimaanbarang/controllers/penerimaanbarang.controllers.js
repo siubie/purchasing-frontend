@@ -34,10 +34,24 @@ angular.module("penerimaanBarang.controllers", [])
             "tanggalDatang": false
         };
         $scope.new = function() {
-            $scope.penerimaanBarang = new penerimaanBarangFactory({
-                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-                lpbItemsList: []
-            });
+            if (!!localStorage.pesananBarang) {
+                pesananBarang = JSON.parse(localStorage.pesananBarang);
+                $scope.penerimaanBarang = new penerimaanBarangFactory({
+                    tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
+                    tanggalDatang: $filter("date")(new Date(), "yyyy-MM-dd"),
+                    sp: pesananBarang.nomor,
+                    supplier: pesananBarang.supplier,
+                    lpbItemsList: []
+                });
+                angular.forEach(pesananBarang.spItemsList, function(detailBarang) {
+                    $scope.penerimaanBarang.lpbItemsList.push({
+                        barang: detailBarang.barang,
+                        spp: detailBarang.spp,
+                        qty: detailBarang.qty,
+                        harga: detailBarang.harga
+                    });
+                });
+            }
         };
         $scope.new();
         $scope.load = function() {
@@ -46,15 +60,14 @@ angular.module("penerimaanBarang.controllers", [])
         };
         $scope.load();
         $scope.create = function() {
+            console.log("penerimaanBarang : ", JSON.stringify($scope.penerimaanBarang));
             $scope.penerimaanBarang.$save(function() {
-                $scope.load();
                 $scope.close();
-                $scope.clearCart();
             });
         };
         $scope.update = function() {
+            console.log("penerimaanBarang : ", JSON.stringify($scope.penerimaanBarang));
             $scope.penerimaanBarang.$update(function() {
-                $scope.load();
                 $scope.close();
             });
         };
@@ -77,6 +90,11 @@ angular.module("penerimaanBarang.controllers", [])
                 backdrop: "static",
                 scope: $scope
             });
+            $scope.modalInstance.result.then({}, function(reason) {
+                if (reason == "update") {
+                    $scope.openUpdate(penerimaanBarang);
+                }
+            });
         };
         $scope.openUpdate = function(penerimaanBarang) {
             $scope.close();
@@ -88,63 +106,20 @@ angular.module("penerimaanBarang.controllers", [])
                 backdrop: "static",
                 scope: $scope
             });
+            $scope.modalInstance.result.then(function() {
+                $scope.load();
+            });
         };
         $scope.openCreateReturBarang = function(penerimaanBarang) {
             $scope.close();
             $scope.newForm = true;
-            modalInstance = $modal.open({
+            localStorage.setItem("penerimaanBarang", JSON.stringify(penerimaanBarang));
+            $scope.modalInstance = $modal.open({
                 templateUrl: 'modules/returbarang/views/form-returbarang.views.html',
                 size: 'lg',
                 backdrop: 'static',
-                controller: "createReturBarangController",
-                resolve: {
-                    penerimaanBarang: function() {
-                        return penerimaanBarang;
-                    }
-                }
-            });
-            modalInstance.result.then(function() {
-                $scope.load();
-            });
-        };
-        $scope.removeDetail = function(index) {
-            $scope.penerimaanBarang.lpbItemsList.splice(index, 1);
-        };
-        $scope.openCalendar = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope.opened.tanggalDatang = true;
-        };
-        $scope.$watch('penerimaanBarang.tanggalDatang', function() {
-            $scope.penerimaanBarang.tanggalDatang = $filter('date')($scope.penerimaanBarang.tanggalDatang, 'yyyy-MM-dd');
-        });
-    })
-    .controller("createPenerimaanBarangController", function($scope, $filter, penerimaanBarangFactory, pesananBarang) {
-        $scope.newForm = true;
-        $scope.opened = {
-            "tanggalDatang": false
-        };
-        $scope.new = function() {
-            $scope.penerimaanBarang = new penerimaanBarangFactory({
-                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-                tanggalDatang: $filter("date")(new Date(), "yyyy-MM-dd"),
-                sp: pesananBarang.nomor,
-                supplier: pesananBarang.supplier,
-                lpbItemsList: []
-            });
-            angular.forEach(pesananBarang.spItemsList, function(detailBarang) {
-                $scope.penerimaanBarang.lpbItemsList.push({
-                    barang: detailBarang.barang,
-                    spp: detailBarang.spp,
-                    qty: detailBarang.qty,
-                    harga: detailBarang.harga
-                });
-            });
-        };
-        $scope.new();
-        $scope.create = function() {
-            $scope.penerimaanBarang.$save(function() {
-                $scope.$close();
+                controller: "returBarangController",
+                scope: $scope
             });
         };
         $scope.removeDetail = function(index) {

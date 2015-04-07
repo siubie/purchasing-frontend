@@ -9,24 +9,21 @@
     <div ng-show="!newForm">
         <h3>Ubah Barang</h3>
     </div>
+    <br/>
     <form name="barangForm" class=row>
-        <div class="form-group col-xs-6 input-group-sm">
-            <label for="kode">Kode</label>
-            <input type="text" class="form-control" id="kode" name="kode" placeholder="Masukkan Kode.." ng-model="barang.kode" ng-disabled="!newForm" required/>
-        </div>
-        <div class="form-group col-xs-6 input-group-sm">
-            <label for="kategori">Kategori</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori'" required>
-                <option value="">-- Pilih Kategori --</option>
-            </select>
+        <div class="form-group col-xs-12" ng-if="!newForm">
+            <label for="kode">Kode:&nbsp;</label>
+            <span ng-bind="barang.kode"></span>
         </div>
         <div class="form-group col-xs-12 input-group-sm">
             <label for="nama">Nama</label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="barang.nama" required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
-            <label for="alias">Alias</label>
-            <input type="text" class="form-control" id="alias" name="alias" placeholder="Masukkan Alias.." ng-model="barang.alias" />
+            <label for="kategori">Kategori</label>
+            <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori'" required>
+                <option value="">-- Pilih Kategori --</option>
+            </select>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="satuan">Satuan</label>

@@ -31,10 +31,26 @@ angular.module("returBarang.controllers", [])
         };
         $scope.newForm = true;
         $scope.new = function() {
-            $scope.returBarang = new returBarangFactory({
-                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-                lpbItemsList: []
-            });
+            if (!!localStorage.penerimaanBarang) {
+                penerimaanBarang = JSON.parse(localStorage.penerimaanBarang);
+                $scope.returBarang = new returBarangFactory({
+                    tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
+                    tanggalDatang: penerimaanBarang.tanggalDatang,
+                    lpb: penerimaanBarang.nomor,
+                    sp: penerimaanBarang.sp,
+                    supplier: penerimaanBarang.supplier,
+                    nomorSj: penerimaanBarang.nomorSj,
+                    returItemsList: []
+                });
+                angular.forEach(penerimaanBarang.lpbItemsList, function(detailBarang) {
+                    $scope.returBarang.returItemsList.push({
+                        barang: detailBarang.barang,
+                        qtyDatang: detailBarang.qty,
+                        qtyRetur: 1,
+                        harga: detailBarang.harga
+                    });
+                });
+            }
         };
         $scope.new();
         $scope.load = function() {
@@ -43,15 +59,14 @@ angular.module("returBarang.controllers", [])
         };
         $scope.load();
         $scope.create = function() {
+            console.log("returBarang : ", JSON.stringify($scope.returBarang));
             $scope.returBarang.$save(function() {
-                $scope.load();
                 $scope.close();
-                $scope.clearCart();
             });
         };
         $scope.update = function() {
+            console.log("returBarang : ", JSON.stringify($scope.returBarang));
             $scope.returBarang.$update(function() {
-                $scope.load();
                 $scope.close();
             });
         };
@@ -67,54 +82,31 @@ angular.module("returBarang.controllers", [])
         $scope.openRead = function(returBarang) {
             $scope.close();
             $scope.newForm = false;
-            $scope.returBarang = angular.copy(returBarang);
+            $scope.returBarang = returBarang;
             $scope.modalInstance = $modal.open({
                 templateUrl: "modules/returbarang/views/detail-returbarang.views.html",
                 size: "lg",
                 backdrop: "static",
                 scope: $scope
             });
+            $scope.modalInstance.result.then({}, function(reason) {
+                if (reason == "update") {
+                    $scope.openUpdate(returBarang);
+                }
+            });
         };
         $scope.openUpdate = function(returBarang) {
             $scope.close();
             $scope.newForm = false;
-            $scope.returBarang = angular.copy(returBarang);
+            $scope.returBarang = returBarang;
             $scope.modalInstance = $modal.open({
                 templateUrl: "modules/returbarang/views/form-returbarang.views.html",
                 size: "lg",
                 backdrop: "static",
                 scope: $scope
             });
-        };
-        $scope.removeDetail = function(index) {
-            $scope.returBarang.returItemsList.splice(index, 1);
-        };
-    })
-    .controller("createReturBarangController", function($scope, $filter, returBarangFactory, penerimaanBarang) {
-        $scope.newForm = true;
-        $scope.new = function() {
-            $scope.returBarang = new returBarangFactory({
-                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-                tanggalDatang: penerimaanBarang.tanggalDatang,
-                lpb: penerimaanBarang.nomor,
-                sp: penerimaanBarang.sp,
-                supplier: penerimaanBarang.supplier,
-                nomorSj: penerimaanBarang.nomorSj,
-                returItemsList: []
-            });
-            angular.forEach(penerimaanBarang.lpbItemsList, function(detailBarang) {
-                $scope.returBarang.returItemsList.push({
-                    barang: detailBarang.barang,
-                    spp: detailBarang.spp,
-                    qtyDatang: detailBarang.qty,
-                    harga: detailBarang.harga
-                });
-            });
-        };
-        $scope.new();
-        $scope.create = function() {
-            $scope.returBarang.$save(function() {
-                $scope.$close();
+            $scope.modalInstance.result.then(function() {
+                $scope.load();
             });
         };
         $scope.removeDetail = function(index) {
