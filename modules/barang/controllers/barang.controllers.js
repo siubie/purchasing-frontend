@@ -93,18 +93,4 @@ angular.module("barang.controllers", []).controller("barangController", function
             $scope.load();
         });
     };
-    $scope.openCreatePermintaanBarang = function() {
-        $scope.newForm = true;
-        $scope.close();
-        $scope.modalInstance = $modal.open({
-            templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
-            size: "lg",
-            backdrop: "static",
-            controller: "permintaanBarangController",
-            scope: $scope
-        });
-        $scope.modalInstance.result.then(function() {
-            $scope.load();
-        });
-    };
 });

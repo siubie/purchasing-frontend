@@ -58,7 +58,7 @@
                     </td>
                     <td class="text-center">
                         <span ng-bind="detailBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
-                        <span ng-model="detailBarang.tanggalButuh" init-date="detailBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                        <span ng-model="detailBarang.tanggalButuh" init-date="detailBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode+leadTime" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
                         </span>
                         <span>
                             <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">

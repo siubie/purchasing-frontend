@@ -28,6 +28,10 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.pesananBarang = new pesananBarangFactory({
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
             ppn: false,
+            diskon: 0,
+            kurs: 1,
+            valuta: "IDR",
+            valutaBayar: "IDR",
             spItemsList: []
         });
         if (!!localStorage.permintaanBarangCart) {
@@ -37,7 +41,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                     spp: itemBarangCart.spp,
                     barang: itemBarangCart.barang,
                     qty: itemBarangCart.qty,
-                    diskon: 0
+                    harga: itemBarangCart.harga,
                 });
             });
         }

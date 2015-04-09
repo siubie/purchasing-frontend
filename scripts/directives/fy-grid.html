@@ -1,7 +1,9 @@
 <div class="form-inline">
-    <!-- <span ng-bind="selected|json"></span>
-    <br/>
-    <br/> -->
+    <!-- <span ng-repeat="lala in selected">
+        <span ng-bind="lala|json"></span>
+        <br/>
+        <br/>
+    </span> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
             <option value="10">10</option>
@@ -100,10 +102,10 @@
                     <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
-                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.hargaSupplier.length" ng-click="item.expanded=true">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.listSupplier.length" ng-click="item.expanded=true">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded&&!!item.hargaSupplier.length" ng-click="item.expanded=false">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded&&!!item.listSupplier.length" ng-click="item.expanded=false">
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </td>
@@ -161,18 +163,52 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-if="module=='katalogBarang'&&!!item.hargaSupplier.length" ng-show="item.expanded">
+            <tr ng-if="module=='katalogBarang'&&!!item.listSupplier.length" ng-show="item.expanded">
                 <td></td>
                 <td colspan="6">
                     <table class="table table-condensed table-bordered table-table-striped">
-                        <tr>
-                            <th class="text-center">Tanggal</th>
-                            <th class="text-center">Harga</th>
-                        </tr>
-                        <tr ng-repeat="detailBarang in item.hargaSupplier|orderBy:'tanggal':'false'">
-                            <td class="text-center" ng-bind="::detailBarang.tanggal|date: 'dd MMMM yyyy'"></td>
-                            <td class="text-center" ng-bind="::detailBarang.harga"></td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-center">Kode</th>
+                                <th class="text-center">Nama</th>
+                                <th class="text-center">Alamat</th>
+                                <th class="text-center">Telepon</th>
+                                <th class="text-center">Lead Time</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="detailKatalog in item.listSupplier|orderBy:'supplier.kode':false">
+                            <tr>
+                                <td class="text-center" ng-init="detailKatalog.expanded=false">
+                                    <button type="button" class="btn btn-default btn-xs" ng-show="!detailKatalog.expanded&&!!detailKatalog.historyHarga.length" ng-click="detailKatalog.expanded=true">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-xs" ng-show="detailKatalog.expanded&&!!detailKatalog.historyHarga.length" ng-click="detailKatalog.expanded=false">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </td>
+                                <td class="text-center" ng-bind="::detailKatalog.supplier.kode"></td>
+                                <td class="text-center" ng-bind="::detailKatalog.supplier.nama"></td>
+                                <td class="text-center" ng-bind="::detailKatalog.supplier.alamat"></td>
+                                <td class="text-center" ng-bind="::detailKatalog.supplier.nomorTelepon"></td>
+                                <td class="text-center" ng-bind="::detailKatalog.leadTime"></td>
+                            </tr>
+                            <tr ng-if="!!detailKatalog.historyHarga.length" ng-show="!!detailKatalog.expanded">
+                                <td></td>
+                                <td colspan="5">
+                                    <table class="table table-condensed table-bordered table-table-striped">
+                                        <tr>
+                                            <th class="text-center">Tanggal</th>
+                                            <th class="text-center">Harga</th>
+                                        </tr>
+                                        <tr ng-repeat="harga in detailKatalog.historyHarga|orderBy:'tanggal':true">
+                                            <td class="text-center" ng-bind="::harga.tanggal"></td>
+                                            <td class="text-center" ng-bind="::harga.harga"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </td>
             </tr>
@@ -181,16 +217,15 @@
                 <td colspan="7">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
-                            <th ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')"></th>
+                            <th ng-if="!(module=='permintaanBarang' &&item.status!='APPROVED' )"></th>
                             <th class="text-center">Nama Barang</th>
                             <th class="text-center">Jumlah</th>
                             <th class="text-center">Tanggal Butuh</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Sisa</th>
-                            <th class="text-center">Keterangan</th>
                         </tr>
                         <tr ng-repeat="detailBarang in item.sppItemsList">
-                            <td class="text-center" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
+                            <td class="text-center" ng-if="!(module=='permintaanBarang' &&item.status!='APPROVED' )">
                                 <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null">
                             </td>
                             <td class="text-center" ng-bind="::detailBarang.barang.nama"></td>
@@ -198,7 +233,6 @@
                             <td class="text-center" ng-bind="::detailBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
                             <td class="text-center" ng-bind="::detailBarang.status"></td>
                             <td class="text-center" ng-bind="::detailBarang.sisa"></td>
-                            <td class="text-center" ng-bind="::detailBarang.keterangan"></td>
                         </tr>
                     </table>
                 </td>

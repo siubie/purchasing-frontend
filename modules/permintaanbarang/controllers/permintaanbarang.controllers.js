@@ -42,14 +42,15 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             status: "RECEIVED",
             sppItemsList: []
         });
-        if (!!localStorage.barangCart) {
-            $scope.barangCart = JSON.parse(localStorage.barangCart);
-            angular.forEach($scope.barangCart, function(itemBarangCart) {
+        if (!!localStorage.katalogBarangCart) {
+            $scope.katalogBarangCart = JSON.parse(localStorage.katalogBarangCart);
+            angular.forEach($scope.katalogBarangCart, function(itemBarangCart) {
                 $scope.permintaanBarang.sppItemsList.push({
-                    barang: itemBarangCart,
-                    tanggalButuh: $filter('date')(new Date(), 'yyyy-MM-dd'),
+                    barang: itemBarangCart.barang,
+                    tanggalButuh: $filter('date')((new Date() + itemBarangCart.leadTime), 'yyyy-MM-dd'),
                     jumlah: 1,
-                    status: "RECEIVED"
+                    status: "RECEIVED",
+                    harga: itemBarangCart.harga
                 });
             });
         }

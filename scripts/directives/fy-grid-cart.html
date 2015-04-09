@@ -1,4 +1,9 @@
 <div class="modal-body">
+    <span ng-repeat="item in cart">
+        <span ng-bind="item|json"></span>
+        <br/>
+        <br/>
+    </span>
     <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>

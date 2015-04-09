@@ -1,21 +1,21 @@
 angular.module("katalogBarang.controllers", []).controller("katalogBarangController", function($scope, $window, $modal, $filter, katalogBarangFactory, barangFactory, supplierFactory) {
     $scope.module = "katalogBarang";
     $scope.fields = [{
-        "name": "barang.nama",
+        "name": "kode",
         "type": "string",
-        "header": "Nama Barang"
+        "header": "Kode"
     }, {
-        "name": "supplier.nama",
+        "name": "nama",
         "type": "string",
-        "header": "Supplier"
+        "header": "Nama"
     }, {
-        "name": "alias",
+        "name": "kategori",
         "type": "string",
-        "header": "Alias"
+        "header": "Kategori"
     }, {
-        "name": "leadTime",
+        "name": "satuan",
         "type": "string",
-        "header": "Lead Time"
+        "header": "Satuan"
     }];
     $scope.Math = window.Math;
     $scope.sort = {
@@ -25,10 +25,25 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         "detailOrder": "false"
     };
     $scope.load = function() {
-        $scope.barangs = barangFactory.query();
+        $scope.barangs = barangFactory.query(function() {
+            $scope.katalogBarangs = katalogBarangFactory.query(function() {
+                $scope.items = angular.copy($scope.barangs);
+                angular.forEach($scope.items, function(item) {
+                    item.listSupplier = [];
+                    angular.forEach($scope.katalogBarangs, function(katalogBarang) {
+                        if (item.kode == katalogBarang.barang.kode) {
+                            item.listSupplier.push({
+                                supplier: katalogBarang.supplier,
+                                alias: katalogBarang.alias,
+                                leadTime: katalogBarang.leadTime,
+                                historyHarga: katalogBarang.historyHarga
+                            });
+                        }
+                    });
+                });
+            });
+        });
         $scope.suppliers = supplierFactory.query();
-        $scope.katalogBarangs = katalogBarangFactory.query();
-        $scope.items = $scope.katalogBarangs;
     };
     $scope.load();
     $scope.new = function() {
@@ -95,6 +110,20 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
             templateUrl: "modules/katalogbarang/views/form-katalogbarang.views.html",
             size: "lg",
             backdrop: "static",
+            scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.load();
+        });
+    };
+    $scope.openCreatePermintaanBarang = function() {
+        $scope.close();
+        $scope.newForm = true;
+        $scope.modalInstance = $modal.open({
+            templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
+            size: "lg",
+            backdrop: "static",
+            controller: "permintaanBarangController",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

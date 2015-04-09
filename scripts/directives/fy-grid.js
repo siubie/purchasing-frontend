@@ -13,25 +13,21 @@ angular.module('fyGrid', [])
                 $scope.search = [];
                 if ($scope.module == "katalogBarang") {
                     $scope.detailFields = [{
-                        "name": "kode",
+                        "name": "barang.kode",
                         "type": "string",
                         "header": "Kode"
                     }, {
-                        "name": "kategori",
+                        "name": "barang.kategori",
                         "type": "string",
                         "header": "Kategori"
                     }, {
-                        "name": "nama",
+                        "name": "barang.nama",
                         "type": "string",
                         "header": "Nama Barang"
                     }, {
-                        "name": "satuan",
+                        "name": "barang.satuan",
                         "type": "string",
                         "header": "Satuan",
-                    }, {
-                        "name": "alias",
-                        "type": "string",
-                        "header": "Alias",
                     }];
                     if (!!localStorage.katalogBarangCart) {
                         $scope.cart = JSON.parse(localStorage.katalogBarangCart);
@@ -114,7 +110,7 @@ angular.module('fyGrid', [])
                                 delete itemSelected.selected;
                                 if (!!$scope.cart.length) {
                                     angular.forEach($scope.cart, function(itemCart) {
-                                        if (itemCart.kode == itemSelected.kode) {
+                                        if (itemCart.barang.kode == itemSelected.kode) {
                                             duplicated = true;
                                         }
                                     });
@@ -199,27 +195,42 @@ angular.module('fyGrid', [])
                     if ($scope.module == "katalogBarang") {
                         angular.forEach($scope.items, function(item) {
                             if (item.selected) {
+                                var barang = new Object({
+                                    kode: item.kode,
+                                    kategori: item.kategori,
+                                    nama: item.nama,
+                                    satuan: item.satuan,
+                                    spesifikasi: item.spesifikasi,
+                                    deskripsi: item.deskripsi
+                                });
                                 var harga = 0;
-                                if (!!item.hargaSupplier.length) {
+                                var leadTime = 30;
+                                if (!!item.listSupplier.length) {
                                     var newest = new Date('1945-08-17');
-                                    angular.forEach(item.hargaSupplier, function(itemHarga) {
-                                        itemHarga.tanggal = new Date(itemHarga.tanggal);
-                                        if (itemHarga.tanggal > newest) {
-                                            harga = itemHarga.harga;
-                                            newest = itemHarga.tanggal;
+                                    var longest = 0;
+                                    angular.forEach(item.listSupplier, function(detailKatalog) {
+                                        if (detailKatalog.leadTime > longest) {
+                                            leadTime = detailKatalog.leadTime;
+                                            longest = detailKatalog.leadTime;
                                         }
+                                        angular.forEach(detailKatalog.historyHarga, function(itemHarga) {
+                                            itemHarga.tanggal = new Date(itemHarga.tanggal);
+                                            if (itemHarga.tanggal > newest) {
+                                                harga = itemHarga.harga;
+                                                newest = itemHarga.tanggal;
+                                            }
+                                            if (itemHarga.tanggal == newest && itemHarga.harga > harga) {
+                                                harga = itemHarga;
+                                            }
+                                        });
                                     });
                                 }
                                 $scope.selected.push({
-                                    kode: item.barang.kode,
-                                    kategori: item.barang.kategori,
-                                    nama: item.barang.nama,
-                                    satuan: item.barang.satuan,
-                                    spesifikasi: item.barang.spesifikasi,
-                                    deskripsi: item.barang.deskripsi,
-                                    alias: item.alias,
+                                    barang: barang,
+                                    leadTime: leadTime,
                                     harga: harga
                                 });
+                                console.log($scope.selected);
                             }
                         });
                     }
@@ -231,7 +242,8 @@ angular.module('fyGrid', [])
                                         $scope.selected.push({
                                             spp: item.nomor,
                                             barang: detail.barang,
-                                            qty: detail.jumlah
+                                            qty: detail.jumlah,
+                                            harga: detail.harga
                                         });
                                     }
                                 });
@@ -303,7 +315,7 @@ angular.module('fyGrid', [])
     .filter('startFrom', function() {
         return function(input, start) {
             start = +start;
-            return input.slice(start);
+            if (!!input) return input.slice(start);
         };
     })
     .filter('periodeFilter', function() {

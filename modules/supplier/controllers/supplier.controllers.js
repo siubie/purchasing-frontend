@@ -18,9 +18,10 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         "header": "Telepon"
     }];
     $scope.Math = window.Math;
-    $scope.sort = "kode";
-    $scope.reverse = false;
-    $scope.telepon = {};
+    $scope.sort = {
+        "field": "kode",
+        "order": false
+    };
     $scope.new = function() {
         $scope.supplier = new supplierFactory();
     };

@@ -9,11 +9,8 @@ cek label for, id, name di setiap input
 bug
 cek filter periode jalan lebih dari 1x di 1 data
 
-katalog barang
 kosongkan keranjang setelah selesai proses
 reset centang setelah add to cart
 prompt apakah ingin membuat lagi
-default satuan ketika edit barang
 jadikan satu kode barang yang sama dan concat kode SPPnya
-barang dipilih
-detail cart
+duplicate di keranjang SPP dan waste
