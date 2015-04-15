@@ -93,7 +93,7 @@
                     <span ng-show="sort.field=='{{field.name}}' && sort.order" class="glyphicon glyphicon-triangle-bottom"></span>
                     <span ng-show="sort.field=='{{field.name}}' && !sort.order" class="glyphicon glyphicon-triangle-top"></span>
                 </th>
-                <th class="text-center">Pilihan</th>
+                <th class="text-center" ng-if="module!='katalogBarang'">Pilihan</th>
             </tr>
         </thead>
         <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
@@ -102,10 +102,10 @@
                     <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
-                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.listSupplier.length" ng-click="item.expanded=true">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.katalogLength" ng-click="item.expanded=true">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded&&!!item.listSupplier.length" ng-click="item.expanded=false">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded&&!!item.katalogLength" ng-click="item.expanded=false">
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </td>
@@ -137,7 +137,7 @@
                         <span ng-if="::!item.ppn">TIDAK</span>
                     </span>
                 </td>
-                <td class="text-center">
+                <td class="text-center" ng-if="module!='katalogBarang'">
                     <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
                         <span class="glyphicon glyphicon-zoom-in"></span>
                     </button>
@@ -163,7 +163,7 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-if="module=='katalogBarang'&&!!item.listSupplier.length" ng-show="item.expanded">
+            <tr ng-if="module=='katalogBarang'" ng-show="item.expanded&&item.katalogLength" ng-init="filterKatalog.barang.kode=item.kode">
                 <td></td>
                 <td colspan="6">
                     <table class="table table-condensed table-bordered table-table-striped">
@@ -175,33 +175,45 @@
                                 <th class="text-center">Alamat</th>
                                 <th class="text-center">Telepon</th>
                                 <th class="text-center">Lead Time</th>
+                                <th class="text-center">Pilihan</th>
                             </tr>
                         </thead>
-                        <tbody ng-repeat="detailKatalog in item.listSupplier|orderBy:'supplier.kode':false">
+                        <tbody ng-repeat="katalogBarang in katalogFiltered = (katalogBarangs|filter:filterKatalog|orderBy:'supplier.kode':false)" ng-init="$parent.item.katalogLength=!!katalogFiltered.length">
                             <tr>
-                                <td class="text-center" ng-init="detailKatalog.expanded=false">
-                                    <button type="button" class="btn btn-default btn-xs" ng-show="!detailKatalog.expanded&&!!detailKatalog.historyHarga.length" ng-click="detailKatalog.expanded=true">
+                                <td class="text-center" ng-init="katalogBarang.expanded=false">
+                                    <button type="button" class="btn btn-default btn-xs" ng-show="!katalogBarang.expanded&&!!katalogBarang.historyHarga.length" ng-click="katalogBarang.expanded=true">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
-                                    <button type="button" class="btn btn-default btn-xs" ng-show="detailKatalog.expanded&&!!detailKatalog.historyHarga.length" ng-click="detailKatalog.expanded=false">
+                                    <button type="button" class="btn btn-default btn-xs" ng-show="katalogBarang.expanded&&!!katalogBarang.historyHarga.length" ng-click="katalogBarang.expanded=false">
                                         <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </td>
-                                <td class="text-center" ng-bind="::detailKatalog.supplier.kode"></td>
-                                <td class="text-center" ng-bind="::detailKatalog.supplier.nama"></td>
-                                <td class="text-center" ng-bind="::detailKatalog.supplier.alamat"></td>
-                                <td class="text-center" ng-bind="::detailKatalog.supplier.nomorTelepon"></td>
-                                <td class="text-center" ng-bind="::detailKatalog.leadTime"></td>
+                                <td class="text-center" ng-bind="::katalogBarang.supplier.kode"></td>
+                                <td class="text-center" ng-bind="::katalogBarang.supplier.nama"></td>
+                                <td class="text-center" ng-bind="::katalogBarang.supplier.alamat"></td>
+                                <td class="text-center" ng-bind="::katalogBarang.supplier.nomorTelepon"></td>
+                                <td class="text-center" ng-bind="::katalogBarang.leadTime"></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(katalogBarang)">
+                                        <span class="glyphicon glyphicon-zoom-in"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(katalogBarang)">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(katalogBarang)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
                             </tr>
-                            <tr ng-if="!!detailKatalog.historyHarga.length" ng-show="!!detailKatalog.expanded">
+                            <tr ng-if="!!katalogBarang.historyHarga.length" ng-show="!!katalogBarang.expanded">
                                 <td></td>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <table class="table table-condensed table-bordered table-table-striped">
                                         <tr>
                                             <th class="text-center">Tanggal</th>
                                             <th class="text-center">Harga</th>
                                         </tr>
-                                        <tr ng-repeat="harga in detailKatalog.historyHarga|orderBy:'tanggal':true">
+                                        <tr ng-repeat="harga in katalogBarang.historyHarga|orderBy: 'tanggal':true">
                                             <td class="text-center" ng-bind="::harga.tanggal"></td>
                                             <td class="text-center" ng-bind="::harga.harga"></td>
                                         </tr>

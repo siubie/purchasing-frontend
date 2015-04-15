@@ -205,32 +205,35 @@ angular.module('fyGrid', [])
                                 });
                                 var harga = 0;
                                 var leadTime = 30;
-                                if (!!item.listSupplier.length) {
+                                if (!!item.katalogLength) {
                                     var newest = new Date('1945-08-17');
                                     var longest = 0;
-                                    angular.forEach(item.listSupplier, function(detailKatalog) {
-                                        if (detailKatalog.leadTime > longest) {
-                                            leadTime = detailKatalog.leadTime;
-                                            longest = detailKatalog.leadTime;
+                                    angular.forEach($scope.katalogBarangs, function(katalogBarang) {
+                                        if (katalogBarang.barang.kode == item.kode) {
+                                            if (katalogBarang.leadTime > longest) {
+                                                leadTime = katalogBarang.leadTime;
+                                                longest = katalogBarang.leadTime;
+                                            }
+                                            angular.forEach(katalogBarang.historyHarga, function(itemHarga) {
+                                                itemHarga.tanggal = new Date(itemHarga.tanggal);
+                                                if (itemHarga.tanggal > newest) {
+                                                    harga = itemHarga.harga;
+                                                    newest = itemHarga.tanggal;
+                                                }
+                                                if (itemHarga.tanggal == newest && itemHarga.harga > harga) {
+                                                    harga = itemHarga;
+                                                }
+                                            });
                                         }
-                                        angular.forEach(detailKatalog.historyHarga, function(itemHarga) {
-                                            itemHarga.tanggal = new Date(itemHarga.tanggal);
-                                            if (itemHarga.tanggal > newest) {
-                                                harga = itemHarga.harga;
-                                                newest = itemHarga.tanggal;
-                                            }
-                                            if (itemHarga.tanggal == newest && itemHarga.harga > harga) {
-                                                harga = itemHarga;
-                                            }
-                                        });
                                     });
+
                                 }
                                 $scope.selected.push({
                                     barang: barang,
                                     leadTime: leadTime,
                                     harga: harga
                                 });
-                                console.log($scope.selected);
+                                // console.log($scope.selected);
                             }
                         });
                     }

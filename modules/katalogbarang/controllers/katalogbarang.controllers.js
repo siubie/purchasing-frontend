@@ -25,25 +25,10 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         "detailOrder": "false"
     };
     $scope.load = function() {
-        $scope.barangs = barangFactory.query(function() {
-            $scope.katalogBarangs = katalogBarangFactory.query(function() {
-                $scope.items = angular.copy($scope.barangs);
-                angular.forEach($scope.items, function(item) {
-                    item.listSupplier = [];
-                    angular.forEach($scope.katalogBarangs, function(katalogBarang) {
-                        if (item.kode == katalogBarang.barang.kode) {
-                            item.listSupplier.push({
-                                supplier: katalogBarang.supplier,
-                                alias: katalogBarang.alias,
-                                leadTime: katalogBarang.leadTime,
-                                historyHarga: katalogBarang.historyHarga
-                            });
-                        }
-                    });
-                });
-            });
-        });
+        $scope.barangs = barangFactory.query();
         $scope.suppliers = supplierFactory.query();
+        $scope.katalogBarangs = katalogBarangFactory.query();
+        $scope.items = $scope.barangs;
     };
     $scope.load();
     $scope.new = function() {
