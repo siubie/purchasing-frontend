@@ -32,6 +32,42 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <strong>Diskon</strong>
+            </td>
+            <td ng-bind="pesananBarang.diskon"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Valuta</strong>
+            </td>
+            <td ng-bind="pesananBarang.valuta"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Valuta Bayar</strong>
+            </td>
+            <td ng-bind="pesananBarang.valutaBayar"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Kurs</strong>
+            </td>
+            <td ng-bind="pesananBarang.kurs"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Syarat Bayar</strong>
+            </td>
+            <td ng-bind="pesananBarang.syaratBayar"></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Status</strong>
+            </td>
+            <td ng-bind="pesananBarang.status"></td>
+        </tr>
+        <tr>
             <td colspan=2>
                 <table class="table table-bordered table-condensed">
                     <tr>
@@ -40,16 +76,18 @@
                     <tr>
                         <th class="text-center">Nomor SPP</th>
                         <th class="text-center">Nama</th>
+                        <th class="text-center">Satuan</th>
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Harga</th>
-                        <th class="text-center">Diskon</th>
+                        <th class="text-center">Status</th>
                     </tr>
-                    <tr ng-repeat="detail in pesananBarang.spItemsList">
-                        <td class="text-center" ng-bind="detail.spp"></td>
-                        <td class="text-center" ng-bind="detail.barang.nama"></td>
-                        <td class="text-center" ng-bind="detail.qty"></td>
-                        <td class="text-center" ng-bind="detail.harga"></td>
-                        <td class="text-center" ng-bind="detail.diskon"></td>
+                    <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
+                        <td class="text-center" ng-bind="itemBarang.spp"></td>
+                        <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                        <td class="text-center" ng-bind="itemBarang.qty"></td>
+                        <td class="text-center" ng-bind="itemBarang.harga"></td>
+                        <td class="text-center" ng-bind="itemBarang.status"></td>
                     </tr>
                 </table>
             </td>

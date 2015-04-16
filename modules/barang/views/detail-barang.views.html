@@ -5,10 +5,10 @@
     <h3>Detail Barang</h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <td>
+            <td class="col-xs-6">
                 <strong>Kode</strong>
             </td>
-            <td ng-bind="barang.kode"></td>
+            <td class="col-xs-6" ng-bind="barang.kode"></td>
         </tr>
         <tr>
             <td>
@@ -40,6 +40,42 @@
             </td>
             <td ng-bind="barang.deskripsi"></td>
         </tr>
+        <!-- <tr>
+            <div class="form-group col-xs-6">
+                <label for="kode">Kode:&nbsp;</label>
+                <span ng-bind="barang.kode"></span>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group col-xs-6">
+                <label for="kategori">Kategori:&nbsp;</label>
+                <span ng-bind="barang.kategori"></span>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group col-xs-6">
+                <label for="nama">Nama:&nbsp;</label>
+                <span ng-bind="barang.nama"></span>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group col-xs-6">
+                <label for="satuan">Satuan:&nbsp;</label>
+                <span ng-bind="barang.satuan"></span>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group col-xs-6">
+                <label for="spesifikasi">Spesifikasi:&nbsp;</label>
+                <span ng-bind="barang.spesifikasi"></span>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group col-xs-6">
+                <label for="deskripsi">Deskripsi:&nbsp;</label>
+                <span ng-bind="barang.deskripsi"></span>
+            </div>
+        </tr> -->
     </table>
     <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-disabled="barangForm.$invalid">
         <span class="glyphicon glyphicon-floppy-disk"></span>

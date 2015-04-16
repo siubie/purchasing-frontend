@@ -26,7 +26,7 @@ angular.module("returBarang.controllers", [])
         }];
         $scope.Math = window.Math;
         $scope.sort = {
-            "field": "tanggal",
+            "field": "nomor",
             "order": true
         };
         $scope.newForm = true;
@@ -34,20 +34,27 @@ angular.module("returBarang.controllers", [])
             if (!!localStorage.penerimaanBarang) {
                 penerimaanBarang = JSON.parse(localStorage.penerimaanBarang);
                 $scope.returBarang = new returBarangFactory({
+                    nomor: "LPBR" + new Date().getTime(),
                     tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
                     tanggalDatang: penerimaanBarang.tanggalDatang,
                     lpb: penerimaanBarang.nomor,
                     sp: penerimaanBarang.sp,
                     supplier: penerimaanBarang.supplier,
                     nomorSj: penerimaanBarang.nomorSj,
+                    diskon: penerimaanBarang.diskon,
+                    kurs: penerimaanBarang.kurs,
+                    valuta: penerimaanBarang.valuta,
+                    valutaBayar: penerimaanBarang.valutaBayar,
+                    status: "RECEIVED",
                     returItemsList: []
                 });
-                angular.forEach(penerimaanBarang.lpbItemsList, function(detailBarang) {
+                angular.forEach(penerimaanBarang.lpbItemsList, function(itemBarang) {
                     $scope.returBarang.returItemsList.push({
-                        barang: detailBarang.barang,
-                        qtyDatang: detailBarang.qty,
+                        barang: itemBarang.barang,
+                        qtyDatang: itemBarang.qty,
                         qtyRetur: 1,
-                        harga: detailBarang.harga
+                        harga: itemBarang.harga,
+                        status: "RECEIVED"
                     });
                 });
             }

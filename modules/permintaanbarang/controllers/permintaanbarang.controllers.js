@@ -36,6 +36,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
     };
     $scope.new = function() {
         $scope.permintaanBarang = new permintaanBarangFactory({
+            nomor: "SPP" + new Date().getTime(),
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
             jenis: false,
             periode: $filter('date')($scope.timestamp.periode, 'MM-yyyy'),
@@ -44,13 +45,13 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         });
         if (!!localStorage.katalogBarangCart) {
             $scope.katalogBarangCart = JSON.parse(localStorage.katalogBarangCart);
-            angular.forEach($scope.katalogBarangCart, function(itemBarangCart) {
+            angular.forEach($scope.katalogBarangCart, function(itemBarang) {
                 $scope.permintaanBarang.sppItemsList.push({
-                    barang: itemBarangCart.barang,
-                    tanggalButuh: $filter('date')((new Date() + itemBarangCart.leadTime), 'yyyy-MM-dd'),
+                    barang: itemBarang.barang,
+                    tanggalButuh: $filter('date')((new Date() + itemBarang.leadTime), 'yyyy-MM-dd'),
                     jumlah: 1,
                     status: "RECEIVED",
-                    harga: itemBarangCart.harga
+                    harga: itemBarang.harga
                 });
             });
         }

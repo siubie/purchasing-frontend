@@ -16,17 +16,31 @@
             <label for="nomor">Nomor:&nbsp;</label>
             <span ng-bind="pesananBarang.nomor"></span>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-12 input-group-sm">
             <label for="supplier">Supplier</label>
             <select class="form-control" id="supplier" name="supplier" ng-model="pesananBarang.supplier" ng-options="supplier.nama for supplier in suppliers | orderBy: 'supplier.nama' track by supplier.nama" required>
                 <option value="">-- Pilih Supplier --</option>
             </select>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
-            <label for="ppn">
-                <span>PPN:&nbsp;</span>
-                <input type="checkbox" id="ppn" name="ppn" ng-model="pesananBarang.ppn" />
-            </label>
+        <div class="form-group col-xs-2 input-group-sm">
+            <label for="diskon">Diskon</label>
+            <input type="number" class="form-control text-center" id="diskon" name="diskon" ng-model="pesananBarang.diskon" min="0" required />
+        </div>
+        <div class="form-group col-xs-2 input-group-sm">
+            <label for="valuta">Valuta</label>
+            <input type="text" class="form-control text-center" id="valuta" name="valuta" ng-model="pesananBarang.valuta" required />
+        </div>
+        <div class="form-group col-xs-2 input-group-sm">
+            <label for="valutaBayar">Valuta Bayar</label>
+            <input type="text" class="form-control text-center" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" required />
+        </div>
+        <div class="form-group col-xs-2 input-group-sm">
+            <label for="syaratBayar">Syarat Bayar</label>
+            <input type="number" class="form-control text-center" id="syaratBayar" name="syaratBayar" ng-model="pesananBarang.syaratBayar" pattern="\d+" required />
+        </div>
+        <div class="form-group col-xs-2 input-group-sm">
+            <label for="ppn">PPN:&nbsp;</label>
+            <input type="checkbox" id="ppn" name="ppn" ng-model="pesananBarang.ppn" />
         </div>
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
@@ -36,24 +50,22 @@
                 <tr>
                     <th class="text-center">Nomor SPP</th>
                     <th class="text-center">Nama</th>
+                    <th class="text-center">Satuan</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Harga</th>
-                    <th class="text-center">Diskon</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="detailBarang in pesananBarang.spItemsList">
-                    <td class="text-center" ng-bind="detailBarang.spp"></td>
-                    <td class="text-center" ng-bind="detailBarang.barang.nama"></td>
+                <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
+                    <td class="text-center" ng-bind="itemBarang.spp"></td>
+                    <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                    <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="qty" ng-model="detailBarang.qty" min="1" required/>
+                        <input class="form-control text-center" type="number" name="qty" ng-model="itemBarang.qty" min="1" pattern="\d+" required/>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="harga" ng-model="detailBarang.harga" min="1" required/>
+                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" required/>
                     </td>
-                    <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="diskon" ng-model="detailBarang.diskon" min="0" required/>
-                    </td>
-                    <td class="input-group-sm">
+                    <td class="text-center input-group-sm">
                         <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>

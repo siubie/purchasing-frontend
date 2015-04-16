@@ -24,6 +24,11 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         $scope.items = $scope.wastes;
     };
     $scope.load();
+    $scope.new = function() {
+        $scope.waste = new wasteFactory({
+            kode: "WST" + new Date().getTime(),
+        });
+    };
     $scope.create = function() {
         console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$save(function() {
@@ -50,7 +55,6 @@ angular.module("waste.controllers", []).controller("wasteController", function($
     $scope.openCreate = function() {
         $scope.close();
         $scope.newForm = true;
-        $scope.waste = new wasteFactory();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/form-waste.views.html",
             size: "lg",

@@ -29,6 +29,12 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.items = $scope.barangs;
     };
     $scope.load();
+    $scope.new = function() {
+        $scope.barang = new barangFactory({
+            kode: "BRG" + new Date().getTime()
+        });
+    };
+    $scope.new();
     $scope.create = function() {
         console.log("barang : ", JSON.stringify($scope.barang));
         $scope.barang.$save(function() {
@@ -53,7 +59,7 @@ angular.module("barang.controllers", []).controller("barangController", function
     $scope.openCreate = function() {
         $scope.close();
         $scope.newForm = true;
-        $scope.barang = new barangFactory();
+        $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
             size: "md",

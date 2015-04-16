@@ -26,5 +26,5 @@ angular.module("purchasingApp", [
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/katalogbarang/");
+    $urlRouterProvider.otherwise("/barang/");
 });

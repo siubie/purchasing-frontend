@@ -24,29 +24,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         "order": true
     };
     $scope.newForm = true;
-    $scope.new = function() {
-        $scope.pesananBarang = new pesananBarangFactory({
-            tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
-            ppn: false,
-            diskon: 0,
-            kurs: 1,
-            valuta: "IDR",
-            valutaBayar: "IDR",
-            spItemsList: []
-        });
-        if (!!localStorage.permintaanBarangCart) {
-            $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);
-            angular.forEach($scope.permintaanBarangCart, function(itemBarangCart) {
-                $scope.pesananBarang.spItemsList.push({
-                    spp: itemBarangCart.spp,
-                    barang: itemBarangCart.barang,
-                    qty: itemBarangCart.qty,
-                    harga: itemBarangCart.harga,
-                });
-            });
-        }
-    };
-    $scope.new();
     $scope.load = function() {
         $scope.suppliers = supplierFactory.query();
         $scope.permintaanBarangs = permintaanBarangFactory.query();
@@ -54,6 +31,33 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.items = $scope.pesananBarangs;
     };
     $scope.load();
+    $scope.new = function() {
+        $scope.pesananBarang = new pesananBarangFactory({
+            nomor: "SP" + new Date().getTime(),
+            tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
+            ppn: false,
+            diskon: 0,
+            kurs: 1,
+            valuta: "IDR",
+            valutaBayar: "IDR",
+            status: "RECEIVED",
+            syaratBayar: 0,
+            spItemsList: []
+        });
+        if (!!localStorage.permintaanBarangCart) {
+            $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);
+            angular.forEach($scope.permintaanBarangCart, function(itemBarang) {
+                $scope.pesananBarang.spItemsList.push({
+                    spp: itemBarang.spp,
+                    barang: itemBarang.barang,
+                    qty: itemBarang.qty,
+                    harga: itemBarang.harga,
+                    status: "RECEIVED"
+                });
+            });
+        }
+    };
+    $scope.new();
     $scope.create = function() {
         console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
         $scope.pesananBarang.$save(function() {

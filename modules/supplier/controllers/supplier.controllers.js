@@ -22,14 +22,17 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         "field": "kode",
         "order": false
     };
-    $scope.new = function() {
-        $scope.supplier = new supplierFactory();
-    };
     $scope.load = function() {
         $scope.suppliers = supplierFactory.query();
         $scope.items = $scope.suppliers;
-        $scope.new();
     };
+    $scope.load();
+    $scope.new = function() {
+        $scope.supplier = new supplierFactory({
+            kode: "SUP" + new Date().getTime()
+        });
+    };
+    $scope.new();
     $scope.create = function() {
         console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$save(function() {
