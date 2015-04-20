@@ -17,6 +17,10 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         "name": "ppn",
         "header": "PPN",
         "type": "ppn"
+    }, {
+        "name": "status",
+        "header": "Status",
+        "type": "string"
     }];
     $scope.Math = window.Math;
     $scope.sort = {
@@ -61,13 +65,13 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     $scope.create = function() {
         console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
         $scope.pesananBarang.$save(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
         $scope.pesananBarang.$update(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(pesananBarang) {
@@ -75,12 +79,12 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         if (confirmDelete) {
             pesananBarang.$delete(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
     $scope.openRead = function(pesananBarang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.pesananBarang = angular.copy(pesananBarang);
         $scope.modalInstance = $modal.open({
@@ -96,7 +100,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
     };
     $scope.openUpdate = function(pesananBarang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.pesananBarang = angular.copy(pesananBarang);
         $scope.modalInstance = $modal.open({
@@ -110,7 +114,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
     };
     $scope.openCreatePenerimaanBarang = function(pesananBarang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         localStorage.setItem("pesananBarang", JSON.stringify(pesananBarang));
         $scope.modalInstance = $modal.open({

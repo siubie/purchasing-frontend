@@ -37,14 +37,14 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$save(function() {
             $scope.load();
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$update(function() {
             $scope.load();
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(supplier) {
@@ -52,7 +52,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         if (confirmDelete) {
             supplier.$delete(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
@@ -62,7 +62,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         }
     };
     $scope.openCreate = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
@@ -73,7 +73,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         });
     };
     $scope.openRead = function(supplier) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.supplier = angular.copy(supplier);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/detail-supplier.views.html',
@@ -83,7 +83,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         });
     };
     $scope.openUpdate = function(supplier) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.supplierOld = angular.copy(supplier);
         $scope.supplier = angular.copy(supplier);

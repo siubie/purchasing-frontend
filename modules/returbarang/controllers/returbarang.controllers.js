@@ -23,6 +23,10 @@ angular.module("returBarang.controllers", [])
             "name": "supplier.nama",
             "header": "Supplier",
             "type": "string"
+        }, {
+            "name": "status",
+            "header": "Status",
+            "type": "string"
         }];
         $scope.Math = window.Math;
         $scope.sort = {
@@ -68,13 +72,13 @@ angular.module("returBarang.controllers", [])
         $scope.create = function() {
             console.log("returBarang : ", JSON.stringify($scope.returBarang));
             $scope.returBarang.$save(function() {
-                $scope.close();
+                $scope.modalInstance.close();
             });
         };
         $scope.update = function() {
             console.log("returBarang : ", JSON.stringify($scope.returBarang));
             $scope.returBarang.$update(function() {
-                $scope.close();
+                $scope.modalInstance.close();
             });
         };
         $scope.delete = function(returBarang) {
@@ -82,12 +86,12 @@ angular.module("returBarang.controllers", [])
             if (confirmDelete) {
                 returBarang.$delete(function() {
                     $scope.load();
-                    $scope.close();
+                    $scope.modalInstance.close();
                 });
             }
         };
         $scope.openRead = function(returBarang) {
-            $scope.close();
+            $scope.modalInstance.close();
             $scope.newForm = false;
             $scope.returBarang = returBarang;
             $scope.modalInstance = $modal.open({
@@ -103,7 +107,7 @@ angular.module("returBarang.controllers", [])
             });
         };
         $scope.openUpdate = function(returBarang) {
-            $scope.close();
+            $scope.modalInstance.close();
             $scope.newForm = false;
             $scope.returBarang = returBarang;
             $scope.modalInstance = $modal.open({

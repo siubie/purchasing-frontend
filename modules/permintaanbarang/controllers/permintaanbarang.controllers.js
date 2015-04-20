@@ -21,10 +21,31 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         "name": "periode",
         "header": "Periode",
         "type": "periode"
+    }, {
+        "name": "status",
+        "header": "Status",
+        "type": "string"
+    }];
+    $scope.cartFields = [{
+        "name": "spp",
+        "type": "string",
+        "header": "Nomor SPP"
+    }, {
+        "name": "barang.kode",
+        "type": "string",
+        "header": "Kode Barang"
+    }, {
+        "name": "barang.nama",
+        "type": "string",
+        "header": "Nama Barang"
+    }, {
+        "name": "qty",
+        "type": "String",
+        "header": "Jumlah SPP",
     }];
     $scope.Math = window.Math;
     $scope.sort = {
-        "field": "tanggal",
+        "field": "nomor",
         "order": true
     };
     $scope.timestamp = {
@@ -34,6 +55,16 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         "periode": false,
         "tanggalButuh": []
     };
+    $scope.load = function() {
+        $scope.barangs = barangFactory.query();
+        $scope.departemens = departemenFactory.query();
+        $scope.permintaanBarangs = permintaanBarangFactory.query();
+        $scope.items = $scope.permintaanBarangs;
+    };
+    $scope.load();
+    if (!!localStorage.permintaanBarangCart) {
+        $scope.cart = JSON.parse(localStorage.permintaanBarangCart);
+    }
     $scope.new = function() {
         $scope.permintaanBarang = new permintaanBarangFactory({
             nomor: "SPP" + new Date().getTime(),
@@ -57,30 +88,23 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         }
     };
     $scope.new();
-    $scope.load = function() {
-        $scope.barangs = barangFactory.query();
-        $scope.departemens = departemenFactory.query();
-        $scope.permintaanBarangs = permintaanBarangFactory.query();
-        $scope.items = $scope.permintaanBarangs;
-    };
-    $scope.load();
     $scope.create = function() {
         console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
         $scope.permintaanBarang.$save(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
         $scope.permintaanBarang.$update(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(permintaanBarang) {
         var confirm = $window.confirm('Apakah Anda Yakin?');
         if (confirm) {
             permintaanBarang.$delete(function() {
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
@@ -91,7 +115,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
             permintaanBarang.$update(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
@@ -102,12 +126,12 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             console.log("permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
             permintaanBarang.$update(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
     $scope.openRead = function(permintaanBarang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.permintaanBarang = permintaanBarang;
         $scope.modalInstance = $modal.open({
@@ -123,7 +147,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         });
     };
     $scope.openUpdate = function(permintaanBarang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.permintaanBarang = permintaanBarang;
         $scope.modalInstance = $modal.open({
@@ -150,7 +174,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
         $scope.opened.tanggalButuh[index] = true;
     };
     $scope.openCreatePesananBarang = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
@@ -159,7 +183,7 @@ angular.module('permintaanBarang.controllers', []).controller('permintaanBarangC
             controller: 'pesananBarangController',
             scope: $scope
         });
-        $scope.close();
+        $scope.modalInstance.close();
     };
     $scope.$watch('timestamp', function() {
         $scope.permintaanBarang.periode = $filter('date')($scope.timestamp.periode, 'MM-yyyy');

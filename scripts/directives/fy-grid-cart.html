@@ -1,22 +1,21 @@
 <div class="modal-body">
-    <span ng-repeat="item in cart">
+    <!-- <span ng-repeat="item in cart">
         <span ng-bind="item|json"></span>
         <br/>
-        <br/>
-    </span>
+    </span> -->
     <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <h3>Detail Keranjang</h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <th ng-repeat="field in detailFields" class="text-center">
+            <th ng-repeat="field in cartFields" class="text-center">
                 <span ng-bind="field.header"></span>
             </th>
             <th class="text-center">Pilihan</th>
         </tr>
         <tr ng-repeat="item in cart | orderBy:sort.field">
-            <td ng-repeat="field in detailFields" class="text-center">
+            <td ng-repeat="field in cartFields" class="text-center">
                 <span ng-bind="item.{{field.name}}"></span>
             </td>
             <td class="text-center">

@@ -13,6 +13,19 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         "type": "string",
         "header": "Satuan"
     }];
+    $scope.cartFields = [{
+        "name": "kode",
+        "type": "string",
+        "header": "Kode Waste"
+    }, {
+        "name": "nama",
+        "type": "string",
+        "header": "Nama Waste"
+    }, {
+        "name": "satuan",
+        "type": "String",
+        "header": "Satuan",
+    }];
     $scope.Math = window.Math;
     $scope.sort = {
         "field": "kode",
@@ -24,6 +37,9 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         $scope.items = $scope.wastes;
     };
     $scope.load();
+    if (!!localStorage.wasteCart) {
+        $scope.cart = JSON.parse(localStorage.wasteCart);
+    }
     $scope.new = function() {
         $scope.waste = new wasteFactory({
             kode: "WST" + new Date().getTime(),
@@ -33,14 +49,14 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$save(function() {
             $scope.load();
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$update(function() {
             $scope.load();
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(waste) {
@@ -48,12 +64,12 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         if (confirmDelete) {
             waste.$delete(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/form-waste.views.html",
@@ -66,7 +82,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openRead = function(waste) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.waste = waste;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/detail-waste.views.html",
@@ -81,7 +97,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openUpdate = function(waste) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.waste = waste;
         $scope.newForm = false;
         $scope.modalInstance = $modal.open({
@@ -95,7 +111,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openCreatePenjualanWaste = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",

@@ -17,9 +17,26 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         "type": "string",
         "header": "Satuan"
     }];
+    $scope.cartFields = [{
+        "name": "barang.kode",
+        "type": "string",
+        "header": "Kode"
+    }, {
+        "name": "barang.kategori",
+        "type": "string",
+        "header": "Kategori"
+    }, {
+        "name": "barang.nama",
+        "type": "string",
+        "header": "Nama Barang"
+    }, {
+        "name": "barang.satuan",
+        "type": "string",
+        "header": "Satuan",
+    }];
     $scope.Math = window.Math;
     $scope.sort = {
-        "field": "barang.nama",
+        "field": "kode",
         "order": false,
         "detailField": "hargaSupplier.tanggal",
         "detailOrder": "false"
@@ -31,6 +48,9 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         $scope.items = $scope.barangs;
     };
     $scope.load();
+    if (!!localStorage.katalogBarangCart) {
+        $scope.cart = JSON.parse(localStorage.katalogBarangCart);
+    }
     $scope.new = function() {
         $scope.katalogBarang = new katalogBarangFactory({
             hargaSupplier: []
@@ -40,13 +60,13 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
     $scope.create = function() {
         console.log("katalogBarang : ", JSON.stringify($scope.katalogBarang));
         $scope.katalogBarang.$save(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("katalogBarang : ", JSON.stringify($scope.katalogBarang));
         $scope.katalogBarang.$update(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(katalogBarang) {
@@ -54,12 +74,11 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         if (confirmDelete) {
             katalogBarang.$delete(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.close();
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
@@ -73,7 +92,6 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.openRead = function(katalogBarang) {
-        $scope.close();
         $scope.katalogBarang = katalogBarang;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/katalogbarang/views/detail-katalogbarang.views.html",
@@ -88,7 +106,6 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.openUpdate = function(katalogBarang) {
-        $scope.close();
         $scope.newForm = false;
         $scope.katalogBarang = katalogBarang;
         $scope.modalInstance = $modal.open({
@@ -102,7 +119,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.openCreatePermintaanBarang = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
@@ -111,6 +128,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
             controller: "permintaanBarangController",
             scope: $scope
         });
+        console.log($scope.modalInstance);
         $scope.modalInstance.result.then(function() {
             $scope.load();
         });

@@ -38,26 +38,29 @@ angular.module("barang.controllers", []).controller("barangController", function
     $scope.create = function() {
         console.log("barang : ", JSON.stringify($scope.barang));
         $scope.barang.$save(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("barang : ", JSON.stringify($scope.barang));
         $scope.barang.$update(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(barang) {
         var confirmDelete = $window.confirm("Apakah Anda Yakin?");
         if (confirmDelete) {
             barang.$delete(function() {
-                $scope.load();
-                $scope.close();
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                } else {
+                    $scope.load();
+                }
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
@@ -71,7 +74,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openRead = function(barang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.barang = barang;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/detail-barang.views.html",
@@ -86,7 +89,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openUpdate = function(barang) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.barang = barang;
         $scope.modalInstance = $modal.open({

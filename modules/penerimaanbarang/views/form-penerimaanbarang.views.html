@@ -5,7 +5,7 @@
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
-        <h3>Tambah Penerimaan Barang</h3>
+        <h3>Buat Penerimaan Barang</h3>
     </div>
     <div ng-show="!newForm">
         <h3>Ubah Penerimaan Barang</h3>
@@ -58,7 +58,7 @@
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan=5>Item Barang</th>
+                    <th class="text-center" colspan=6>Item Barang</th>
                 </tr>
                 <tr>
                     <th class="text-center">Nomor SPP</th>
@@ -75,9 +75,7 @@
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="qty" ng-model="itemBarang.qty" min="1" pattern="\d+" required/>
                     </td>
-                    <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" required/>
-                    </td>
+                    <td class="text-center" ng-bind="itemBarang.harga"></td>
                     <td class="input-group-sm">
                         <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
                             <span class="glyphicon glyphicon-trash"></span>

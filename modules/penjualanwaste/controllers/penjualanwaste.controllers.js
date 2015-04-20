@@ -47,13 +47,13 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
     $scope.create = function() {
         console.log("penjualanWaste : ", JSON.stringify($scope.penjualanWaste));
         $scope.penjualanWaste.$save(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("penjualanWaste : ", JSON.stringify($scope.penjualanWaste));
         $scope.penjualanWaste.$update(function() {
-            $scope.close();
+            $scope.modalInstance.close();
         });
     };
     $scope.delete = function(penjualanWaste) {
@@ -61,12 +61,12 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         if (confirmDelete) {
             penjualanWaste.$delete(function() {
                 $scope.load();
-                $scope.close();
+                $scope.modalInstance.close();
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
@@ -79,7 +79,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
     };
     $scope.openRead = function(penjualanWaste) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.penjualanWaste = penjualanWaste;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/detail-penjualanwaste.views.html",
@@ -94,7 +94,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
     };
     $scope.openUpdate = function(penjualanWaste) {
-        $scope.close();
+        $scope.modalInstance.close();
         $scope.newForm = false;
         $scope.penjualanWaste = penjualanWaste;
         $scope.modalInstance = $modal.open({

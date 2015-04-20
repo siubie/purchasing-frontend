@@ -5,16 +5,17 @@
         <br/>
     </span> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
-        <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
+        <select class="form-control" ng-model="page.items" ng-init="page.items=5" ng-change="page.current=1">
+            <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
         </select>
     </span>
-    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()" ng-if="module=='barang'||module=='supplier'||module=='katalogBarang'||module=='waste'">
+    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()">
         <span class="glyphicon glyphicon-plus"></span>
-        <span>&nbsp;Tambah</span>
+        <span>&nbsp;Buat</span>
     </button>
     <button class="btn btn-default btn-sm" type="button" ng-click="load()">
         <span class="glyphicon glyphicon-refresh"></span>
@@ -47,7 +48,7 @@
             <span class="input-group-addon">
                 <strong>Status</strong>
             </span>
-            <select class="form-control" ng-model="search.status" ng-init="search.status='RECEIVED'">
+            <select class="form-control" ng-model="search.status" ng-init="search.status=''">
                 <option value="">Semua</option>
                 <option value="RECEIVED">Diterima</option>
                 <option value="APPROVED">Disetujui</option>
@@ -73,10 +74,10 @@
         <br/>
         <br/>
     </h5>
-    <table class="table table-striped table-bordered table-condensed" ng-init="page.current=1" ng-show="page.current>0 && page.current<=page.max">
+    <table class="table table-bordered table-condensed" ng-init="page.current=1" ng-show="page.current>0 && page.current<=page.max">
         <thead>
             <tr>
-                <th class="text-center">
+                <th class="text-center" ng-if="module=='katalogBarang'||module=='permintaanBarang'||module=='waste'">
                     <input type="checkbox" ng-model="page.selectedAll" ng-change="checkDisplayed()">
                 </th>
                 <th class="text-center" ng-if="module=='katalogBarang'||module=='permintaanBarang'">
@@ -98,8 +99,8 @@
         </thead>
         <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
             <tr>
-                <td class="text-center">
-                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-if="!(module=='permintaanBarang'&&item.status!='APPROVED')">
+                <td class="text-center" ng-if="module=='katalogBarang'||module=='permintaanBarang'||module=='waste'">
+                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-show="!(module=='permintaanBarang'&&item.status!='APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
                     <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.katalogLength" ng-click="item.expanded=true">
@@ -165,21 +166,17 @@
             </tr>
             <tr ng-if="module=='katalogBarang'" ng-show="item.expanded&&item.katalogLength" ng-init="filterKatalog.barang.kode=item.kode">
                 <td></td>
-                <td colspan="6">
+                <td colspan="5">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
-                            <th class="text-center">Kode</th>
-                            <th class="text-center">Nama</th>
-                            <th class="text-center">Alamat</th>
-                            <th class="text-center">Telepon</th>
+                            <th class="text-center">Supplier</th>
+                            <th class="text-center">Alias</th>
                             <th class="text-center">Lead Time</th>
                             <th class="text-center">Pilihan</th>
                         </tr>
                         <tr ng-repeat="katalogBarang in katalogFiltered = (katalogBarangs|filter:filterKatalog|orderBy:'supplier.kode':false)" ng-init="$parent.item.katalogLength=!!katalogFiltered.length">
-                            <td class="text-center" ng-bind="::katalogBarang.supplier.kode"></td>
                             <td class="text-center" ng-bind="::katalogBarang.supplier.nama"></td>
-                            <td class="text-center" ng-bind="::katalogBarang.supplier.alamat"></td>
-                            <td class="text-center" ng-bind="::katalogBarang.supplier.nomorTelepon"></td>
+                            <td class="text-center" ng-bind="::katalogBarang.alias"></td>
                             <td class="text-center" ng-bind="::katalogBarang.leadTime"></td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(katalogBarang)">
@@ -224,21 +221,6 @@
         </tbody>
     </table>
     <div class="form-inline" ng-show="!!filtered.length">
-        <span class="pull-left" ng-show="!!displayed.length">
-            <span class="input-group input-group-sm" dropdown>
-                <button type="button" class="form-control btn btn-default dropdown-toggle" ng-disabled="!selected.length" dropdown-toggle>
-                    <span ng-bind="selected.length"></span>
-                    <span>Item Dipilih&nbsp;</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href ng-click="addToCart()">Add</a>
-                    </li>
-                    <li><a href ng-click="uncheckAll()">Reset</a>
-                    </li>
-                </ul>
-            </span>
-        </span>
         <span class="pull-right">
             <form name="currentPageForm">
                 <span ng-show="!!displayed.length && currentPageForm.$valid">

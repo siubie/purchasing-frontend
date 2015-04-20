@@ -1,11 +1,11 @@
 <div class="modal-body">
-    <span ng-bind="pesananBarang|json"></span>
-    <br/>
+    <!-- <span ng-bind="pesananBarang|json"></span>
+    <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
-        <h3>Tambah Pesanan Barang</h3>
+        <h3>Buat Pesanan Barang</h3>
     </div>
     <div ng-show="!newForm">
         <h3>Ubah Pesanan Barang</h3>
@@ -45,7 +45,7 @@
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan=5>Item Barang</th>
+                    <th class="text-center" colspan=6>Item Barang</th>
                 </tr>
                 <tr>
                     <th class="text-center">Nomor SPP</th>
