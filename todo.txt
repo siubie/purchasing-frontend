@@ -1,20 +1,14 @@
 technique
 unit test
-hindari $scope di dalam method
 
 feature
-cek label for, id, name di setiap input
-
 
 bug
 cek filter periode jalan lebih dari 1x di 1 data
 
-kosongkan keranjang setelah selesai proses
-reset centang setelah add to cart
-prompt apakah ingin membuat lagi
-jadikan satu kode barang yang sama dan concat kode SPPnya
-duplicate di keranjang SPP dan waste
 tanggal butuh ditambah lead time
 pengesahan SPP per item
 pengesahan di SP ketika harga berubah
-promise di modal
+tunjukkan konfirmasi yang berisi detial object sebelum CUD
+implementasi toastJS
+editable di setiap item

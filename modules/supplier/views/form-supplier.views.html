@@ -1,6 +1,6 @@
 <div class="modal-body">
     <!-- {{supplier|json}} -->
-    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+    <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
@@ -31,7 +31,7 @@
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="delete(supplier)" ng-show="!newForm">
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete(supplier)" ng-if="access.delete&&!newForm">
                 <span class="glyphicon glyphicon-trash"></span>
                 <span>&nbsp;Hapus</span>
             </button>

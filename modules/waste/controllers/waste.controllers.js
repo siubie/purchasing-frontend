@@ -1,5 +1,13 @@
 angular.module("waste.controllers", []).controller("wasteController", function($scope, $window, $modal, wasteFactory, satuanGudangFactory) {
     $scope.module = "waste";
+    $scope.access = {
+        create: true,
+        update: true,
+        delete: true,
+        expand: false,
+        selection: true,
+        cart: true
+    };
     $scope.fields = [{
         "name": "kode",
         "type": "string",
@@ -26,7 +34,6 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         "type": "String",
         "header": "Satuan",
     }];
-    $scope.Math = window.Math;
     $scope.sort = {
         "field": "kode",
         "order": false
@@ -44,33 +51,35 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         $scope.waste = new wasteFactory({
             kode: "WST" + new Date().getTime(),
         });
+        console.log("new waste");
     };
+    $scope.new();
     $scope.create = function() {
         console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$save(function() {
-            $scope.load();
             $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("waste : ", JSON.stringify($scope.waste));
         $scope.waste.$update(function() {
-            $scope.load();
             $scope.modalInstance.close();
         });
     };
     $scope.delete = function(waste) {
-        var confirmDelete = $window.confirm("Apakah Anda Yakin?");
-        if (confirmDelete) {
+        var confirm = $window.confirm("Apakah Anda Yakin?");
+        if (confirm) {
             waste.$delete(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
                 $scope.load();
-                $scope.modalInstance.close();
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.modalInstance.close();
         $scope.newForm = true;
+        $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/form-waste.views.html",
             size: "lg",
@@ -82,8 +91,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openRead = function(waste) {
-        $scope.modalInstance.close();
-        $scope.waste = waste;
+        angular.copy(waste,$scope.waste);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/detail-waste.views.html",
             size: "lg",
@@ -97,8 +105,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openUpdate = function(waste) {
-        $scope.modalInstance.close();
-        $scope.waste = waste;
+        angular.copy(waste,$scope.waste);
         $scope.newForm = false;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/form-waste.views.html",
@@ -111,8 +118,8 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openCreatePenjualanWaste = function() {
-        $scope.modalInstance.close();
         $scope.newForm = true;
+        $scope.cartSystem = true;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
@@ -121,7 +128,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.uncheckAll();
         });
     };
 });

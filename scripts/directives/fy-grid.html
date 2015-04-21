@@ -1,11 +1,6 @@
 <div class="form-inline">
-    <!-- <span ng-repeat="lala in selected">
-        <span ng-bind="lala|json"></span>
-        <br/>
-        <br/>
-    </span> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
-        <select class="form-control" ng-model="page.items" ng-init="page.items=5" ng-change="page.current=1">
+        <select class="form-control" ng-model="page.items" ng-init="page.items=25" ng-change="page.current=1">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -13,7 +8,7 @@
             <option value="100">100</option>
         </select>
     </span>
-    <button type="button" class="btn btn-default btn-sm" ng-click="openCreate()">
+    <button type="button" class="btn btn-default btn-sm" ng-if="access.create" ng-click="openCreate()">
         <span class="glyphicon glyphicon-plus"></span>
         <span>&nbsp;Buat</span>
     </button>
@@ -22,7 +17,7 @@
         <span>&nbsp;Refresh</span>
     </button>
     <span class="pull-right">
-        <span class="input-group input-group-sm" dropdown ng-if="module=='katalogBarang'||module=='permintaanBarang'||module=='waste'">
+        <span class="input-group input-group-sm" dropdown ng-if="access.cart">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
             </span>
@@ -77,10 +72,10 @@
     <table class="table table-bordered table-condensed" ng-init="page.current=1" ng-show="page.current>0 && page.current<=page.max">
         <thead>
             <tr>
-                <th class="text-center" ng-if="module=='katalogBarang'||module=='permintaanBarang'||module=='waste'">
+                <th class="text-center" ng-if="access.selection">
                     <input type="checkbox" ng-model="page.selectedAll" ng-change="checkDisplayed()">
                 </th>
-                <th class="text-center" ng-if="module=='katalogBarang'||module=='permintaanBarang'">
+                <th class="text-center" ng-if="access.expand">
                     <button type="button" class="btn btn-default btn-xs" ng-show="!page.expandedAll" ng-click="page.expandedAll=true">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
@@ -99,7 +94,7 @@
         </thead>
         <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
             <tr>
-                <td class="text-center" ng-if="module=='katalogBarang'||module=='permintaanBarang'||module=='waste'">
+                <td class="text-center" ng-if="access.selection">
                     <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-show="!(module=='permintaanBarang'&&item.status!='APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
@@ -120,32 +115,32 @@
                 </td>
                 <td ng-repeat="field in fields">
                     <span ng-if=" field.type=='string'">
-                        <span ng-bind="::item.{{field.name}}|limitTo: '30'"></span>
-                        <span ng-show="::item.{{field.name}}.length>30">...</span>
+                        <span ng-bind="item.{{field.name}}|limitTo: '30'"></span>
+                        <span ng-show="item.{{field.name}}.length>30">...</span>
                     </span>
                     <span ng-if="field.type=='date'">
-                        <span ng-bind="::item.{{field.name}}|date:field.filter"></span>
+                        <span ng-bind="item.{{field.name}}|date:field.filter"></span>
                     </span>
                     <span ng-if="field.type=='jenis'">
-                        <span ng-if="::item.jenis">EMERGENCY</span>
-                        <span ng-if="::!item.jenis">RUTIN</span>
+                        <span ng-if="item.jenis">EMERGENCY</span>
+                        <span ng-if="!item.jenis">RUTIN</span>
                     </span>
                     <span ng-if="field.type=='periode'">
-                        <span ng-bind="::item.{{field.name}}|periodeFilter|date:'MMMM yyyy'"></span>
+                        <span ng-bind="item.{{field.name}}|periodeFilter|date:'MMMM yyyy'"></span>
                     </span>
                     <span ng-if="field.type=='ppn'">
-                        <span ng-if="::item.ppn">YA</span>
-                        <span ng-if="::!item.ppn">TIDAK</span>
+                        <span ng-if="item.ppn">YA</span>
+                        <span ng-if="!item.ppn">TIDAK</span>
                     </span>
                 </td>
                 <td class="text-center" ng-if="module!='katalogBarang'">
                     <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
                         <span class="glyphicon glyphicon-zoom-in"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="!(module=='permintaanBarang'&&(item.status=='APPROVED'||item.status=='REJECTED'))">
+                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="access.update">
                         <span class="glyphicon glyphicon-edit"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="module=='barang'||module=='supplier'||module=='waste'">
+                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
                     <span ng-if="module=='permintaanBarang'&&item.status=='RECEIVED'">
@@ -175,9 +170,9 @@
                             <th class="text-center">Pilihan</th>
                         </tr>
                         <tr ng-repeat="katalogBarang in katalogFiltered = (katalogBarangs|filter:filterKatalog|orderBy:'supplier.kode':false)" ng-init="$parent.item.katalogLength=!!katalogFiltered.length">
-                            <td class="text-center" ng-bind="::katalogBarang.supplier.nama"></td>
-                            <td class="text-center" ng-bind="::katalogBarang.alias"></td>
-                            <td class="text-center" ng-bind="::katalogBarang.leadTime"></td>
+                            <td class="text-center" ng-bind="katalogBarang.supplier.nama"></td>
+                            <td class="text-center" ng-bind="katalogBarang.alias"></td>
+                            <td class="text-center" ng-bind="katalogBarang.leadTime"></td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(katalogBarang)">
                                     <span class="glyphicon glyphicon-zoom-in"></span>
@@ -195,10 +190,10 @@
             </tr>
             <tr ng-if="module=='permintaanBarang'" ng-show="item.expanded">
                 <td></td>
-                <td colspan="7">
+                <td colspan="8">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
-                            <th ng-if="!(module=='permintaanBarang' &&item.status!='APPROVED' )"></th>
+                            <th ng-if="item.status=='APPROVED'"></th>
                             <th class="text-center">Nama Barang</th>
                             <th class="text-center">Jumlah</th>
                             <th class="text-center">Tanggal Butuh</th>
@@ -206,14 +201,14 @@
                             <th class="text-center">Sisa</th>
                         </tr>
                         <tr ng-repeat="detailBarang in item.sppItemsList">
-                            <td class="text-center" ng-if="!(module=='permintaanBarang' &&item.status!='APPROVED' )">
+                            <td class="text-center" ng-if="item.status=='APPROVED'">
                                 <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null">
                             </td>
-                            <td class="text-center" ng-bind="::detailBarang.barang.nama"></td>
-                            <td class="text-center" ng-bind="::detailBarang.jumlah"></td>
-                            <td class="text-center" ng-bind="::detailBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
-                            <td class="text-center" ng-bind="::detailBarang.status"></td>
-                            <td class="text-center" ng-bind="::detailBarang.sisa"></td>
+                            <td class="text-center" ng-bind="detailBarang.barang.nama"></td>
+                            <td class="text-center" ng-bind="detailBarang.jumlah"></td>
+                            <td class="text-center" ng-bind="detailBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
+                            <td class="text-center" ng-bind="detailBarang.status"></td>
+                            <td class="text-center" ng-bind="detailBarang.sisa"></td>
                         </tr>
                     </table>
                 </td>

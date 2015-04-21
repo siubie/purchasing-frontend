@@ -1,5 +1,13 @@
 angular.module('supplier.controllers', []).controller('supplierController', ['$scope', '$window', '$state', '$modal', '$filter', 'supplierFactory', function($scope, $window, $state, $modal, $filter, supplierFactory) {
     $scope.module = "supplier";
+    $scope.access = {
+        create: true,
+        update: true,
+        delete: true,
+        expand: false,
+        selection: false,
+        cart: false
+    };
     $scope.fields = [{
         "name": "kode",
         "type": "string",
@@ -17,7 +25,6 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         "type": "string",
         "header": "Telepon"
     }];
-    $scope.Math = window.Math;
     $scope.sort = {
         "field": "kode",
         "order": false
@@ -36,33 +43,27 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
     $scope.create = function() {
         console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$save(function() {
-            $scope.load();
             $scope.modalInstance.close();
         });
     };
     $scope.update = function() {
         console.log("supplier : ", JSON.stringify($scope.supplier));
         $scope.supplier.$update(function() {
-            $scope.load();
             $scope.modalInstance.close();
         });
     };
     $scope.delete = function(supplier) {
-        var confirmDelete = $window.confirm('Apakah Anda Yakin?');
-        if (confirmDelete) {
+        var confirm = $window.confirm('Apakah Anda Yakin?');
+        if (confirm) {
             supplier.$delete(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
                 $scope.load();
-                $scope.modalInstance.close();
             });
         }
     };
-    $scope.close = function() {
-        if ($scope.modalInstance) {
-            $scope.modalInstance.dismiss();
-        }
-    };
     $scope.openCreate = function() {
-        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
@@ -71,27 +72,35 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
             backdrop: 'static',
             scope: $scope
         });
+        $scope.modalInstance.result.then(function() {
+            $scope.load();
+        });
     };
     $scope.openRead = function(supplier) {
-        $scope.modalInstance.close();
-        $scope.supplier = angular.copy(supplier);
+        angular.copy(supplier,$scope.supplier);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/detail-supplier.views.html',
             size: 'md',
             backdrop: 'static',
             scope: $scope
         });
+        $scope.modalInstance.result.then({}, function(reason) {
+            if (reason == "update") {
+                $scope.openUpdate(supplier);
+            }
+        });
     };
     $scope.openUpdate = function(supplier) {
-        $scope.modalInstance.close();
         $scope.newForm = false;
-        $scope.supplierOld = angular.copy(supplier);
-        $scope.supplier = angular.copy(supplier);
+        angular.copy(supplier,$scope.supplier);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/form-supplier.views.html',
             size: 'md',
             backdrop: 'static',
             scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.load();
         });
     };
 }]);

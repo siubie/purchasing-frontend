@@ -1,5 +1,13 @@
 angular.module('pesananBarang.controllers', []).controller('pesananBarangController', ['$scope', '$window', '$state', '$modal', '$filter', 'supplierFactory', 'permintaanBarangFactory', 'pesananBarangFactory', function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
+    $scope.access = {
+        create: true,
+        update: true,
+        delete: true,
+        expand: false,
+        selection: false,
+        cart: false
+    };
     $scope.fields = [{
         "name": "nomor",
         "header": "Nomor",
@@ -22,7 +30,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         "header": "Status",
         "type": "string"
     }];
-    $scope.Math = window.Math;
     $scope.sort = {
         "field": "nomor",
         "order": true
@@ -48,7 +55,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             syaratBayar: 0,
             spItemsList: []
         });
-        if (!!localStorage.permintaanBarangCart) {
+        if ($scope.cartSystem && !!localStorage.permintaanBarangCart) {
             $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);
             angular.forEach($scope.permintaanBarangCart, function(itemBarang) {
                 $scope.pesananBarang.spItemsList.push({
@@ -75,18 +82,19 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
     };
     $scope.delete = function(pesananBarang) {
-        var confirmDelete = $window.confirm('Apakah Anda Yakin?');
-        if (confirmDelete) {
+        var confirm = $window.confirm('Apakah Anda Yakin?');
+        if (confirm) {
             pesananBarang.$delete(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
                 $scope.load();
-                $scope.modalInstance.close();
             });
         }
     };
     $scope.openRead = function(pesananBarang) {
-        $scope.modalInstance.close();
         $scope.newForm = false;
-        $scope.pesananBarang = angular.copy(pesananBarang);
+        angular.copy(pesananBarang,$scope.pesananBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/detail-pesananbarang.views.html',
             size: 'lg',
@@ -95,14 +103,13 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
         $scope.modalInstance.result.then({}, function(reason) {
             if (reason == "update") {
-                $scope.openUpdate(permintaanBarang);
+                $scope.openUpdate(pesananBarang);
             }
         });
     };
     $scope.openUpdate = function(pesananBarang) {
-        $scope.modalInstance.close();
         $scope.newForm = false;
-        $scope.pesananBarang = angular.copy(pesananBarang);
+        angular.copy(pesananBarang,$scope.pesananBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
             size: 'lg',
@@ -114,8 +121,8 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
     };
     $scope.openCreatePenerimaanBarang = function(pesananBarang) {
-        $scope.modalInstance.close();
         $scope.newForm = true;
+        $scope.cartSystem = true;
         localStorage.setItem("pesananBarang", JSON.stringify(pesananBarang));
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/penerimaanbarang/views/form-penerimaanbarang.views.html',

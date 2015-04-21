@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <button class="btn btn-default btn-xs pull-right" type="button" ng-click="close()">
+    <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <h3>Detail Permintaan Barang</h3>
@@ -71,16 +71,20 @@
             </td>
         </tr>
     </table>
-    <button class="btn btn-default btn-sm" type="button" ng-click="openUpdate(permintaanBarang)" ng-if="permintaanBarang.status=='RECEIVED'" ng-disabled="permintaanBarangForm.$invalid">
+    <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update&&permintaanBarang.status=='RECEIVED'" ng-disabled="permintaanBarangForm.$invalid">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Ubah</span>
     </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="approve(permintaanBarang)" ng-if="permintaanBarang.status=='RECEIVED'">
+    <button class="btn btn-default btn-sm" type="button" ng-click="approve(permintaanBarang)" ng-if="access.update&&permintaanBarang.status=='RECEIVED'">
         <span class="glyphicon glyphicon-ok"></span>
         <span>&nbsp;Setujui</span>
     </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="reject(permintaanBarang)" ng-if="permintaanBarang.status=='RECEIVED'">
+    <button class="btn btn-default btn-sm" type="button" ng-click="reject(permintaanBarang)" ng-if="access.update&&permintaanBarang.status=='RECEIVED'">
         <span class="glyphicon glyphicon-remove"></span>
         <span>&nbsp;Tolak</span>
+    </button>
+    <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete" ng-show="!newForm">
+        <span class="glyphicon glyphicon-trash"></span>
+        <span>&nbsp;Hapus</span>
     </button>
 </div>

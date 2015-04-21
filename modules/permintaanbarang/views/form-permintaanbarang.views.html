@@ -1,7 +1,7 @@
 <div class="modal-body">
     <!-- <span ng-bind="permintaanBarang|json"></span>
     <br/> -->
-    <button type="button" class="btn btn-default btn-xs pull-right" ng-click="close()">
+    <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
@@ -53,7 +53,10 @@
                     <th></th>
                 </tr>
                 <tr ng-repeat="itemBarang in permintaanBarang.sppItemsList">
-                    <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                    <td class="text-center" ng-if="!!cartSystem" ng-bind="itemBarang.barang.nama"></td>
+                    <td class="input-group-sm" ng-if="!cartSystem">
+                        <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:$viewValue | limitTo:10" typeahead-editable="false" required/>
+                    </td>
                     <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
                     <td class="text-center input-group-sm">
                         <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" required/>
@@ -68,7 +71,7 @@
                             </button>
                         </span>
                     </td>
-                    <td class="text-center input-group-sm">
+                    <td class="input-group-sm">
                         <textarea class="form-control" ng-model="itemBarang.keterangan"></textarea>
                     </td>
                     <td class="text-center input-group-sm">
@@ -78,19 +81,27 @@
                     </td>
                 </tr>
             </table>
+            <button type="button" class="btn btn-default btn-sm" ng-if="!cartSystem" ng-click="addDetail()">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span>Tambah Item</span>
+            </button>
         </div>
         <div class="col-xs-12">
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="permintaanBarangForm.$invalid||!permintaanBarang.sppItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="approve(permintaanBarang)" ng-show="!newForm">
+            <button type="button" class="btn btn-default btn-sm" ng-click="approve(permintaanBarang)" ng-if="!newForm">
                 <span class="glyphicon glyphicon-ok"></span>
                 <span>&nbsp;Setujui</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="reject(permintaanBarang)" ng-show="!newForm">
+            <button type="button" class="btn btn-default btn-sm" ng-click="reject(permintaanBarang)" ng-if="!newForm">
                 <span class="glyphicon glyphicon-remove"></span>
                 <span>&nbsp;Tolak</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete&&!newForm" ng-show="!newForm">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;Hapus</span>
             </button>
         </div>
     </form>

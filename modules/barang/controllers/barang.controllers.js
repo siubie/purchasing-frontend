@@ -1,5 +1,13 @@
 angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, barangFactory, kategoriBarangFactory, satuanGudangFactory) {
     $scope.module = "barang";
+    $scope.access = {
+        create: true,
+        update: true,
+        delete: true,
+        expand: false,
+        selection: false,
+        cart: false
+    };
     $scope.fields = [{
         "name": "kode",
         "type": "string",
@@ -17,7 +25,6 @@ angular.module("barang.controllers", []).controller("barangController", function
         "type": "string",
         "header": "Satuan"
     }];
-    $scope.Math = window.Math;
     $scope.sort = {
         "field": "kode",
         "order": false
@@ -48,19 +55,17 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.delete = function(barang) {
-        var confirmDelete = $window.confirm("Apakah Anda Yakin?");
-        if (confirmDelete) {
+        var confirm = $window.confirm("Apakah Anda Yakin?");
+        if (confirm) {
             barang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
-                } else {
-                    $scope.load();
                 }
+                $scope.load();
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.modalInstance.close();
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
@@ -74,8 +79,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openRead = function(barang) {
-        $scope.modalInstance.close();
-        $scope.barang = barang;
+        angular.copy(barang,$scope.barang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/detail-barang.views.html",
             size: "md",
@@ -89,9 +93,8 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openUpdate = function(barang) {
-        $scope.modalInstance.close();
         $scope.newForm = false;
-        $scope.barang = barang;
+        angular.copy(barang,$scope.barang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
             size: "md",

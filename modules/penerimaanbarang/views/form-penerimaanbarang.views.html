@@ -76,7 +76,7 @@
                         <input class="form-control text-center" type="number" name="qty" ng-model="itemBarang.qty" min="1" pattern="\d+" required/>
                     </td>
                     <td class="text-center" ng-bind="itemBarang.harga"></td>
-                    <td class="input-group-sm">
+                    <td class="text-center">
                         <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
@@ -89,7 +89,7 @@
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="delete(penerimaanBarang)" ng-show="!newForm">
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete(penerimaanBarang)" ng-if="!newForm">
                 <span class="glyphicon glyphicon-trash"></span>
                 <span>&nbsp;Hapus</span>
             </button>

@@ -4,6 +4,7 @@ angular.module("fyGrid", [])
             restrict: "AE",
             templateUrl: "scripts/directives/fy-grid.html",
             controller: function($scope, $filter, $window, $modal) {
+                $scope.Math = window.Math;
                 $scope.cart = [];
                 $scope.page = {
                     current: 1,
@@ -34,13 +35,7 @@ angular.module("fyGrid", [])
                         item.selected = false;
                     });
                 };
-                // $scope.close = function() {
-                //     if ($scope.modalInstance) {
-                //         $scope.modalInstance.close();
-                //     }
-                // };
                 $scope.detailCart = function() {
-                    $scope.close();
                     $scope.modalInstance = $modal.open({
                         templateUrl: "scripts/directives/fy-grid-cart.html",
                         size: "lg",
@@ -65,36 +60,35 @@ angular.module("fyGrid", [])
                                 localStorage.setItem("wasteCart", "");
                                 break;
                         }
-                        $scope.close();
+                        if (!!$scope.modalInstance) {
+                            $scope.modalInstance.close();
+                        }
                     }
                 };
                 $scope.deleteCartItem = function(cartItem) {
-                    var confirm = $window.confirm("Apakah Anda Yakin?");
-                    if (confirm) {
-                        angular.forEach($scope.items, function(item) {
-                            switch ($scope.module) {
-                                case "katalogBarang":
-                                    if (item.kode == cartItem.barang.kode) {
+                    angular.forEach($scope.items, function(item) {
+                        switch ($scope.module) {
+                            case "katalogBarang":
+                                if (item.kode == cartItem.barang.kode) {
+                                    item.selected = false;
+                                }
+                                break;
+                            case "permintaanBarang":
+                                angular.forEach($scope.item.sppItemsList, function(item) {
+                                    if (item.barang.kode == cartItem.barang.kode) {
                                         item.selected = false;
                                     }
-                                    break;
-                                case "permintaanBarang":
-                                    angular.forEach($scope.item.sppItemsList, function(item) {
-                                        if (item.barang.kode == cartItem.barang.kode) {
-                                            item.selected = false;
-                                        }
-                                    });
-                                    break;
-                                case "waste":
-                                    if (item.kode == cartItem.kode) {
-                                        item.selected = false;
-                                    }
-                                    break;
-                            }
-                        });
-                        if (!$scope.cart.length) {
-                            $scope.close();
+                                });
+                                break;
+                            case "waste":
+                                if (item.kode == cartItem.kode) {
+                                    item.selected = false;
+                                }
+                                break;
                         }
+                    });
+                    if (!$scope.cart.length) {
+                        $scope.modalInstance.close();
                     }
                 };
                 $scope.$watch("items", function() {

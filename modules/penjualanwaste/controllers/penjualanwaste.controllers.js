@@ -1,5 +1,13 @@
-angular.module("penjualanWaste.controllers", []).controller("penjualanWasteController", function($scope, $window, $modal, $filter, penjualanWasteFactory) {
+angular.module("penjualanWaste.controllers", []).controller("penjualanWasteController", function($scope, $window, $modal, $filter, wasteFactory, penjualanWasteFactory) {
     $scope.module = "penjualanWaste";
+    $scope.access = {
+        create: true,
+        update: true,
+        delete: true,
+        expand: false,
+        selection: false,
+        cart: false
+    };
     $scope.fields = [{
         "name": "nomor",
         "type": "string",
@@ -17,12 +25,12 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         "type": "string",
         "header": "Alamat"
     }];
-    $scope.Math = window.Math;
     $scope.sort = {
         "field": "nomor",
-        "order": false
+        "order": true
     };
     $scope.load = function() {
+        $scope.wastes = wasteFactory.query();
         $scope.penjualanWastes = penjualanWasteFactory.query();
         $scope.items = $scope.penjualanWastes;
     };
@@ -33,7 +41,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
             wasteItemsList: []
         });
-        if (!!localStorage.wasteCart) {
+        if ($scope.cartSystem && !!localStorage.wasteCart) {
             $scope.wasteCart = JSON.parse(localStorage.wasteCart);
             angular.forEach($scope.wasteCart, function(itemWasteCart) {
                 $scope.penjualanWaste.wasteItemsList.push({
@@ -57,17 +65,20 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
     };
     $scope.delete = function(penjualanWaste) {
-        var confirmDelete = $window.confirm("Apakah Anda Yakin?");
-        if (confirmDelete) {
+        var confirm = $window.confirm("Apakah Anda Yakin?");
+        if (confirm) {
             penjualanWaste.$delete(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
                 $scope.load();
-                $scope.modalInstance.close();
             });
         }
     };
     $scope.openCreate = function() {
-        $scope.modalInstance.close();
         $scope.newForm = true;
+        $scope.new();
+        $scope.addDetail();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
@@ -79,8 +90,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
     };
     $scope.openRead = function(penjualanWaste) {
-        $scope.modalInstance.close();
-        $scope.penjualanWaste = penjualanWaste;
+        angular.copy(penjualanWaste,$scope.penjualanWaste);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/detail-penjualanwaste.views.html",
             size: "lg",
@@ -94,9 +104,8 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
     };
     $scope.openUpdate = function(penjualanWaste) {
-        $scope.modalInstance.close();
         $scope.newForm = false;
-        $scope.penjualanWaste = penjualanWaste;
+        angular.copy(penjualanWaste,$scope.penjualanWaste);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
@@ -105,6 +114,11 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
         $scope.modalInstance.result.then(function() {
             $scope.load();
+        });
+    };
+    $scope.addDetail = function(index) {
+        $scope.penjualanWaste.wasteItemsList.push({
+            jumlah: 1
         });
     };
     $scope.removeDetail = function(index) {

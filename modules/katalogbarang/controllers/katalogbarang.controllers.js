@@ -1,5 +1,13 @@
 angular.module("katalogBarang.controllers", []).controller("katalogBarangController", function($scope, $window, $modal, $filter, katalogBarangFactory, barangFactory, supplierFactory) {
     $scope.module = "katalogBarang";
+    $scope.access = {
+        create: true,
+        update: true,
+        delete: true,
+        expand: true,
+        selection: true,
+        cart: true
+    };
     $scope.fields = [{
         "name": "kode",
         "type": "string",
@@ -34,7 +42,6 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         "type": "string",
         "header": "Satuan",
     }];
-    $scope.Math = window.Math;
     $scope.sort = {
         "field": "kode",
         "order": false,
@@ -70,11 +77,13 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.delete = function(katalogBarang) {
-        var confirmDelete = $window.confirm("Apakah Anda Yakin?");
-        if (confirmDelete) {
+        var confirm = $window.confirm("Apakah Anda Yakin?");
+        if (confirm) {
             katalogBarang.$delete(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
                 $scope.load();
-                $scope.modalInstance.close();
             });
         }
     };
@@ -92,7 +101,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.openRead = function(katalogBarang) {
-        $scope.katalogBarang = katalogBarang;
+        angular.copy(katalogBarang,$scope.katalogBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/katalogbarang/views/detail-katalogbarang.views.html",
             size: "lg",
@@ -107,7 +116,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
     };
     $scope.openUpdate = function(katalogBarang) {
         $scope.newForm = false;
-        $scope.katalogBarang = katalogBarang;
+        angular.copy(katalogBarang,$scope.katalogBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/katalogbarang/views/form-katalogbarang.views.html",
             size: "lg",
@@ -119,7 +128,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.openCreatePermintaanBarang = function() {
-        $scope.modalInstance.close();
+        $scope.cartSystem = true;
         $scope.newForm = true;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
@@ -128,9 +137,8 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
             controller: "permintaanBarangController",
             scope: $scope
         });
-        console.log($scope.modalInstance);
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.uncheckAll();
         });
     };
 });
