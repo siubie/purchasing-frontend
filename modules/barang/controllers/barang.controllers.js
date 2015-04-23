@@ -29,13 +29,17 @@ angular.module("barang.controllers", []).controller("barangController", function
         "field": "kode",
         "order": false
     };
-    $scope.load = function() {
+    $scope.query = function() {
         $scope.kategoriBarangs = kategoriBarangFactory.query();
         $scope.satuanGudangs = satuanGudangFactory.query();
-        $scope.barangs = barangFactory.query();
+        $scope.barangs = barangFactory.query(function() {
+            angular.forEach($scope.barangs, function(barang) {
+                barang.editable = true;
+            });
+        });
         $scope.items = $scope.barangs;
     };
-    $scope.load();
+    $scope.query();
     $scope.new = function() {
         $scope.barang = new barangFactory({
             kode: "BRG" + new Date().getTime()
@@ -61,7 +65,7 @@ angular.module("barang.controllers", []).controller("barangController", function
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
@@ -75,11 +79,11 @@ angular.module("barang.controllers", []).controller("barangController", function
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openRead = function(barang) {
-        angular.copy(barang,$scope.barang);
+        angular.copy(barang, $scope.barang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/detail-barang.views.html",
             size: "md",
@@ -94,7 +98,7 @@ angular.module("barang.controllers", []).controller("barangController", function
     };
     $scope.openUpdate = function(barang) {
         $scope.newForm = false;
-        angular.copy(barang,$scope.barang);
+        angular.copy(barang, $scope.barang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
             size: "md",
@@ -102,7 +106,7 @@ angular.module("barang.controllers", []).controller("barangController", function
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
 });

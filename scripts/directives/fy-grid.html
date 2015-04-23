@@ -1,4 +1,9 @@
 <div class="form-inline">
+    <!-- <span ng-repeat="item in cart">
+        <span ng-bind="item|json"></span>
+        <br/>
+        <br/>
+    </span> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=25" ng-change="page.current=1">
             <option value="5">5</option>
@@ -12,7 +17,7 @@
         <span class="glyphicon glyphicon-plus"></span>
         <span>&nbsp;Buat</span>
     </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="load()">
+    <button class="btn btn-default btn-sm" type="button" ng-click="query()">
         <span class="glyphicon glyphicon-refresh"></span>
         <span>&nbsp;Refresh</span>
     </button>
@@ -23,7 +28,7 @@
             </span>
             <button type="button" class="form-control btn btn-default dropdown-toggle" ng-disabled="!cart.length" dropdown-toggle>
                 <span ng-bind="cart.length"></span>
-                <span>Barang&nbsp;</span>
+                <span>Item&nbsp;</span>
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
@@ -137,17 +142,17 @@
                     <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
                         <span class="glyphicon glyphicon-zoom-in"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="access.update">
+                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="access.update&&item.editable">
                         <span class="glyphicon glyphicon-edit"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete">
+                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete&&item.editable">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                    <span ng-if="module=='permintaanBarang'&&item.status=='RECEIVED'">
-                        <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approve(item)">
+                    <span ng-if="module=='permintaanBarang'&&item.editable">
+                        <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveAllItem(item)">
                             <span class="glyphicon glyphicon-ok"></span>
                         </button>
-                        <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(item)">
+                        <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="rejectAllItem(item)">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </span>
@@ -200,15 +205,15 @@
                             <th class="text-center">Status</th>
                             <th class="text-center">Sisa</th>
                         </tr>
-                        <tr ng-repeat="detailBarang in item.sppItemsList">
+                        <tr ng-repeat="itemBarang in item.sppItemsList">
                             <td class="text-center" ng-if="item.status=='APPROVED'">
-                                <input type="checkbox" ng-model="detailBarang.selected" ng-change="!detailBarang.selected?item.selected=false:null">
+                                <input type="checkbox" ng-model="itemBarang.selected" ng-if="itemBarang.status=='APPROVED'" ng-change="!itemBarang.selected?item.selected=false:null">
                             </td>
-                            <td class="text-center" ng-bind="detailBarang.barang.nama"></td>
-                            <td class="text-center" ng-bind="detailBarang.jumlah"></td>
-                            <td class="text-center" ng-bind="detailBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
-                            <td class="text-center" ng-bind="detailBarang.status"></td>
-                            <td class="text-center" ng-bind="detailBarang.sisa"></td>
+                            <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                            <td class="text-center" ng-bind="itemBarang.jumlah"></td>
+                            <td class="text-center" ng-bind="itemBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
+                            <td class="text-center" ng-bind="itemBarang.status"></td>
+                            <td class="text-center" ng-bind="itemBarang.sisa"></td>
                         </tr>
                     </table>
                 </td>

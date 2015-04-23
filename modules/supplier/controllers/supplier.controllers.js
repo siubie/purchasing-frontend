@@ -29,11 +29,15 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         "field": "kode",
         "order": false
     };
-    $scope.load = function() {
-        $scope.suppliers = supplierFactory.query();
+    $scope.query = function() {
+        $scope.suppliers = supplierFactory.query(function() {
+            angular.forEach($scope.suppliers, function(supplier) {
+                supplier.editable = true;
+            });
+        });
         $scope.items = $scope.suppliers;
     };
-    $scope.load();
+    $scope.query();
     $scope.new = function() {
         $scope.supplier = new supplierFactory({
             kode: "SUP" + new Date().getTime()
@@ -59,7 +63,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
@@ -73,11 +77,11 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openRead = function(supplier) {
-        angular.copy(supplier,$scope.supplier);
+        angular.copy(supplier, $scope.supplier);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/detail-supplier.views.html',
             size: 'md',
@@ -92,7 +96,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
     };
     $scope.openUpdate = function(supplier) {
         $scope.newForm = false;
-        angular.copy(supplier,$scope.supplier);
+        angular.copy(supplier, $scope.supplier);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/form-supplier.views.html',
             size: 'md',
@@ -100,7 +104,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
 }]);

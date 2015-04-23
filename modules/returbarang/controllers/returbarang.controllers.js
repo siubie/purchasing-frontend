@@ -1,7 +1,7 @@
 angular.module("returBarang.controllers", []).controller("returBarangController", function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, returBarangFactory) {
     $scope.module = "returBarang";
     $scope.access = {
-        create: true,
+        create: false,
         update: true,
         delete: true,
         expand: false,
@@ -39,7 +39,15 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         "field": "nomor",
         "order": true
     };
-    $scope.newForm = true;
+    $scope.query = function() {
+        $scope.returBarangs = returBarangFactory.query(function() {
+            angular.forEach($scope.returBarangs, function(returBarang) {
+                returBarang.editable = true;
+            });
+        });
+        $scope.items = $scope.returBarangs;
+    };
+    $scope.query();
     $scope.new = function() {
         if (!!localStorage.penerimaanBarang) {
             penerimaanBarang = JSON.parse(localStorage.penerimaanBarang);
@@ -70,11 +78,6 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         }
     };
     $scope.new();
-    $scope.load = function() {
-        $scope.returBarangs = returBarangFactory.query();
-        $scope.items = $scope.returBarangs;
-    };
-    $scope.load();
     $scope.create = function() {
         console.log("returBarang : ", JSON.stringify($scope.returBarang));
         $scope.returBarang.$save(function() {
@@ -94,13 +97,13 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
     $scope.openRead = function(returBarang) {
         $scope.newForm = false;
-        angular.copy(returBarang,$scope.returBarang);
+        angular.copy(returBarang, $scope.returBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/returbarang/views/detail-returbarang.views.html",
             size: "lg",
@@ -115,7 +118,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
     };
     $scope.openUpdate = function(returBarang) {
         $scope.newForm = false;
-        angular.copy(returBarang,$scope.returBarang);
+        angular.copy(returBarang, $scope.returBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/returbarang/views/form-returbarang.views.html",
             size: "lg",

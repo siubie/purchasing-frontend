@@ -29,12 +29,16 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         "field": "nomor",
         "order": true
     };
-    $scope.load = function() {
+    $scope.query = function() {
         $scope.wastes = wasteFactory.query();
-        $scope.penjualanWastes = penjualanWasteFactory.query();
+        $scope.penjualanWastes = penjualanWasteFactory.query(function() {
+            angular.forEach($scope.penjualanWastes, function(penjualanWaste) {
+                penjualanWaste.editable = true;
+            });
+        });
         $scope.items = $scope.penjualanWastes;
     };
-    $scope.load();
+    $scope.query();
     $scope.new = function() {
         $scope.penjualanWaste = new penjualanWasteFactory({
             nomor: "PW" + new Date().getTime(),
@@ -71,7 +75,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
@@ -86,11 +90,11 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openRead = function(penjualanWaste) {
-        angular.copy(penjualanWaste,$scope.penjualanWaste);
+        angular.copy(penjualanWaste, $scope.penjualanWaste);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/detail-penjualanwaste.views.html",
             size: "lg",
@@ -105,7 +109,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
     };
     $scope.openUpdate = function(penjualanWaste) {
         $scope.newForm = false;
-        angular.copy(penjualanWaste,$scope.penjualanWaste);
+        angular.copy(penjualanWaste, $scope.penjualanWaste);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
@@ -113,7 +117,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.addDetail = function(index) {

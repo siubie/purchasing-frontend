@@ -71,11 +71,15 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.new();
-    $scope.load = function() {
-        $scope.penerimaanBarangs = penerimaanBarangFactory.query();
+    $scope.query = function() {
+        $scope.penerimaanBarangs = penerimaanBarangFactory.query(function() {
+            angular.forEach($scope.penerimaanBarangs, function(penerimaanBarang) {
+                penerimaanBarang.editable = true;
+            });
+        });
         $scope.items = $scope.penerimaanBarangs;
     };
-    $scope.load();
+    $scope.query();
     $scope.create = function() {
         console.log("penerimaanBarang : ", JSON.stringify($scope.penerimaanBarang));
         $scope.penerimaanBarang.$save(function() {
@@ -95,13 +99,13 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
     $scope.openRead = function(penerimaanBarang) {
         $scope.newForm = false;
-        angular.copy(penerimaanBarang,$scope.penerimaanBarang);
+        angular.copy(penerimaanBarang, $scope.penerimaanBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penerimaanbarang/views/detail-penerimaanbarang.views.html",
             size: "lg",
@@ -116,7 +120,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     };
     $scope.openUpdate = function(penerimaanBarang) {
         $scope.newForm = false;
-        angular.copy(penerimaanBarang,$scope.penerimaanBarang);
+        angular.copy(penerimaanBarang, $scope.penerimaanBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penerimaanbarang/views/form-penerimaanbarang.views.html",
             size: "lg",
@@ -124,7 +128,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openCreateReturBarang = function(penerimaanBarang) {

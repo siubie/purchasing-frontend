@@ -41,45 +41,59 @@
         </div>
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
-                <tr>
-                    <th class="text-center" colspan=6>Item Barang</th>
-                </tr>
-                <tr>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">Satuan</th>
-                    <th class="text-center">Jumlah</th>
-                    <th class="text-center">Tanggal Butuh</th>
-                    <th class="text-center">Keterangan</th>
-                    <th></th>
-                </tr>
-                <tr ng-repeat="itemBarang in permintaanBarang.sppItemsList">
-                    <td class="text-center" ng-if="!!cartSystem" ng-bind="itemBarang.barang.nama"></td>
-                    <td class="input-group-sm" ng-if="!cartSystem">
-                        <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:$viewValue | limitTo:10" typeahead-editable="false" required/>
-                    </td>
-                    <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
-                    <td class="text-center input-group-sm">
-                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" required/>
-                    </td>
-                    <td class="text-center">
-                        <span ng-bind="itemBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
-                        <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode+leadTime" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
-                        </span>
-                        <span>
-                            <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
-                                <span class="glyphicon glyphicon-calendar"></span>
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan=6>Item Barang</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Nama</th>
+                        <th class="text-center">Satuan</th>
+                        <th class="text-center">Jumlah</th>
+                        <th class="text-center">Tanggal Butuh</th>
+                        <th class="text-center">Keterangan</th>
+                        <th class="text-center">Pilihan</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="itemBarang in permintaanBarang.sppItemsList">
+                    <tr ng-if="itemBarang.editable">
+                        <td class="text-center" ng-if="!!cartSystem" ng-bind="itemBarang.barang.nama"></td>
+                        <td class="input-group-sm" ng-if="!cartSystem">
+                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:$viewValue | limitTo:10 | orderBy:'barang.nama':'false'" typeahead-editable="false"
+                            required/>
+                        </td>
+                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                        <td class="text-center input-group-sm">
+                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" required/>
+                        </td>
+                        <td class="text-center">
+                            <span ng-bind="itemBarang.tanggalButuh|date:'dd MMMM yyyy'"></span>
+                            <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode+leadTime" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                            </span>
+                            <span>
+                                <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </button>
+                            </span>
+                        </td>
+                        <td class="input-group-sm">
+                            <textarea class="form-control" ng-model="itemBarang.keterangan"></textarea>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="permintaanBarang.sppItemsList.length<=1">
+                                <span class="glyphicon glyphicon-trash"></span>
                             </button>
-                        </span>
-                    </td>
-                    <td class="input-group-sm">
-                        <textarea class="form-control" ng-model="itemBarang.keterangan"></textarea>
-                    </td>
-                    <td class="text-center input-group-sm">
-                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr ng-if="!itemBarang.editable">
+                        <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                        <td class="text-center" ng-bind="itemBarang.barang.jumlah"></td>
+                        <td class="text-center" ng-bind="itemBarang.tanggalButuh|date:'dd MMMM yyyy'"></td>
+                        <td class="text-center" ng-bind="itemBarang.keterangan"></td>
+                        <td></td>
+                    </tr>
+                    </tr>
+                </tbody>
             </table>
             <button type="button" class="btn btn-default btn-sm" ng-if="!cartSystem" ng-click="addDetail()">
                 <span class="glyphicon glyphicon-plus"></span>
@@ -90,14 +104,6 @@
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="permintaanBarangForm.$invalid||!permintaanBarang.sppItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
-            </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="approve(permintaanBarang)" ng-if="!newForm">
-                <span class="glyphicon glyphicon-ok"></span>
-                <span>&nbsp;Setujui</span>
-            </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="reject(permintaanBarang)" ng-if="!newForm">
-                <span class="glyphicon glyphicon-remove"></span>
-                <span>&nbsp;Tolak</span>
             </button>
             <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete&&!newForm" ng-show="!newForm">
                 <span class="glyphicon glyphicon-trash"></span>

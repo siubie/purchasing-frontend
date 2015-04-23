@@ -1,7 +1,7 @@
 angular.module('pesananBarang.controllers', []).controller('pesananBarangController', ['$scope', '$window', '$state', '$modal', '$filter', 'supplierFactory', 'permintaanBarangFactory', 'pesananBarangFactory', function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
-        create: true,
+        create: false,
         update: true,
         delete: true,
         expand: false,
@@ -35,13 +35,17 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         "order": true
     };
     $scope.newForm = true;
-    $scope.load = function() {
+    $scope.query = function() {
         $scope.suppliers = supplierFactory.query();
         $scope.permintaanBarangs = permintaanBarangFactory.query();
-        $scope.pesananBarangs = pesananBarangFactory.query();
+        $scope.pesananBarangs = pesananBarangFactory.query(function() {
+            angular.forEach($scope.pesananBarangs, function(pesananBarang) {
+                pesananBarang.editable = true;
+            });
+        });
         $scope.items = $scope.pesananBarangs;
     };
-    $scope.load();
+    $scope.query();
     $scope.new = function() {
         $scope.pesananBarang = new pesananBarangFactory({
             nomor: "SP" + new Date().getTime(),
@@ -88,13 +92,13 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
     $scope.openRead = function(pesananBarang) {
         $scope.newForm = false;
-        angular.copy(pesananBarang,$scope.pesananBarang);
+        angular.copy(pesananBarang, $scope.pesananBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/detail-pesananbarang.views.html',
             size: 'lg',
@@ -109,7 +113,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openUpdate = function(pesananBarang) {
         $scope.newForm = false;
-        angular.copy(pesananBarang,$scope.pesananBarang);
+        angular.copy(pesananBarang, $scope.pesananBarang);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
             size: 'lg',
@@ -117,7 +121,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openCreatePenerimaanBarang = function(pesananBarang) {

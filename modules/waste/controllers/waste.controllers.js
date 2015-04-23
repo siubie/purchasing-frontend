@@ -38,12 +38,16 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         "field": "kode",
         "order": false
     };
-    $scope.load = function() {
-        $scope.wastes = wasteFactory.query();
+    $scope.query = function() {
+        $scope.wastes = wasteFactory.query(function() {
+            angular.forEach($scope.wastes, function(waste) {
+                waste.editable = true;
+            });
+        });
         $scope.satuanGudangs = satuanGudangFactory.query();
         $scope.items = $scope.wastes;
     };
-    $scope.load();
+    $scope.query();
     if (!!localStorage.wasteCart) {
         $scope.cart = JSON.parse(localStorage.wasteCart);
     }
@@ -73,7 +77,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
-                $scope.load();
+                $scope.query();
             });
         }
     };
@@ -87,11 +91,11 @@ angular.module("waste.controllers", []).controller("wasteController", function($
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openRead = function(waste) {
-        angular.copy(waste,$scope.waste);
+        angular.copy(waste, $scope.waste);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/detail-waste.views.html",
             size: "lg",
@@ -105,7 +109,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openUpdate = function(waste) {
-        angular.copy(waste,$scope.waste);
+        angular.copy(waste, $scope.waste);
         $scope.newForm = false;
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/form-waste.views.html",
@@ -114,7 +118,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
             scope: $scope,
         });
         $scope.modalInstance.result.then(function() {
-            $scope.load();
+            $scope.query();
         });
     };
     $scope.openCreatePenjualanWaste = function() {

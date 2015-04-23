@@ -33,7 +33,7 @@
                     <th class="text-center">Satuan</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Harga</th>
-                    <th></th>
+                    <th class="text-center">Pilihan</th>
                 </tr>
                 <tr ng-repeat="itemWaste in penjualanWaste.wasteItemsList">
                     <td class="text-center" ng-if="cartSystem" ng-bind="itemWaste.waste.nama"></td>
@@ -48,7 +48,7 @@
                         <input class="form-control text-center" type="number" name="harga" ng-model="itemWaste.harga" min="1" required/>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="penjualanWaste.wasteItemsList.length<=1">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </td>

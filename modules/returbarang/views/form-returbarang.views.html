@@ -64,7 +64,7 @@
                     <th class="text-center">Jumlah Retur</th>
                     <th class="text-center">Harga</th>
                     <th class="text-center">Alasan</th>
-                    <th></th>
+                    <th class="text-center">Pilihan</th>
                 </tr>
                 <tr ng-repeat="itemBarang in returBarang.returItemsList">
                     <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
@@ -77,8 +77,8 @@
                     <td class="input-group-sm">
                         <textarea class="form-control" id="alasan" name="alasan" placeholder="Masukkan Alasan.." ng-model="itemBarang.alasan"></textarea>
                     </td>
-                    <td class="input-group-sm">
-                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)">
+                    <td class="text-center">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="returBarang.returItemsList.length<=1">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </td>
