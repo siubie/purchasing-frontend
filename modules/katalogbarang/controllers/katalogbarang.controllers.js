@@ -62,6 +62,14 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         }
     };
     $scope.query();
+    $scope.get = function(id1, id2) {
+        $scope.katalogBarang = katalogBarangFactory.get({
+            id1: id1,
+            id2: id2
+        }, function() {
+            $scope.katalogBarang.editable = true;
+        });
+    };
     if (!!localStorage.katalogBarangCart) {
         $scope.cart = JSON.parse(localStorage.katalogBarangCart);
     }
@@ -108,7 +116,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.openRead = function(katalogBarang) {
-        angular.copy(katalogBarang, $scope.katalogBarang);
+        $scope.get(katalogBarang.barang.kode, katalogBarang.supplier.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/katalogbarang/views/detail-katalogbarang.views.html",
             size: "lg",
@@ -123,7 +131,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
     };
     $scope.openUpdate = function(katalogBarang) {
         $scope.newForm = false;
-        angular.copy(katalogBarang, $scope.katalogBarang);
+        $scope.get(katalogBarang.barang.kode, katalogBarang.supplier.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/katalogbarang/views/form-katalogbarang.views.html",
             size: "lg",

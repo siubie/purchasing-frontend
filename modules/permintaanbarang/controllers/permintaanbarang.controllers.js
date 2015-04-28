@@ -94,9 +94,9 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         }
     };
     $scope.query();
-    $scope.get = function(nomor) {
+    $scope.get = function(id) {
         $scope.permintaanBarang = permintaanBarangFactory.get({
-            id: nomor
+            id: id
         }, function() {
             switch ($scope.permintaanBarang.status) {
                 case "APPROVED":
@@ -262,7 +262,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         });
     };
     $scope.openRead = function(permintaanBarang) {
-        angular.copy(permintaanBarang, $scope.permintaanBarang);
+        $scope.get(permintaanBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/permintaanbarang/views/detail-permintaanbarang.views.html",
             size: "lg",
@@ -277,7 +277,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
     };
     $scope.openUpdate = function(permintaanBarang) {
         $scope.newForm = false;
-        angular.copy(permintaanBarang, $scope.permintaanBarang);
+        $scope.get(permintaanBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
             size: "lg",
@@ -300,28 +300,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
     $scope.removeDetail = function(index) {
         $scope.permintaanBarang.sppItemsList.splice(index, 1);
     };
-    // $scope.addToCart = function(selected, permintaanBarang, itemBarang) {
-    //     $log.debug(selected);
-    //     $log.debug(permintaanBarang);
-    //     $log.debug(itemBarang);
-    //     if (permintaanBarang.status == "APPROVED" && itemBarang.status == "APPROVED") {
-    //         if (selected) {
-    //             $scope.cart.push({
-    //                 spp: permintaanBarang.nomor,
-    //                 barang: itemBarang.barang,
-    //                 qty: itemBarang.jumlah,
-    //                 harga: itemBarang.harga
-    //             });
-    //         } else {
-    //             angular.forEach($scope.cart, function(itemCart, i) {
-    //                 if (itemCart.spp == permintaanBarang.nomor && itemCart.barang.kode == itemBarang.barang.kode) {
-    //                     $scope.cart.splice(i, 1);
-    //                 }
-    //             });
-    //         }
-    //     }
-    //     $log.debug($scope.cart);
-    // };
     $scope.openCalendar = function($event) {
         $event.preventDefault();
         $event.stopPropagation();

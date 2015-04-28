@@ -48,6 +48,13 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         $scope.items = $scope.returBarangs;
     };
     $scope.query();
+    $scope.get = function(id) {
+        $scope.returBarang = returBarangFactory.get({
+            id: id
+        }, function() {
+            $scope.returBarang.editable = true;
+        });
+    };
     $scope.new = function() {
         if (!!localStorage.penerimaanBarang) {
             penerimaanBarang = JSON.parse(localStorage.penerimaanBarang);
@@ -102,8 +109,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         }
     };
     $scope.openRead = function(returBarang) {
-        $scope.newForm = false;
-        angular.copy(returBarang, $scope.returBarang);
+        $scope.get(returBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/returbarang/views/detail-returbarang.views.html",
             size: "lg",
@@ -118,7 +124,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
     };
     $scope.openUpdate = function(returBarang) {
         $scope.newForm = false;
-        angular.copy(returBarang, $scope.returBarang);
+        $scope.get(returBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/returbarang/views/form-returbarang.views.html",
             size: "lg",

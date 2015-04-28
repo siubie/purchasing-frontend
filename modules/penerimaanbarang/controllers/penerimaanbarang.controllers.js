@@ -43,6 +43,22 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     $scope.opened = {
         "tanggalDatang": false
     };
+    $scope.query = function() {
+        $scope.penerimaanBarangs = penerimaanBarangFactory.query(function() {
+            angular.forEach($scope.penerimaanBarangs, function(penerimaanBarang) {
+                penerimaanBarang.editable = true;
+            });
+        });
+        $scope.items = $scope.penerimaanBarangs;
+    };
+    $scope.query();
+    $scope.get = function(id) {
+        $scope.penerimaanBarang = penerimaanBarangFactory.get({
+            id: id
+        }, function() {
+            $scope.penerimaanBarang.editable = true;
+        });
+    };
     $scope.new = function() {
         if (!!localStorage.pesananBarang) {
             pesananBarang = JSON.parse(localStorage.pesananBarang);
@@ -71,15 +87,6 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.new();
-    $scope.query = function() {
-        $scope.penerimaanBarangs = penerimaanBarangFactory.query(function() {
-            angular.forEach($scope.penerimaanBarangs, function(penerimaanBarang) {
-                penerimaanBarang.editable = true;
-            });
-        });
-        $scope.items = $scope.penerimaanBarangs;
-    };
-    $scope.query();
     $scope.create = function() {
         console.log("penerimaanBarang : ", JSON.stringify($scope.penerimaanBarang));
         $scope.penerimaanBarang.$save(function() {
@@ -104,8 +111,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.openRead = function(penerimaanBarang) {
-        $scope.newForm = false;
-        angular.copy(penerimaanBarang, $scope.penerimaanBarang);
+        $scope.get(penerimaanBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penerimaanbarang/views/detail-penerimaanbarang.views.html",
             size: "lg",
@@ -120,7 +126,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     };
     $scope.openUpdate = function(penerimaanBarang) {
         $scope.newForm = false;
-        angular.copy(penerimaanBarang, $scope.penerimaanBarang);
+        $scope.get(penerimaanBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penerimaanbarang/views/form-penerimaanbarang.views.html",
             size: "lg",

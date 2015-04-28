@@ -1,4 +1,4 @@
-angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, barangFactory, kategoriBarangFactory, satuanGudangFactory) {
+angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, $log, barangFactory, kategoriBarangFactory, satuanGudangFactory) {
     $scope.module = "barang";
     $scope.access = {
         create: true,
@@ -40,6 +40,13 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.items = $scope.barangs;
     };
     $scope.query();
+    $scope.get = function(id) {
+        $scope.barang = barangFactory.get({
+            id: id
+        }, function() {
+            $scope.barang.editable = true;
+        });
+    };
     $scope.new = function() {
         $scope.barang = new barangFactory({
             kode: "BRG" + new Date().getTime()
@@ -83,7 +90,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openRead = function(barang) {
-        angular.copy(barang, $scope.barang);
+        $scope.get(barang.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/detail-barang.views.html",
             size: "md",
@@ -98,7 +105,7 @@ angular.module("barang.controllers", []).controller("barangController", function
     };
     $scope.openUpdate = function(barang) {
         $scope.newForm = false;
-        angular.copy(barang, $scope.barang);
+        $scope.get(barang.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
             size: "md",

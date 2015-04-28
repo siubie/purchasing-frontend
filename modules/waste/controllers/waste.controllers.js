@@ -48,6 +48,13 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         $scope.items = $scope.wastes;
     };
     $scope.query();
+    $scope.get = function(id) {
+        $scope.waste = wasteFactory.get({
+            id: id
+        }, function() {
+            $scope.waste.editable = true;
+        });
+    };
     if (!!localStorage.wasteCart) {
         $scope.cart = JSON.parse(localStorage.wasteCart);
     }
@@ -95,7 +102,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openRead = function(waste) {
-        angular.copy(waste, $scope.waste);
+        $scope.get(waste.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/detail-waste.views.html",
             size: "lg",
@@ -109,8 +116,8 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.openUpdate = function(waste) {
-        angular.copy(waste, $scope.waste);
         $scope.newForm = false;
+        $scope.get(waste.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/waste/views/form-waste.views.html",
             size: "lg",

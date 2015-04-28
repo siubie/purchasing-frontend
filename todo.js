@@ -6,16 +6,18 @@ var todo = new Object({
         "cek filter periode jalan lebih dari 1 x di 1 data"
     ],
     feature: [
-        "tanggal butuh ditambah lead time",
         "pengesahan di SP ketika harga berubah",
-        "tunjukkan konfirmasi yang berisi detial object sebelum CUD",
+        "tunjukkan konfirmasi yang berisi detail object sebelum CUD",
         "implementasi toastJS",
         "auto expand setelah proses",
         "uji refresh data ketika data difilter",
-        "tambahkan validasi editable di semua modul"
+        "tambahkan validasi editable di semua modul",
+        "form input master barang berdasarkan spesifikasi setiap kategori",
+        "validasi lead time tanggal 25 ditambah lead time",
+        "filter supplier saat membuat SP",
+        "kurs SP ambil dari internet"
     ],
     bisnis: [
-        "buat SP dari screen SP",
-        "status untuk SPP yang itemnya ada yang disetujui dan ada yang ditolak"
+        "buat SP dari screen SP"
     ]
 });

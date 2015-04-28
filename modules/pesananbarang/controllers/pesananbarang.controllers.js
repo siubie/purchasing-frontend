@@ -46,6 +46,13 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.items = $scope.pesananBarangs;
     };
     $scope.query();
+    $scope.get = function(id) {
+        $scope.pesananBarang = pesananBarangFactory.get({
+            id: id
+        }, function() {
+            $scope.pesananBarang.editable = true;
+        });
+    };
     $scope.new = function() {
         $scope.pesananBarang = new pesananBarangFactory({
             nomor: "SP" + new Date().getTime(),
@@ -98,7 +105,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openRead = function(pesananBarang) {
         $scope.newForm = false;
-        angular.copy(pesananBarang, $scope.pesananBarang);
+        $scope.get(pesananBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/detail-pesananbarang.views.html',
             size: 'lg',
@@ -113,7 +120,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openUpdate = function(pesananBarang) {
         $scope.newForm = false;
-        angular.copy(pesananBarang, $scope.pesananBarang);
+        $scope.get(pesananBarang.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
             size: 'lg',

@@ -38,6 +38,13 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         $scope.items = $scope.suppliers;
     };
     $scope.query();
+    $scope.get = function(id) {
+        $scope.supplier = supplierFactory.get({
+            id: id
+        }, function() {
+            $scope.supplier.editable = true;
+        });
+    };
     $scope.new = function() {
         $scope.supplier = new supplierFactory({
             kode: "SUP" + new Date().getTime()
@@ -81,7 +88,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         });
     };
     $scope.openRead = function(supplier) {
-        angular.copy(supplier, $scope.supplier);
+        $scope.get(supplier.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/detail-supplier.views.html',
             size: 'md',
@@ -96,7 +103,7 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
     };
     $scope.openUpdate = function(supplier) {
         $scope.newForm = false;
-        angular.copy(supplier, $scope.supplier);
+        $scope.get(supplier.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: 'modules/supplier/views/form-supplier.views.html',
             size: 'md',

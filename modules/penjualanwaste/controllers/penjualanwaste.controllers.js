@@ -39,6 +39,13 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         $scope.items = $scope.penjualanWastes;
     };
     $scope.query();
+    $scope.get = function(id) {
+        $scope.penjualanWaste = penjualanWasteFactory.get({
+            id: id
+        }, function() {
+            $scope.penjualanWaste.editable = true;
+        });
+    };
     $scope.new = function() {
         $scope.penjualanWaste = new penjualanWasteFactory({
             nomor: "PW" + new Date().getTime(),
@@ -94,7 +101,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
     };
     $scope.openRead = function(penjualanWaste) {
-        angular.copy(penjualanWaste, $scope.penjualanWaste);
+        $scope.get(penjualanWaste.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/detail-penjualanwaste.views.html",
             size: "lg",
@@ -109,7 +116,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
     };
     $scope.openUpdate = function(penjualanWaste) {
         $scope.newForm = false;
-        angular.copy(penjualanWaste, $scope.penjualanWaste);
+        $scope.get(penjualanWaste.nomor);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
