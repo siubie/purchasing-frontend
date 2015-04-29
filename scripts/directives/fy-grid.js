@@ -62,6 +62,20 @@ angular.module("fyGrid", [])
                         backdrop: "static",
                         scope: $scope
                     });
+                    $scope.modalInstance.result.then({}, function(reason) {
+                        switch (reason) {
+                            case "createPermintaanBarang":
+                                $scope.openCreatePermintaanBarang();
+                                break;
+                            case "createPesananBarang":
+                                $scope.openCreatePesananBarang();
+                                break;
+                            case "createPenjualanWaste":
+                                $scope.openCreatePenjualanWaste();
+                                break;
+                        }
+
+                    });
                 };
                 $scope.clearCart = function() {
                     var confirm = $window.confirm("Apakah Anda Yakin?");
@@ -160,7 +174,7 @@ angular.module("fyGrid", [])
                                             $scope.cart.push({
                                                 spp: item.nomor,
                                                 barang: itemBarang.barang,
-                                                qty: itemBarang.jumlah,
+                                                qty: itemBarang.sisa,
                                                 harga: itemBarang.harga
                                             });
                                         }

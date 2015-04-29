@@ -47,7 +47,8 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
     };
     $scope.new = function() {
         $scope.supplier = new supplierFactory({
-            kode: "SUP" + new Date().getTime()
+            kode: "SUP" + new Date().getTime(),
+            editable: true
         });
     };
     $scope.new();

@@ -61,8 +61,8 @@ angular.module("waste.controllers", []).controller("wasteController", function($
     $scope.new = function() {
         $scope.waste = new wasteFactory({
             kode: "WST" + new Date().getTime(),
+            editable: true
         });
-        console.log("new waste");
     };
     $scope.new();
     $scope.create = function() {

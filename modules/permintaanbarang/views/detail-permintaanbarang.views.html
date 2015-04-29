@@ -81,20 +81,22 @@
             </td>
         </tr>
     </table>
-    <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update&&permintaanBarang.editable">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
-        <span>&nbsp;Ubah</span>
-    </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="approveAllItem(permintaanBarang)" ng-if="access.update&&permintaanBarang.editable">
-        <span class="glyphicon glyphicon-ok"></span>
-        <span>&nbsp;Setujui</span>
-    </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="rejectAllItem(permintaanBarang)" ng-if="access.update&&permintaanBarang.editable">
-        <span class="glyphicon glyphicon-remove"></span>
-        <span>&nbsp;Tolak</span>
-    </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete&&permintaanBarang.editable">
-        <span class="glyphicon glyphicon-trash"></span>
-        <span>&nbsp;Hapus</span>
-    </button>
+    <div ng-if="permintaanBarang.editable">
+        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            <span>&nbsp;Ubah</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="approveAllItem(permintaanBarang)" ng-if="access.update">
+            <span class="glyphicon glyphicon-ok"></span>
+            <span>&nbsp;Setujui</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="rejectAllItem(permintaanBarang)" ng-if="access.update">
+            <span class="glyphicon glyphicon-remove"></span>
+            <span>&nbsp;Tolak</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete">
+            <span class="glyphicon glyphicon-trash"></span>
+            <span>&nbsp;Hapus</span>
+        </button>
+    </div>
 </div>

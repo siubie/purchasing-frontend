@@ -96,12 +96,14 @@
             </td>
         </tr>
     </table>
-    <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="penerimaanBarangForm.$invalid">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
-        <span>&nbsp;Ubah</span>
-    </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="delete(penerimaanBarang)" ng-if="access.delete" ng-show="!newForm">
-        <span class="glyphicon glyphicon-trash"></span>
-        <span>&nbsp;Hapus</span>
-    </button>
+    <div ng-if="penerimaanBarang.editable">
+        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="penerimaanBarangForm.$invalid">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            <span>&nbsp;Ubah</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="delete(penerimaanBarang)" ng-if="access.delete" ng-show="!newForm">
+            <span class="glyphicon glyphicon-trash"></span>
+            <span>&nbsp;Hapus</span>
+        </button>
+    </div>
 </div>

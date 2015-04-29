@@ -23,12 +23,14 @@
             <td ng-bind="waste.satuan"></td>
         </tr>
     </table>
-    <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="wasteForm.$invalid">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
-        <span>&nbsp;Ubah</span>
-    </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="delete(waste)" ng-if="access.delete">
-        <span class="glyphicon glyphicon-trash"></span>
-        <span>&nbsp;Hapus</span>
-    </button>
+    <div ng-if="waste.editable">
+        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="wasteForm.$invalid">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            <span>&nbsp;Ubah</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="delete(waste)" ng-if="access.delete">
+            <span class="glyphicon glyphicon-trash"></span>
+            <span>&nbsp;Hapus</span>
+        </button>
+    </div>
 </div>

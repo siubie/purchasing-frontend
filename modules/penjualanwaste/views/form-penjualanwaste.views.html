@@ -59,7 +59,7 @@
                 <span>Tambah Item</span>
             </button>
         </div>
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-if="penjualanWaste.editable">
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penjualanWasteForm.$invalid||!penjualanWaste.wasteItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>

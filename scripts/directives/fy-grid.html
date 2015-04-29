@@ -22,7 +22,7 @@
         <span>&nbsp;Refresh</span>
     </button>
     <span class="pull-right">
-        <span class="input-group input-group-sm" dropdown ng-if="access.cart">
+        <span class="input-group input-group-sm" dropdown ng-if="access.cart" ng-show="!!items.length">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
             </span>

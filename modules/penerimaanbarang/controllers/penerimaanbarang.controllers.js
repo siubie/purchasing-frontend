@@ -73,7 +73,8 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                 valuta: pesananBarang.valuta,
                 valutaBayar: pesananBarang.valutaBayar,
                 status: "RECEIVED",
-                lpbItemsList: []
+                lpbItemsList: [],
+                editable: true
             });
             angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
                 $scope.penerimaanBarang.lpbItemsList.push({

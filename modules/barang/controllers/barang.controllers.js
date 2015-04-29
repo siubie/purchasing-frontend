@@ -49,7 +49,8 @@ angular.module("barang.controllers", []).controller("barangController", function
     };
     $scope.new = function() {
         $scope.barang = new barangFactory({
-            kode: "BRG" + new Date().getTime()
+            kode: "BRG" + new Date().getTime(),
+            editable: true
         });
     };
     $scope.new();

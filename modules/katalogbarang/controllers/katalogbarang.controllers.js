@@ -75,7 +75,8 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
     }
     $scope.new = function() {
         $scope.katalogBarang = new katalogBarangFactory({
-            hargaSupplier: []
+            hargaSupplier: [],
+            editable: true
         });
     };
     $scope.new();

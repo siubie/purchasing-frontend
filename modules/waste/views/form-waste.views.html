@@ -26,7 +26,7 @@
                 <option value="">-- Pilih Satuan --</option>
             </select>
         </div>
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-if="waste.editable">
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="wasteForm.$invalid">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>

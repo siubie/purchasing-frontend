@@ -50,7 +50,8 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         $scope.penjualanWaste = new penjualanWasteFactory({
             nomor: "PW" + new Date().getTime(),
             tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
-            wasteItemsList: []
+            wasteItemsList: [],
+            editable: true
         });
         if ($scope.cartSystem && !!localStorage.wasteCart) {
             $scope.wasteCart = JSON.parse(localStorage.wasteCart);

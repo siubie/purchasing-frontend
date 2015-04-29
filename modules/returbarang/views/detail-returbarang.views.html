@@ -105,12 +105,14 @@
                 </td>
             </tr>
     </table>
-    <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="returBarangForm.$invalid">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
-        <span>&nbsp;Ubah</span>
-    </button>
-    <button class="btn btn-default btn-sm" type="button" ng-click="delete(returBarang)" ng-if="access.delete">
-        <span class="glyphicon glyphicon-trash"></span>
-        <span>&nbsp;Hapus</span>
-    </button>
+    <div ng-if="returBarang.editable">
+        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="returBarangForm.$invalid">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            <span>&nbsp;Ubah</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="delete(returBarang)" ng-if="access.delete">
+            <span class="glyphicon glyphicon-trash"></span>
+            <span>&nbsp;Hapus</span>
+        </button>
+    </div>
 </div>

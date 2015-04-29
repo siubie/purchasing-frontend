@@ -128,8 +128,8 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             jenis: false,
             periode: $filter("date")($scope.timestamp.periode, "MM-yyyy"),
             status: "RECEIVED",
-            editable: true,
-            sppItemsList: []
+            sppItemsList: [],
+            editable: true
         });
         if (!!localStorage.katalogBarangCart) {
             $scope.katalogBarangCart = JSON.parse(localStorage.katalogBarangCart);

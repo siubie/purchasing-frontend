@@ -26,15 +26,15 @@
             </td>
         </tr>
     </table>
-    <button type="button" class="btn btn-default btn-sm" ng-if="module=='katalogBarang'" ng-click="openCreatePermintaanBarang()">
+    <button type="button" class="btn btn-default btn-sm" ng-if="module=='katalogBarang'" ng-click="$dismiss('createPermintaanBarang')">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Buat SPP</span>
     </button>
-    <button type="button" class="btn btn-default btn-sm" ng-if="module=='permintaanBarang'" ng-click="openCreatePesananBarang()">
+    <button type="button" class="btn btn-default btn-sm" ng-if="module=='permintaanBarang'" ng-click="$dismiss('createPesananBarang')">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Buat SP</span>
     </button>
-    <button type="button" class="btn btn-default btn-sm" ng-if="module=='waste'" ng-click="openCreatePenjualanWaste()">
+    <button type="button" class="btn btn-default btn-sm" ng-if="module=='waste'" ng-click="$dismiss('createPenjualanWaste')">
         <span class="glyphicon glyphicon-floppy-disk"></span>
         <span>&nbsp;Buat Penjualan Waste</span>
     </button>

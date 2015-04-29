@@ -71,7 +71,8 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
                 valuta: penerimaanBarang.valuta,
                 valutaBayar: penerimaanBarang.valutaBayar,
                 status: "RECEIVED",
-                returItemsList: []
+                returItemsList: [],
+                editable: true
             });
             angular.forEach(penerimaanBarang.lpbItemsList, function(itemBarang) {
                 $scope.returBarang.returItemsList.push({

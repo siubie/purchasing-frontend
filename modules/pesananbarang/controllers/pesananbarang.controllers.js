@@ -64,7 +64,8 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             valutaBayar: "IDR",
             status: "RECEIVED",
             syaratBayar: 0,
-            spItemsList: []
+            spItemsList: [],
+            editable: true
         });
         if ($scope.cartSystem && !!localStorage.permintaanBarangCart) {
             $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);

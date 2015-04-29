@@ -85,7 +85,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-if="returBarang.editable">
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="returBarangForm.$invalid||!returBarang.returItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
