@@ -4,6 +4,7 @@
         <br/>
         <br/>
     </span> -->
+    <br/>
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=25" ng-change="page.current=1">
             <option value="5">5</option>
@@ -44,16 +45,36 @@
                 </li>
             </ul>
         </span>
-        <span class="input-group input-group-sm" ng-if="module=='permintaanBarang'" ng-show="!!items.length">
-            <span class="input-group-addon">
-                <strong>Status</strong>
+        <span ng-switch="module" ng-show="!!items.length">
+            <span class="input-group input-group-sm" ng-switch-when="katalogBarang">
+                <span class="input-group-addon">
+                    <strong>Kategori</strong>
+                </span>
+                <select class="form-control" ng-model="search.kategori" ng-change="uncheckAll()">
+                    <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==search.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
+                </select>
             </span>
-            <select class="form-control" ng-model="search.status" ng-init="search.status=''">
-                <option value="">Semua</option>
-                <option value="RECEIVED">Diterima</option>
-                <option value="APPROVED">Disetujui</option>
-                <option value="REJECTED">Ditolak</option>
-            </select>
+            <span ng-switch-when="permintaanBarang">
+                <span class="input-group input-group-sm">
+                    <span class="input-group-addon">
+                        <strong>Kategori</strong>
+                    </span>
+                    <select class="form-control" ng-model="search.kategori" ng-change="uncheckAll()">
+                        <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==search.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
+                    </select>
+                </span>
+                <span class="input-group input-group-sm">
+                    <span class="input-group-addon">
+                        <strong>Status</strong>
+                    </span>
+                    <select class="form-control" ng-model="search.status">
+                        <option value="">Semua</option>
+                        <option value="RECEIVED">Diterima</option>
+                        <option value="APPROVED">Disetujui</option>
+                        <option value="REJECTED">Ditolak</option>
+                    </select>
+                </span>
+            </span>
         </span>
         <span class="input-group input-group-sm" ng-show="!!items.length">
             <span class="input-group-addon" ng-show="!search.$">
@@ -125,6 +146,9 @@
                     </span>
                     <span ng-if="field.type=='date'">
                         <span ng-bind="item.{{field.name}}|date:field.filter"></span>
+                    </span>
+                    <span ng-if="field.type=='array'">
+                        <span ng-bind="item.{{field.name}}"></span>
                     </span>
                     <span ng-if="field.type=='jenis'">
                         <span ng-if="item.jenis">EMERGENCY</span>

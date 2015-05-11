@@ -74,7 +74,7 @@
                     <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                     <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="qty" ng-model="itemBarang.qty" min="1" pattern="\d+" required/>
+                        <input class="form-control text-center" type="number" name="qty" ng-model="itemBarang.qty" min="1" max="{{::itemBarang.qty}}" pattern="\d+" required/>
                     </td>
                     <td class="text-center" ng-bind="itemBarang.harga"></td>
                     <td class="text-center">

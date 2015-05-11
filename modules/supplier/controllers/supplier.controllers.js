@@ -1,4 +1,4 @@
-angular.module('supplier.controllers', []).controller('supplierController', ['$scope', '$window', '$state', '$modal', '$filter', 'supplierFactory', function($scope, $window, $state, $modal, $filter, supplierFactory) {
+angular.module('supplier.controllers', []).controller("supplierController", function($scope, $window, $state, $modal, $filter, kategoriBarangFactory, supplierFactory) {
     $scope.module = "supplier";
     $scope.access = {
         create: true,
@@ -24,12 +24,17 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
         "name": "nomorTelepon",
         "type": "string",
         "header": "Telepon"
+    }, {
+        "name": "kategori",
+        "type": "array",
+        "header": "Kategori"
     }];
     $scope.sort = {
         "field": "kode",
         "order": false
     };
     $scope.query = function() {
+        $scope.kategoriBarangs = kategoriBarangFactory.query();
         $scope.suppliers = supplierFactory.query(function() {
             angular.forEach($scope.suppliers, function(supplier) {
                 supplier.editable = true;
@@ -115,4 +120,4 @@ angular.module('supplier.controllers', []).controller('supplierController', ['$s
             $scope.query();
         });
     };
-}]);
+});

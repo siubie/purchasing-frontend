@@ -39,12 +39,18 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         "order": false
     };
     $scope.query = function() {
+        $scope.satuanGudangs = satuanGudangFactory.query(function() {
+            $scope.satuanGudangArray = [];
+            angular.forEach($scope.satuanGudangs, function(satuanGudang) {
+                $scope.satuanGudangArray.push(satuanGudang.satuan);
+            });
+            $scope.satuanGudangArray.sort();
+        });
         $scope.wastes = wasteFactory.query(function() {
             angular.forEach($scope.wastes, function(waste) {
                 waste.editable = true;
             });
         });
-        $scope.satuanGudangs = satuanGudangFactory.query();
         $scope.items = $scope.wastes;
     };
     $scope.query();

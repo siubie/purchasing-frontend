@@ -1,4 +1,4 @@
-angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, $log, barangFactory, departemenFactory, permintaanBarangFactory) {
+angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, $log, barangFactory, departemenFactory, kategoriBarangFactory, permintaanBarangFactory) {
     $scope.module = "permintaanBarang";
     $scope.access = {
         create: true,
@@ -22,9 +22,9 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         "header": "Jenis",
         "type": "jenis"
     }, {
-        "name": "departemen.departemen",
-        "header": "Peminta",
-        "type": "string"
+        "name": "kategori",
+        "header": "Kategori",
+        "type": "array"
     }, {
         "name": "periode",
         "header": "Periode",
@@ -51,6 +51,10 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         "type": "String",
         "header": "Jumlah SPP",
     }];
+    $scope.search = {
+        "kategori": "KOM",
+        "status": ""
+    };
     $scope.sort = {
         "field": "nomor",
         "order": true
@@ -66,6 +70,13 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
     $scope.query = function() {
         $scope.barangs = barangFactory.query();
         $scope.departemens = departemenFactory.query();
+        $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
+            $scope.kategoriBarangArray = [];
+            angular.forEach($scope.kategoriBarangs, function(kategoriBarang) {
+                $scope.kategoriBarangArray.push(kategoriBarang.kode);
+            });
+            $scope.kategoriBarangArray.sort();
+        });
         $scope.permintaanBarangs = permintaanBarangFactory.query(function() {
             angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
                 switch (permintaanBarang.status) {
@@ -131,7 +142,9 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             sppItemsList: [],
             editable: true
         });
-        if (!!localStorage.katalogBarangCart) {
+        if (!!$scope.cartSystem && !!localStorage.katalogBarangCart) {
+            $scope.katalogBarang = JSON.parse(localStorage.katalogBarang);
+            $scope.permintaanBarang.kategori = $scope.katalogBarang.kategori;
             $scope.katalogBarangCart = JSON.parse(localStorage.katalogBarangCart);
             angular.forEach($scope.katalogBarangCart, function(itemBarang) {
                 $scope.permintaanBarang.sppItemsList.push({
@@ -153,7 +166,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         });
     };
     $scope.update = function() {
-        console.log("update permintaanBarang : ", JSON.stringify($scope.permintaanBarang));
         $scope.permintaanBarang.$update(function() {
             $scope.modalInstance.close();
             $log.info("permintaanBarang updated");
@@ -329,13 +341,19 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         if (($filter("date")($scope.timestamp.periode, "yyyyMMdd")) < ($filter("date")(new Date(), "yyyyMMdd"))) {
             $scope.timestamp.periode = new Date();
         }
-        angular.forEach($scope.permintaanBarang.sppItemsList, function(detailBarang) {
-            detailBarang.tanggalButuh = $filter("date")($scope.timestamp.periode, "yyyy-MM-dd");
+        angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
+            itemBarang.tanggalButuh = $filter("date")($scope.timestamp.periode, "yyyy-MM-dd");
         });
     }, true);
+    $scope.$watch("permintaanBarang.kategori", function(newKategori, oldKategori) {
+        if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
+            $scope.permintaanBarang.sppItemsList = [];
+            $scope.addDetail();
+        }
+    });
     $scope.$watchCollection("permintaanBarang.sppItemsList", function() {
-        angular.forEach($scope.permintaanBarang.sppItemsList, function(detailBarang) {
-            detailBarang.tanggalButuh = $filter("date")(detailBarang.tanggalButuh, "yyyy-MM-dd");
+        angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
+            itemBarang.tanggalButuh = $filter("date")(itemBarang.tanggalButuh, "yyyy-MM-dd");
         });
     }, true);
 });

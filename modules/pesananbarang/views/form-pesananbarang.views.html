@@ -14,11 +14,11 @@
     <form class="row" name="pesananBarangForm">
         <div class="form-group col-xs-12" ng-if="!newForm">
             <label for="nomor">Nomor:&nbsp;</label>
-            <span ng-bind="pesananBarang.nomor"></span>
+            <span ng-bind="pesananBarang.nomor"></span>d
         </div>
         <div class="form-group col-xs-12 input-group-sm">
             <label for="supplier">Supplier</label>
-            <select class="form-control" id="supplier" name="supplier" ng-model="pesananBarang.supplier" ng-options="supplier.nama for supplier in suppliers | orderBy: 'supplier.nama' track by supplier.nama" required>
+            <select class="form-control" id="supplier" name="supplier" ng-model="pesananBarang.supplier" ng-options="supplier.nama for supplier in suppliers | filter:{kategori:pesananBarang.kategori} | orderBy: 'nama' track by supplier.nama" required>
                 <option value="">-- Pilih Supplier --</option>
             </select>
         </div>

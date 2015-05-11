@@ -22,14 +22,16 @@
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="kategori">Kategori</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy: 'kategori'" required>
+            <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori">
                 <option value="">-- Pilih Kategori --</option>
+                <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==barang.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
             </select>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="satuan">Satuan</label>
-            <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" ng-options="satuanGudang.satuan as satuanGudang.satuan for satuanGudang in satuanGudangs" required>
+            <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan">
                 <option value="">-- Pilih Satuan --</option>
+                <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang==barang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
             </select>
         </div>
         <div class="form-group col-xs-12 input-group-sm">

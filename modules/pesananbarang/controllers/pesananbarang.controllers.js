@@ -1,4 +1,4 @@
-angular.module('pesananBarang.controllers', []).controller('pesananBarangController', ['$scope', '$window', '$state', '$modal', '$filter', 'supplierFactory', 'permintaanBarangFactory', 'pesananBarangFactory', function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
+angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
         create: false,
@@ -68,6 +68,8 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             editable: true
         });
         if ($scope.cartSystem && !!localStorage.permintaanBarangCart) {
+            $scope.permintaanBarang = JSON.parse(localStorage.permintaanBarang);
+            $scope.pesananBarang.kategori = $scope.permintaanBarang.kategori;
             $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);
             angular.forEach($scope.permintaanBarangCart, function(itemBarang) {
                 $scope.pesananBarang.spItemsList.push({
@@ -75,6 +77,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                     barang: itemBarang.barang,
                     qty: itemBarang.qty,
                     harga: itemBarang.harga,
+                    hargaKatalog: itemBarang.hargaKatalog,
                     status: "RECEIVED"
                 });
             });
@@ -147,4 +150,4 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     $scope.removeDetail = function(index) {
         $scope.pesananBarang.spItemsList.splice(index, 1);
     };
-}]);
+});

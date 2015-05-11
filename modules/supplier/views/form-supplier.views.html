@@ -26,8 +26,19 @@
             <label for="nomorTelepon">Nomor Telepon</label>
             <input type="text" class="form-control" id="nomorTelepon" name="nomorTelepon" placeholder="Masukkan Nomor Telepon.." ng-model="supplier.nomorTelepon" required/>
         </div>
+        <div class="form-group col-xs-6 input-group-sm">
+            <label for="kategori">Kategori</label>
+            <ui-select multiple ng-model="supplier.kategori" theme="bootstrap">
+                <ui-select-match placeholder="Masukkan Kategori...">
+                    <span ng-bind="$item.kode"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="kategoriBarang.kode as kategoriBarang in kategoriBarangs | filter:$select.search | orderBy:'kategori'">
+                    <span ng-bind="kategoriBarang.kategori"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
         <div class="col-xs-12" ng-if="supplier.editable">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="supplierForm.$invalid">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="supplierForm.$invalid||!supplier.kategori.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>

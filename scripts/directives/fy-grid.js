@@ -11,7 +11,6 @@ angular.module("fyGrid", [])
                     expandedAll: false,
                     selectedAll: false
                 };
-                $scope.search = [];
                 $scope.checkDisplayed = function() {
                     angular.forEach($scope.displayed, function(item) {
                         item.selected = $scope.page.selectedAll;
@@ -156,7 +155,6 @@ angular.module("fyGrid", [])
                                                 });
                                             }
                                         });
-
                                     }
                                     $scope.cart.push({
                                         barang: barang,
@@ -175,7 +173,8 @@ angular.module("fyGrid", [])
                                                 spp: item.nomor,
                                                 barang: itemBarang.barang,
                                                 qty: itemBarang.sisa,
-                                                harga: itemBarang.harga
+                                                harga: itemBarang.harga,
+                                                hargaKatalog: itemBarang.harga
                                             });
                                         }
                                     });
@@ -231,9 +230,15 @@ angular.module("fyGrid", [])
                 $scope.$watchCollection("cart", function() {
                     switch ($scope.module) {
                         case "katalogBarang":
+                            localStorage.setItem("katalogBarang", JSON.stringify({
+                                kategori: $scope.search.kategori
+                            }));
                             localStorage.setItem("katalogBarangCart", JSON.stringify($scope.cart));
                             break;
                         case "permintaanBarang":
+                            localStorage.setItem("permintaanBarang", JSON.stringify({
+                                kategori: $scope.search.kategori
+                            }));
                             localStorage.setItem("permintaanBarangCart", JSON.stringify($scope.cart));
                             break;
                         case "waste":

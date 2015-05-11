@@ -28,6 +28,12 @@
             </td>
             <td ng-bind="supplier.nomorTelepon"></td>
         </tr>
+        <tr>
+            <td>
+                <strong>Kategori</strong>
+            </td>
+            <td ng-bind="supplier.kategori"></td>
+        </tr>
     </table>
     <div ng-if="supplier.editable">
         <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="supplierForm.$invalid">

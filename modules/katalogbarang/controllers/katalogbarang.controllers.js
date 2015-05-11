@@ -1,4 +1,4 @@
-angular.module("katalogBarang.controllers", []).controller("katalogBarangController", function($scope, $window, $modal, $filter, katalogBarangFactory, barangFactory, supplierFactory) {
+angular.module("katalogBarang.controllers", []).controller("katalogBarangController", function($scope, $window, $modal, $filter, kategoriBarangFactory, katalogBarangFactory, barangFactory, supplierFactory) {
     $scope.module = "katalogBarang";
     $scope.access = {
         create: true,
@@ -42,6 +42,9 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         "type": "string",
         "header": "Satuan",
     }];
+    $scope.search = {
+        "kategori": "KOM"
+    };
     $scope.sort = {
         "field": "kode",
         "order": false,
@@ -49,6 +52,13 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         "detailOrder": "false"
     };
     $scope.query = function() {
+        $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
+            $scope.kategoriBarangArray = [];
+            angular.forEach($scope.kategoriBarangs, function(kategoriBarang) {
+                $scope.kategoriBarangArray.push(kategoriBarang.kode);
+            });
+            $scope.kategoriBarangArray.sort();
+        });
         $scope.barangs = barangFactory.query();
         $scope.suppliers = supplierFactory.query();
         $scope.katalogBarangs = katalogBarangFactory.query(function() {

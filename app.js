@@ -3,6 +3,7 @@ angular.module("purchasingApp", [
     "ngAnimate",
     "ngResource",
     "ui.router",
+    "ui.select",
     "ui.bootstrap.transition",
     "ui.bootstrap.modal",
     "ui.bootstrap.datepicker",
@@ -26,5 +27,5 @@ angular.module("purchasingApp", [
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/barang/");
+    $urlRouterProvider.otherwise("/permintaanbarang/");
 });

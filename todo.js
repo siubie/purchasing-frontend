@@ -12,9 +12,10 @@ var todo = new Object({
         "auto expand setelah proses",
         "form input master barang berdasarkan spesifikasi setiap kategori",
         "validasi lead time tanggal 25 ditambah lead time",
-        "filter supplier saat membuat SP",
         "kurs SP ambil dari internet",
-        "validasi input number di setiap modul"
+        "validasi input number di setiap modul (min dan max)",
+        "ganti semua watch ke ngChange",
+        "kunci kategori di edit permintaan barang"
     ],
     bisnis: [
         "buat SP dari screen SP"

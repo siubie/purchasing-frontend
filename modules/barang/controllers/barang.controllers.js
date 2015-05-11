@@ -30,8 +30,20 @@ angular.module("barang.controllers", []).controller("barangController", function
         "order": false
     };
     $scope.query = function() {
-        $scope.kategoriBarangs = kategoriBarangFactory.query();
-        $scope.satuanGudangs = satuanGudangFactory.query();
+        $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
+            $scope.kategoriBarangArray = [];
+            angular.forEach($scope.kategoriBarangs, function(kategoriBarang) {
+                $scope.kategoriBarangArray.push(kategoriBarang.kode);
+            });
+            $scope.kategoriBarangArray.sort();
+        });
+        $scope.satuanGudangs = satuanGudangFactory.query(function() {
+            $scope.satuanGudangArray = [];
+            angular.forEach($scope.satuanGudangs, function(satuanGudang) {
+                $scope.satuanGudangArray.push(satuanGudang.satuan);
+            });
+            $scope.satuanGudangArray.sort();
+        });
         $scope.barangs = barangFactory.query(function() {
             angular.forEach($scope.barangs, function(barang) {
                 barang.editable = true;
