@@ -32,7 +32,16 @@
             <td>
                 <strong>Spesifikasi</strong>
             </td>
-            <td ng-bind="barang.spesifikasi"></td>
+            <td>
+                <span ng-repeat="form in spesifikasiForms[barang.kategori]">
+                    <span ng-bind="form.header + ' : '+ spesifikasiUtama[form.name]"></span>
+                    <br/>
+                </span>
+                <span ng-if="barang.spesifikasiTambahan">
+                    <br/>
+                    <span ng-bind="barang.spesifikasiTambahan"></span>
+                </span>
+            </td>
         </tr>
         <tr>
             <td>

@@ -13,12 +13,12 @@
     <form class="row" name="katalogBarangForm">
         <div class="form-group col-xs-6 input-group-sm">
             <label for="barang">Barang</label>
-            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="katalogBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:$viewValue | limitTo:10 | orderBy:'nama'" typeahead-editable="false"
+            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="katalogBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'" typeahead-editable="false"
             ng-disabled="!newForm" required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="supplier">Supplier</label>
-            <input type="text" class="form-control" id="supplier" name="supplier" placeholder="Masukkan Supplier.." ng-model="katalogBarang.supplier" typeahead="supplier as supplier.nama for supplier in suppliers | filter:$viewValue | limitTo:10 | orderBy:'nama'"
+            <input type="text" class="form-control" id="supplier" name="supplier" placeholder="Masukkan Supplier.." ng-model="katalogBarang.supplier" typeahead="supplier as supplier.nama for supplier in suppliers | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
             typeahead-editable="false" ng-disabled="!newForm" required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">

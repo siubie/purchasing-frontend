@@ -1,4 +1,4 @@
-angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
+angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, $http, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
         create: false,
@@ -44,6 +44,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             });
         });
         $scope.items = $scope.pesananBarangs;
+        $http.jsonp("http://jsonrates.com/get/?base=IDR&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK").success(function(response) {
+            $scope.kurs = response.rates;
+        });
     };
     $scope.query();
     $scope.get = function(id) {
@@ -106,6 +109,19 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                 $scope.query();
             });
         }
+    };
+    $scope.getRate = function() {
+        var url = "http://jsonrates.com/get/?from=" + $scope.pesananBarang.valuta + "&to=" + $scope.pesananBarang.valutaBayar + "&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK";
+        $http.jsonp(url).success(function(response) {
+            $scope.pesananBarang.kurs = Number(response.rate);
+        });
+    };
+    $scope.totalCost = function() {
+        var totalCost = 0;
+        angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+            totalCost = totalCost + ((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100));
+        });
+        return totalCost;
     };
     $scope.openRead = function(pesananBarang) {
         $scope.newForm = false;

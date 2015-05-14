@@ -10,12 +10,11 @@ var todo = new Object({
         "tunjukkan konfirmasi yang berisi detail object sebelum CUD",
         "implementasi toastJS",
         "auto expand setelah proses",
-        "form input master barang berdasarkan spesifikasi setiap kategori",
         "validasi lead time tanggal 25 ditambah lead time",
-        "kurs SP ambil dari internet",
         "validasi input number di setiap modul (min dan max)",
         "ganti semua watch ke ngChange",
-        "kunci kategori di edit permintaan barang"
+        "informasi perubahan harga di SP",
+        "gunakan return untuk fungsi dengan kembalian"
     ],
     bisnis: [
         "buat SP dari screen SP"

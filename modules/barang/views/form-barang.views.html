@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <!-- <span ng-bind="barang|json"></span>
+    <!-- <span ng-bind="spesifikasiUtama|json"></span>
     <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
@@ -16,27 +16,45 @@
             <label for="kode">Kode:&nbsp;</label>
             <span ng-bind="barang.kode"></span>
         </div>
-        <div class="form-group col-xs-12 input-group-sm">
+        <div class="form-group col-xs-12" ng-show="!!spesifikasiForms[barang.kategori]">
+            <label for="nama">Nama:&nbsp;</label>
+            <span ng-bind="barang.nama"></span>
+        </div>
+        <div class="form-group col-xs-12 input-group-sm" ng-show="!spesifikasiForms[barang.kategori]">
             <label for="nama">Nama</label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="barang.nama" required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="kategori">Kategori</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori">
+            <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" required>
                 <option value="">-- Pilih Kategori --</option>
-                <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==barang.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
             </select>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="satuan">Satuan</label>
-            <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan">
+            <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" required>
                 <option value="">-- Pilih Satuan --</option>
                 <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang==barang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
             </select>
         </div>
+        <div ng-repeat="form in spesifikasiForms[barang.kategori]">
+            <div class="form-group col-xs-3 input-group-sm" ng-if="form.type=='text'">
+                <label for="{{form.name}}">{{form.header}}</label>
+                <input type="text" class="form-control" id="{{form.name}}" name="{{form.name}}" placeholder="Masukkan {{form.header}}.." ng-model="spesifikasiUtama[form.name]" ng-change="changeSpesifikasiUtama(spesifikasiUtama[form.name],form.name)" ng-init="!spesifikasiUtama[form.name] ? spesifikasiUtama[form.name]='' : null"
+                ng-required="form.required" />
+            </div>
+            <div class="form-group col-xs-3 input-group-sm" ng-if="form.type=='select'">
+                <label for="{{form.name}}">{{form.header}}</label>
+                <select class="form-control" id="{{form.name}}" name="{{form.name}}" ng-model="spesifikasiUtama[form.name]" ng-change="changeSpesifikasiUtama(spesifikasiUtama[form.name],form.name)" ng-init="!spesifikasiUtama[form.name] ? spesifikasiUtama[form.name]='' : null"
+                ng-required="form.required">
+                    <option value="">-- Pilih {{form.header}} --</option>
+                    <option ng-repeat="item in spesifikasi[barang.kategori][form.name]" value="{{item}}" ng-selected="item==spesifikasiUtama[form.name]">{{item}}</option>
+                </select>
+            </div>
+        </div>
         <div class="form-group col-xs-12 input-group-sm">
-            <label for="spesifikasi">Spesifikasi</label>
-            <textarea class="form-control" id="spesifikasi" name="spesifikasi" placeholder="Masukkan Spesifikasi.." ng-model="barang.spesifikasi"></textarea>
+            <label for="spesifikasiTambahan">Spesifikasi</label>
+            <textarea class="form-control" id="spesifikasiTambahan" name="spesifikasiTambahan" placeholder="Masukkan Spesifikasi.." ng-model="barang.spesifikasiTambahan"></textarea>
         </div>
         <div class="form-group col-xs-12 input-group-sm">
             <label for="deskripsi">Deskripsi</label>

@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <!-- <span ng-bind="pesananBarang|json"></span>
+    <!-- <span ng-bind="pesananBarang.kurs|json"></span>
     <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
@@ -28,11 +28,19 @@
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="valuta">Valuta</label>
-            <input type="text" class="form-control text-center" id="valuta" name="valuta" ng-model="pesananBarang.valuta" required />
+            <select class="form-control" id="valuta" name="valuta" ng-model="pesananBarang.valuta" ng-options="valuta as valuta for (valuta,rate) in kurs" ng-change="getRate()" required>
+                <option value="">-- Pilih Valuta --</option>
+            </select>
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="valutaBayar">Valuta Bayar</label>
-            <input type="text" class="form-control text-center" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" required />
+            <select class="form-control" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" ng-options="valuta as valuta for (valuta,rate) in kurs" ng-change="getRate()" required>
+                <option value="">-- Pilih Valuta --</option>
+            </select>
+        </div>
+        <div class="form-group col-xs-2 input-group-sm">
+            <label for="kurs">Kurs:&nbsp;</label>
+            <span ng-bind="pesananBarang.kurs"></span>
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="syaratBayar">Syarat Bayar</label>

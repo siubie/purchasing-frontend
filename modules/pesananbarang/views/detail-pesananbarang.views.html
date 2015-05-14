@@ -71,7 +71,7 @@
             <td colspan=2>
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=6 class="text-center">Item Barang</th>
+                        <th colspan=7 class="text-center">Item Barang</th>
                     </tr>
                     <tr>
                         <th class="text-center">Nomor SPP</th>
@@ -79,6 +79,7 @@
                         <th class="text-center">Satuan</th>
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Harga</th>
+                        <th class="text-center">Harga Bayar</th>
                         <th class="text-center">Status</th>
                     </tr>
                     <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
@@ -86,11 +87,19 @@
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                         <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
                         <td class="text-center" ng-bind="itemBarang.qty"></td>
-                        <td class="text-center" ng-bind="itemBarang.harga"></td>
+                        <td class="text-center" ng-bind="itemBarang.harga | number:2"></td>
+                        <td class="text-center" ng-bind="(itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100) | number:2"></td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
                     </tr>
+                    <tr>
+                        <td colspan=5 class="text-center">
+                            <strong>Total</strong>
+                        </td>
+                        <td class="text-center" ng-bind="totalCost() | number:2"></td>
+                        <td>
+                    </tr>
                 </table>
-            </td>
+                </td>
         </tr>
     </table>
     <div ng-if="pesananBarang.editable">

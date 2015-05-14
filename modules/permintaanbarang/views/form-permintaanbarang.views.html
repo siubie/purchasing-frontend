@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <!-- <span ng-bind="permintaanBarang|json"></span>
+    <!-- <span ng-bind="cartSystem|json"></span>
     <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
@@ -22,13 +22,9 @@
                 <option value="">-- Pilih Departemen --</option>
             </select>
         </div> -->
-        <div class="form-group col-xs-4 input-group-sm" ng-if="!!cartSystem">
-            <label for="kategori">Kategori:&nbsp;</label>
-            <span ng-bind="permintaanBarang.kategori"></span>
-        </div>
-        <div class="form-group col-xs-4 input-group-sm" ng-if="!cartSystem" ng-init="permintaanBarang.kategori='KOM'">
+        <div class="form-group col-xs-4 input-group-sm" ng-init="permintaanBarang.kategori='KOM'">
             <label for="kategori">Kategori</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" required></select>
+            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem||!newForm" required></select>
         </div>
         <div class="form-group col-xs-4 input-group-sm">
             <label for="periode">Periode:&nbsp;</label>
@@ -66,7 +62,7 @@
                     <tr ng-if="itemBarang.editable">
                         <td class="text-center" ng-if="!!cartSystem" ng-bind="itemBarang.barang.nama"></td>
                         <td class="input-group-sm" ng-if="!cartSystem">
-                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:$viewValue | limitTo:10 | orderBy:'nama'"
+                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
                             typeahead-editable="false" required/>
                         </td>
                         <!-- <td class="input-group-sm" ng-if="!cartSystem">

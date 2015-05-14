@@ -151,6 +151,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                     barang: itemBarang.barang,
                     tanggalButuh: $filter("date")((new Date() + itemBarang.leadTime), "yyyy-MM-dd"),
                     jumlah: 1,
+                    sisa: 1,
                     status: "RECEIVED",
                     harga: itemBarang.harga,
                     editable: true
@@ -304,6 +305,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         $scope.permintaanBarang.sppItemsList.push({
             tanggalButuh: $filter("date")(new Date(), "yyyy-MM-dd"),
             jumlah: 1,
+            sisa: 1,
             status: "RECEIVED",
             harga: 0,
             editable: true

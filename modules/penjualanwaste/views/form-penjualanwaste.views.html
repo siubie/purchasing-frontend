@@ -38,7 +38,7 @@
                 <tr ng-repeat="itemWaste in penjualanWaste.wasteItemsList">
                     <td class="text-center" ng-if="cartSystem" ng-bind="itemWaste.waste.nama"></td>
                     <td class="input-group-sm" ng-if="!cartSystem">
-                        <input type="text" class="form-control" id="waste" name="waste" placeholder="Masukkan Waste.." ng-model="itemWaste.waste" typeahead="waste as waste.nama for waste in wastes | filter:$viewValue | limitTo:10" typeahead-editable="false" required/>
+                        <input type="text" class="form-control" id="waste" name="waste" placeholder="Masukkan Waste.." ng-model="itemWaste.waste" typeahead="waste as waste.nama for waste in wastes | filter:{nama:$viewValue} | limitTo:10" typeahead-editable="false" required/>
                     </td>
                     <td class="text-center" ng-bind="itemWaste.waste.satuan"></td>
                     <td class="input-group-sm">

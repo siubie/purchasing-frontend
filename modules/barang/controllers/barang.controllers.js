@@ -1,4 +1,5 @@
-angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, $log, barangFactory, kategoriBarangFactory, satuanGudangFactory) {
+angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, $log, $http, barangFactory, kategoriBarangFactory, satuanGudangFactory, spesifikasiFactory) {
+    $scope.test = "jenis";
     $scope.module = "barang";
     $scope.access = {
         create: true,
@@ -15,7 +16,11 @@ angular.module("barang.controllers", []).controller("barangController", function
     }, {
         "name": "kategori",
         "type": "string",
-        "header": "kategori"
+        "header": "Kategori"
+    }, {
+        "name": "jenis",
+        "type": "string",
+        "header": "Jenis"
     }, {
         "name": "nama",
         "type": "string",
@@ -25,18 +30,57 @@ angular.module("barang.controllers", []).controller("barangController", function
         "type": "string",
         "header": "Satuan"
     }];
+    $scope.spesifikasiForms = {
+        "BNG": [{
+            "name": "jenis",
+            "type": "select",
+            "header": "Jenis",
+            "required": true
+        }, {
+            "name": "sistemNomor",
+            "type": "select",
+            "header": "Sistem Penomoran",
+            "required": true
+        }, {
+            "name": "nomor",
+            "type": "text",
+            "header": "Nomor Benang",
+            "required": true
+        }, {
+            "name": "proses",
+            "type": "select",
+            "header": "Proses",
+            "required": false
+        }],
+        "KIM": [{
+            "name": "jenis",
+            "type": "select",
+            "header": "Jenis",
+            "required": true
+        }, {
+            "name": "brand",
+            "type": "text",
+            "header": "Brand",
+            "required": true
+        }, {
+            "name": "warna",
+            "type": "text",
+            "header": "Warna",
+            "required": false
+        }, {
+            "name": "keterangan",
+            "type": "text",
+            "header": "Keterangan",
+            "required": false
+        }]
+    };
     $scope.sort = {
         "field": "kode",
-        "order": false
+        "order": true
     };
     $scope.query = function() {
-        $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
-            $scope.kategoriBarangArray = [];
-            angular.forEach($scope.kategoriBarangs, function(kategoriBarang) {
-                $scope.kategoriBarangArray.push(kategoriBarang.kode);
-            });
-            $scope.kategoriBarangArray.sort();
-        });
+        $scope.kategoriBarangs = kategoriBarangFactory.query();
+        $scope.spesifikasi = spesifikasiFactory;
         $scope.satuanGudangs = satuanGudangFactory.query(function() {
             $scope.satuanGudangArray = [];
             angular.forEach($scope.satuanGudangs, function(satuanGudang) {
@@ -56,6 +100,8 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.barang = barangFactory.get({
             id: id
         }, function() {
+            $scope.spesifikasiUtama = {};
+            $scope.spesifikasiUtama = angular.fromJson($scope.barang.spesifikasiUtama);
             $scope.barang.editable = true;
         });
     };
@@ -64,6 +110,7 @@ angular.module("barang.controllers", []).controller("barangController", function
             kode: "BRG" + new Date().getTime(),
             editable: true
         });
+        $scope.spesifikasiUtama = {};
     };
     $scope.new();
     $scope.create = function() {
@@ -89,12 +136,56 @@ angular.module("barang.controllers", []).controller("barangController", function
             });
         }
     };
+    $scope.changeSpesifikasiUtama = function(spec, formName) {
+        if (!spec) {
+            $scope.spesifikasiUtama[formName] = "";
+        }
+        switch ($scope.barang.kategori) {
+            case "BNG":
+                $scope.barang.nama = "";
+                if (!!$scope.spesifikasiUtama.jenis) {
+                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasiUtama.jenis;
+                }
+                if (!!$scope.spesifikasiUtama.sistemNomor && $scope.spesifikasiUtama.sistemNomor != "D") {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.sistemNomor;
+                }
+                if (!!$scope.spesifikasiUtama.nomor) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.nomor;
+                }
+                if (!!$scope.spesifikasiUtama.sistemNomor && $scope.spesifikasiUtama.sistemNomor == "D") {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.sistemNomor;
+                }
+                if (!!$scope.spesifikasiUtama.proses) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.proses;
+                }
+                $scope.barang.jenis = $scope.spesifikasiUtama.jenis;
+                $scope.barang.spesifikasiUtama = JSON.stringify($scope.spesifikasiUtama);
+                break;
+            case "KIM":
+                $scope.barang.nama = "";
+                if (!!$scope.spesifikasiUtama.jenis) {
+                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasiUtama.jenis;
+                }
+                if (!!$scope.spesifikasiUtama.brand) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.brand;
+                }
+                if (!!$scope.spesifikasiUtama.warna) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.warna;
+                }
+                if (!!$scope.spesifikasiUtama.keterangan) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.keterangan;
+                }
+                $scope.barang.jenis = $scope.spesifikasiUtama.jenis;
+                $scope.barang.spesifikasiUtama = JSON.stringify($scope.spesifikasiUtama);
+                break;
+        }
+    };
     $scope.openCreate = function() {
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
-            size: "md",
+            size: "lg",
             backdrop: "static",
             scope: $scope
         });
@@ -121,7 +212,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.get(barang.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
-            size: "md",
+            size: "lg",
             backdrop: "static",
             scope: $scope
         });
