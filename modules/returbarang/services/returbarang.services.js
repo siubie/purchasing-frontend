@@ -1,6 +1,14 @@
-angular.module('returBarang.services', []).factory('returBarangFactory', ['$resource', function($resource) {
-    return $resource('http://dev.disyam.com:3000/purchasing/returbarang/:id', {}, {
-        // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/lpbr/:id', {}, {
+angular.module('returBarang.services', []).factory('returBarangFactory', function($resource, constFactory) {
+    var url = "";
+    switch (constFactory.env) {
+        case "development":
+            url = "http://dev.disyam.com:3000/purchasing/returbarang/:id";
+            break;
+        case "production":
+            url = "http://192.168.15.95:8080/PurchasingApp/purchasing/lpbr/:id";
+            break;
+    }
+    return $resource(url, {}, {
         'update': {
             method: 'PUT',
             params: {
@@ -14,4 +22,4 @@ angular.module('returBarang.services', []).factory('returBarangFactory', ['$reso
             }
         }
     });
-}]);
+});

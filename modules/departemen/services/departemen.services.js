@@ -1,6 +1,14 @@
-angular.module('departemen.services', []).factory('departemenFactory', ['$resource', function($resource) {
-    return $resource('http://dev.disyam.com:3000/purchasing/departemen/:id', {}, {
-        // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/departemen/:id', {}, {
+angular.module('departemen.services', []).factory('departemenFactory', function($resource, constFactory) {
+    var url = "";
+    switch (constFactory.env) {
+        case "development":
+            url = "http://dev.disyam.com:3000/purchasing/departemen/:id";
+            break;
+        case "production":
+            url = "http://192.168.15.95:8080/PurchasingApp/purchasing/departemen/:id";
+            break;
+    }
+    return $resource(url, {}, {
         'update': {
             method: 'PUT',
             params: {
@@ -14,4 +22,4 @@ angular.module('departemen.services', []).factory('departemenFactory', ['$resour
             }
         }
     });
-}]);
+});

@@ -1,6 +1,14 @@
-angular.module('katalogBarang.services', []).factory('katalogBarangFactory', ['$resource', function($resource) {
-    return $resource('http://dev.disyam.com:3000/purchasing/katalogbarang/:id1/:id2', {}, {
-        // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/katalog/:id1/:id2', {}, {
+angular.module('katalogBarang.services', []).factory('katalogBarangFactory', function($resource, constFactory) {
+    var url = "";
+    switch (constFactory.env) {
+        case "development":
+            url = "http://dev.disyam.com:3000/purchasing/katalogbarang/:id1/:id2";
+            break;
+        case "production":
+            url = "http://192.168.15.95:8080/PurchasingApp/purchasing/katalog/:id1/:id2";
+            break;
+    }
+    return $resource(url, {}, {
         'update': {
             method: 'PUT',
             params: {
@@ -16,4 +24,4 @@ angular.module('katalogBarang.services', []).factory('katalogBarangFactory', ['$
             }
         }
     });
-}]);
+});

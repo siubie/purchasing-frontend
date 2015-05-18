@@ -1,6 +1,14 @@
-angular.module('penjualanWaste.services', []).factory('penjualanWasteFactory', ['$resource', function($resource) {
-    return $resource('http://dev.disyam.com:3000/purchasing/penjualanwaste/:id', {}, {
-        // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/fakturwaste/:id', {}, {
+angular.module('penjualanWaste.services', []).factory('penjualanWasteFactory', function($resource, constFactory) {
+    var url = "";
+    switch (constFactory.env) {
+        case "development":
+            url = "http://dev.disyam.com:3000/purchasing/penjualanwaste/:id";
+            break;
+        case "production":
+            url = "http://192.168.15.95:8080/PurchasingApp/purchasing/fakturwaste/:id";
+            break;
+    }
+    return $resource(url, {}, {
         'update': {
             method: 'PUT',
             params: {
@@ -14,4 +22,4 @@ angular.module('penjualanWaste.services', []).factory('penjualanWasteFactory', [
             }
         }
     });
-}]);
+});

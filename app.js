@@ -11,6 +11,7 @@ angular.module("purchasingApp", [
     "ui.bootstrap.typeahead",
     "ui.bootstrap.popover",
     "purchasing.routes",
+    "purchasing.services",
     "barang",
     "departemen",
     "katalogBarang",
@@ -28,4 +29,10 @@ angular.module("purchasingApp", [
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
     $urlRouterProvider.otherwise("/barang/");
+});
+
+angular.module('purchasing.services', []).factory('constFactory', function() {
+    return {
+        env: "development"
+    };
 });

@@ -1,21 +1,29 @@
-angular.module('barang.services', []).factory('barangFactory', ['$resource', function($resource) {
-        return $resource('http://dev.disyam.com:3000/purchasing/barang/:id', {}, {
-            // return $resource('http://purchasing.behaestex.co.id:8080/PurchasingApp/purchasing/barang/:id', {}, {
-            'update': {
-                method: 'PUT',
+angular.module("barang.services", []).factory("barangFactory", function($resource, constFactory) {
+        var url = "";
+        switch (constFactory.env) {
+            case "development":
+                url = "http://dev.disyam.com:3000/purchasing/barang/:id";
+                break;
+            case "production":
+                url = "http://192.168.15.95:8080/PurchasingApp/purchasing/barang/:id";
+                break;
+        }
+        return $resource(url, {}, {
+            "update": {
+                method: "PUT",
                 params: {
-                    id: '@kode'
+                    id: "@kode"
                 }
             },
-            'delete': {
-                method: 'DELETE',
+            "delete": {
+                method: "DELETE",
                 params: {
-                    id: '@kode'
+                    id: "@kode"
                 }
             }
         });
-    }])
-    .factory('spesifikasiFactory', function() {
+    })
+    .factory("spesifikasiFactory", function() {
         var spesifikasi = {
             "BNG": {
                 "jenis": [

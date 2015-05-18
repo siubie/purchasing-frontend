@@ -33,12 +33,12 @@
                 <strong>Spesifikasi</strong>
             </td>
             <td>
-                <span ng-repeat="form in spesifikasiForms[barang.kategori]">
+                <span ng-repeat="form in spesifikasiForms[barang.kategori]" ng-if="!!barang.spesifikasiUtama">
                     <span ng-bind="form.header + ' : '+ spesifikasiUtama[form.name]"></span>
                     <br/>
                 </span>
-                <span ng-if="barang.spesifikasiTambahan">
-                    <br/>
+                <span ng-if="!!barang.spesifikasiTambahan">
+                    <br ng-if="!!barang.spesifikasiUtama"/>
                     <span ng-bind="barang.spesifikasiTambahan"></span>
                 </span>
             </td>
@@ -49,42 +49,6 @@
             </td>
             <td ng-bind="barang.deskripsi"></td>
         </tr>
-        <!-- <tr>
-            <div class="form-group col-xs-6">
-                <label for="kode">Kode:&nbsp;</label>
-                <span ng-bind="barang.kode"></span>
-            </div>
-        </tr>
-        <tr>
-            <div class="form-group col-xs-6">
-                <label for="kategori">Kategori:&nbsp;</label>
-                <span ng-bind="barang.kategori"></span>
-            </div>
-        </tr>
-        <tr>
-            <div class="form-group col-xs-6">
-                <label for="nama">Nama:&nbsp;</label>
-                <span ng-bind="barang.nama"></span>
-            </div>
-        </tr>
-        <tr>
-            <div class="form-group col-xs-6">
-                <label for="satuan">Satuan:&nbsp;</label>
-                <span ng-bind="barang.satuan"></span>
-            </div>
-        </tr>
-        <tr>
-            <div class="form-group col-xs-6">
-                <label for="spesifikasi">Spesifikasi:&nbsp;</label>
-                <span ng-bind="barang.spesifikasi"></span>
-            </div>
-        </tr>
-        <tr>
-            <div class="form-group col-xs-6">
-                <label for="deskripsi">Deskripsi:&nbsp;</label>
-                <span ng-bind="barang.deskripsi"></span>
-            </div>
-        </tr> -->
     </table>
     <div ng-if="barang.editable">
         <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="barangForm.$invalid">
