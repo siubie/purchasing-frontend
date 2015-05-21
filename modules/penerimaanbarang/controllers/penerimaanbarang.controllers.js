@@ -9,35 +9,47 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         cart: false
     };
     $scope.fields = [{
-        "name": "nomor",
-        "header": "Nomor",
-        "type": "string"
+        name: "nomor",
+        header: "Nomor",
+        type: "string",
+        grid: true,
+        warning: true
     }, {
-        "name": "tanggalDatang",
-        "header": "Tanggal Datang",
-        "type": "date",
-        "filter": "longDate"
+        name: "tanggalDatang",
+        header: "Tanggal Datang",
+        type: "date",
+        filter: "longDate",
+        grid: true,
+        warning: true
     }, {
-        "name": "tanggalBuat",
-        "header": "Tanggal Dibuat",
-        "type": "date",
-        "filter": "longDate"
+        name: "tanggalBuat",
+        header: "Tanggal Dibuat",
+        type: "date",
+        filter: "longDate",
+        grid: true,
+        warning: true
     }, {
-        "name": "sp",
-        "header": "Nomor SP",
-        "type": "string"
+        name: "sp",
+        header: "Nomor SP",
+        type: "string",
+        grid: true,
+        warning: true
     }, {
-        "name": "supplier.nama",
-        "header": "Supplier",
-        "type": "string"
+        name: "supplier.nama",
+        header: "Supplier",
+        type: "string",
+        grid: true,
+        warning: true
     }, {
-        "name": "status",
-        "header": "Status",
-        "type": "string"
+        name: "status",
+        header: "Status",
+        type: "string",
+        grid: true,
+        warning: false
     }];
     $scope.sort = {
-        "field": "nomor",
-        "order": true
+        field: "nomor",
+        order: true
     };
     $scope.newForm = true;
     $scope.opened = {
@@ -88,20 +100,66 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.new();
-    $scope.create = function() {
-        console.log("penerimaanBarang : ", JSON.stringify($scope.penerimaanBarang));
-        $scope.penerimaanBarang.$save(function() {
-            $scope.modalInstance.close();
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Penerimaan Barang Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            if (process == "create" && field.name == "nomor") {
+                field.warning = false;
+            }
+            var fieldName = field.name.split('.');
+            if (field.warning) {
+                switch (fieldName.length) {
+                    case 1:
+                        if (!!$scope.penerimaanBarang[field.name]) {
+                            warning = warning + field.header + " : " + $scope.penerimaanBarang[field.name] + "\n";
+                        }
+                        break;
+                    case 2:
+                        if (!!$scope.penerimaanBarang[fieldName[0]][fieldName[1]]) {
+                            warning = warning + field.header + " : " + $scope.penerimaanBarang[fieldName[0]][fieldName[1]] + "\n";
+                        }
+                        break;
+                }
+            }
         });
+        warning = warning + "Item Barang : \n";
+        angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang, i) {
+            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+        });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.penerimaanBarang.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        console.log("penerimaanBarang : ", JSON.stringify($scope.penerimaanBarang));
-        $scope.penerimaanBarang.$update(function() {
-            $scope.modalInstance.close();
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.penerimaanBarang.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(penerimaanBarang) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.penerimaanBarang = penerimaanBarang;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             penerimaanBarang.$delete(function() {
                 if (!!$scope.modalInstance) {

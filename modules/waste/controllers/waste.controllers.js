@@ -9,34 +9,40 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         cart: true
     };
     $scope.fields = [{
-        "name": "kode",
-        "type": "string",
-        "header": "Kode"
+        name: "kode",
+        type: "string",
+        header: "Kode",
+        grid: true,
+        warning: true
     }, {
-        "name": "nama",
-        "type": "string",
-        "header": "Nama"
+        name: "nama",
+        type: "string",
+        header: "Nama",
+        grid: true,
+        warning: true
     }, {
-        "name": "satuan",
-        "type": "string",
-        "header": "Satuan"
+        name: "satuan",
+        type: "string",
+        header: "Satuan",
+        grid: true,
+        warning: true
     }];
     $scope.cartFields = [{
-        "name": "kode",
-        "type": "string",
-        "header": "Kode Waste"
+        name: "kode",
+        type: "string",
+        header: "Kode Waste"
     }, {
-        "name": "nama",
-        "type": "string",
-        "header": "Nama Waste"
+        name: "nama",
+        type: "string",
+        header: "Nama Waste"
     }, {
-        "name": "satuan",
-        "type": "String",
-        "header": "Satuan",
+        name: "satuan",
+        type: "String",
+        header: "Satuan",
     }];
     $scope.sort = {
-        "field": "kode",
-        "order": false
+        field: "kode",
+        order: false
     };
     $scope.query = function() {
         $scope.satuanGudangs = satuanGudangFactory.query(function() {
@@ -71,20 +77,50 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
     };
     $scope.new();
-    $scope.create = function() {
-        console.log("waste : ", JSON.stringify($scope.waste));
-        $scope.waste.$save(function() {
-            $scope.modalInstance.close();
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Katalog Barang Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            if (process == "create" && field.name == "kode") {
+                field.warning = false;
+            }
+            if (field.warning && !!$scope.waste[field.name]) {
+                warning = warning + field.header + " : " + $scope.waste[field.name] + "\n";
+            }
         });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.waste.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        console.log("waste : ", JSON.stringify($scope.waste));
-        $scope.waste.$update(function() {
-            $scope.modalInstance.close();
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.waste.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(waste) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.waste = waste;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             waste.$delete(function() {
                 if (!!$scope.modalInstance) {

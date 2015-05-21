@@ -9,47 +9,79 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         cart: true
     };
     $scope.fields = [{
-        "name": "kode",
-        "type": "string",
-        "header": "Kode"
+        name: "kode",
+        type: "string",
+        header: "Kode",
+        grid: true,
+        warning: false
     }, {
-        "name": "nama",
-        "type": "string",
-        "header": "Nama"
+        name: "nama",
+        type: "string",
+        header: "Nama",
+        grid: true,
+        warning: false
     }, {
-        "name": "kategori",
-        "type": "string",
-        "header": "Kategori"
+        name: "kategori",
+        type: "string",
+        header: "Kategori",
+        grid: true,
+        warning: false
     }, {
-        "name": "satuan",
-        "type": "string",
-        "header": "Satuan"
+        name: "satuan",
+        type: "string",
+        header: "Satuan",
+        grid: true,
+        warning: false
+    }, {
+        name: "barang.nama",
+        type: "string",
+        header: "Barang",
+        grid: false,
+        warning: true
+    }, {
+        name: "supplier.nama",
+        type: "string",
+        header: "Supplier",
+        grid: false,
+        warning: true
+    }, {
+        name: "alias",
+        type: "string",
+        header: "Alias",
+        grid: false,
+        warning: true
+    }, {
+        name: "leadTime",
+        type: "string",
+        header: "Lead Time",
+        grid: false,
+        warning: true
     }];
     $scope.cartFields = [{
-        "name": "barang.kode",
-        "type": "string",
-        "header": "Kode"
+        name: "barang.kode",
+        type: "string",
+        header: "Kode"
     }, {
-        "name": "barang.kategori",
-        "type": "string",
-        "header": "Kategori"
+        name: "barang.kategori",
+        type: "string",
+        header: "Kategori"
     }, {
-        "name": "barang.nama",
-        "type": "string",
-        "header": "Nama Barang"
+        name: "barang.nama",
+        type: "string",
+        header: "Nama Barang"
     }, {
-        "name": "barang.satuan",
-        "type": "string",
-        "header": "Satuan",
+        name: "barang.satuan",
+        type: "string",
+        header: "Satuan",
     }];
     $scope.search = {
         "kategori": "KOM"
     };
     $scope.sort = {
-        "field": "kode",
-        "order": false,
-        "detailField": "hargaSupplier.tanggal",
-        "detailOrder": "false"
+        field: "kode",
+        order: false,
+        detailField: "hargaSupplier.tanggal",
+        detailOrder: false
     };
     $scope.query = function() {
         $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
@@ -90,20 +122,59 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
     };
     $scope.new();
-    $scope.create = function() {
-        console.log("katalogBarang : ", JSON.stringify($scope.katalogBarang));
-        $scope.katalogBarang.$save(function() {
-            $scope.modalInstance.close();
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Katalog Barang Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            var fieldName = field.name.split('.');
+            if (field.warning) {
+                switch (fieldName.length) {
+                    case 1:
+                        if (!!$scope.katalogBarang[field.name]) {
+                            warning = warning + field.header + " : " + $scope.katalogBarang[field.name] + "\n";
+                        }
+                        break;
+                    case 2:
+                        if (!!$scope.katalogBarang[fieldName[0]][fieldName[1]]) {
+                            warning = warning + field.header + " : " + $scope.katalogBarang[fieldName[0]][fieldName[1]] + "\n";
+                        }
+                        break;
+                }
+            }
         });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.katalogBarang.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        console.log("katalogBarang : ", JSON.stringify($scope.katalogBarang));
-        $scope.katalogBarang.$update(function() {
-            $scope.modalInstance.close();
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.katalogBarang.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(katalogBarang) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.katalogBarang = katalogBarang;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             katalogBarang.$delete(function() {
                 if (!!$scope.modalInstance) {

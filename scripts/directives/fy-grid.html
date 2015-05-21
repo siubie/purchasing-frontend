@@ -109,11 +109,13 @@
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </th>
-                <th ng-repeat="field in fields" class="text-center" ng-click="sort.field==field.name?sort.order=!sort.order:null;sort.field=field.name">
-                    <span ng-bind="field.header"></span>
-                    <span>&nbsp;</span>
-                    <span ng-show="sort.field=='{{field.name}}' && sort.order" class="glyphicon glyphicon-triangle-bottom"></span>
-                    <span ng-show="sort.field=='{{field.name}}' && !sort.order" class="glyphicon glyphicon-triangle-top"></span>
+                <th class="text-center" ng-repeat="field in fields" ng-if="field.grid" ng-click="sort.field == field.name ? sort.order =! sort.order : null ; sort.field = field.name">
+                    <span >
+                        <span ng-bind="field.header"></span>
+                        <span>&nbsp;</span>
+                        <span ng-show="sort.field == '{{field.name}}' && sort.order" class="glyphicon glyphicon-triangle-bottom"></span>
+                        <span ng-show="sort.field == '{{field.name}}' && !sort.order" class="glyphicon glyphicon-triangle-top"></span>
+                    </span>
                 </th>
                 <th class="text-center" ng-if="module!='katalogBarang'">Pilihan</th>
             </tr>
@@ -121,13 +123,13 @@
         <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
             <tr>
                 <td class="text-center" ng-if="access.selection">
-                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-show="!(module=='permintaanBarang'&&item.status!='APPROVED')">
+                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-show="!(module == 'permintaanBarang' && item.status != 'APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
-                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded&&!!item.katalogLength" ng-click="item.expanded=true">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded && !!item.katalogLength" ng-click="item.expanded=true">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded&&!!item.katalogLength" ng-click="item.expanded=false">
+                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded && !!item.katalogLength" ng-click="item.expanded=false">
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </td>
@@ -139,13 +141,13 @@
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </td>
-                <td ng-repeat="field in fields">
+                <td ng-repeat="field in fields" ng-if="field.grid">
                     <span ng-if=" field.type=='string'">
-                        <span ng-bind="item.{{field.name}}|limitTo: '30'"></span>
+                        <span ng-bind="item.{{field.name}} | limitTo:'30'"></span>
                         <span ng-show="item.{{field.name}}.length>30">...</span>
                     </span>
                     <span ng-if="field.type=='date'">
-                        <span ng-bind="item.{{field.name}}|date:field.filter"></span>
+                        <span ng-bind="item.{{field.name}} | date:field.filter"></span>
                     </span>
                     <span ng-if="field.type=='array'">
                         <span ng-bind="item.{{field.name}}"></span>
@@ -155,7 +157,7 @@
                         <span ng-if="!item.jenis">RUTIN</span>
                     </span>
                     <span ng-if="field.type=='periode'">
-                        <span ng-bind="item.{{field.name}}|periodeFilter|date:'MMMM yyyy'"></span>
+                        <span ng-bind="item.{{field.name}} | periodeFilter | date:'MMMM yyyy'"></span>
                     </span>
                     <span ng-if="field.type=='ppn'">
                         <span ng-if="item.ppn">YA</span>

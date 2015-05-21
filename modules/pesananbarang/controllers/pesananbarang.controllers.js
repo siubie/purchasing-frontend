@@ -9,30 +9,40 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         cart: false
     };
     $scope.fields = [{
-        "name": "nomor",
-        "header": "Nomor",
-        "type": "string"
+        name: "nomor",
+        header: "Nomor",
+        type: "string",
+        grid: true,
+        warning: true
     }, {
-        "name": "tanggal",
-        "header": "Tanggal",
-        "type": "date",
-        "filter": "longDate"
+        name: "tanggal",
+        header: "Tanggal",
+        type: "date",
+        filter: "longDate",
+        grid: true,
+        warning: true
     }, {
-        "name": "supplier.nama",
-        "header": "Supplier",
-        "type": "string"
+        name: "supplier.nama",
+        header: "Supplier",
+        type: "string",
+        grid: true,
+        warning: true
     }, {
-        "name": "ppn",
-        "header": "PPN",
-        "type": "ppn"
+        name: "ppn",
+        header: "PPN",
+        type: "ppn",
+        grid: true,
+        warning: true
     }, {
-        "name": "status",
-        "header": "Status",
-        "type": "string"
+        name: "status",
+        header: "Status",
+        type: "string",
+        grid: true,
+        warning: false
     }];
     $scope.sort = {
-        "field": "nomor",
-        "order": true
+        field: "nomor",
+        order: true
     };
     $scope.newForm = true;
     $scope.query = function() {
@@ -87,20 +97,66 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         }
     };
     $scope.new();
-    $scope.create = function() {
-        console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
-        $scope.pesananBarang.$save(function() {
-            $scope.modalInstance.close();
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Pesanan Barang Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            if (process == "create" && field.name == "nomor") {
+                field.warning = false;
+            }
+            var fieldName = field.name.split('.');
+            if (field.warning) {
+                switch (fieldName.length) {
+                    case 1:
+                        if (!!$scope.pesananBarang[field.name]) {
+                            warning = warning + field.header + " : " + $scope.pesananBarang[field.name] + "\n";
+                        }
+                        break;
+                    case 2:
+                        if (!!$scope.pesananBarang[fieldName[0]][fieldName[1]]) {
+                            warning = warning + field.header + " : " + $scope.pesananBarang[fieldName[0]][fieldName[1]] + "\n";
+                        }
+                        break;
+                }
+            }
         });
+        warning = warning + "Item Barang : \n";
+        angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang, i) {
+            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+        });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.pesananBarang.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        console.log("pesananBarang : ", JSON.stringify($scope.pesananBarang));
-        $scope.pesananBarang.$update(function() {
-            $scope.modalInstance.close();
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.pesananBarang.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(pesananBarang) {
-        var confirm = $window.confirm('Apakah Anda Yakin?');
+        $scope.pesananBarang = pesananBarang;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             pesananBarang.$delete(function() {
                 if (!!$scope.modalInstance) {

@@ -24,7 +24,7 @@
         </div> -->
         <div class="form-group col-xs-4 input-group-sm" ng-init="permintaanBarang.kategori='KOM'">
             <label for="kategori">Kategori</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem||!newForm" required></select>
+            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem || !newForm" required></select>
         </div>
         <div class="form-group col-xs-4 input-group-sm">
             <label for="periode">Periode:&nbsp;</label>
@@ -80,8 +80,8 @@
                             <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa=itemBarang.jumlah" required/>
                         </td>
                         <td class="text-center">
-                            <span ng-bind="itemBarang.tanggalButuh|date: 'dd MMMM yyyy'"></span>
-                            <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="timestamp.periode+leadTime" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                            <span ng-bind="itemBarang.tanggalButuh | date: 'dd MMMM yyyy'"></span>
+                            <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="itemBarang.minDate" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
                             </span>
                             <span>
                                 <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">

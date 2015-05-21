@@ -115,7 +115,6 @@ angular.module("fyGrid", [])
                     });
                     if (!cartLength) {
                         $scope.modalInstance.close();
-                        console.log("true ", cartLength);
                     }
                 };
                 $scope.$watch("items", function() {

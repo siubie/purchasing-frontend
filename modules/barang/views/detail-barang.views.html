@@ -34,7 +34,8 @@
             </td>
             <td>
                 <span ng-repeat="form in spesifikasiForms[barang.kategori]" ng-if="!!barang.spesifikasiUtama">
-                    <span ng-bind="form.header + ' : '+ spesifikasiUtama[form.name]"></span>
+                    <strong><span ng-bind="form.header"></span></strong>
+                    <span ng-bind="' : '+ spesifikasiUtama[form.name]"></span>
                     <br/>
                 </span>
                 <span ng-if="!!barang.spesifikasiTambahan">

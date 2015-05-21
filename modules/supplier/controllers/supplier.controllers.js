@@ -9,29 +9,39 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         cart: false
     };
     $scope.fields = [{
-        "name": "kode",
-        "type": "string",
-        "header": "Kode"
+        name: "kode",
+        type: "string",
+        header: "Kode",
+        grid: true,
+        warning: true
     }, {
-        "name": "nama",
-        "type": "string",
-        "header": "Nama"
+        name: "nama",
+        type: "string",
+        header: "Nama",
+        grid: true,
+        warning: true
     }, {
-        "name": "alamat",
-        "type": "string",
-        "header": "Alamat"
+        name: "alamat",
+        type: "string",
+        header: "Alamat",
+        grid: true,
+        warning: true
     }, {
-        "name": "nomorTelepon",
-        "type": "string",
-        "header": "Telepon"
+        name: "nomorTelepon",
+        type: "string",
+        header: "Telepon",
+        grid: true,
+        warning: true
     }, {
-        "name": "kategori",
-        "type": "array",
-        "header": "Kategori"
+        name: "kategori",
+        type: "array",
+        header: "Kategori",
+        grid: true,
+        warning: true
     }];
     $scope.sort = {
-        "field": "kode",
-        "order": false
+        field: "kode",
+        order: false
     };
     $scope.query = function() {
         $scope.kategoriBarangs = kategoriBarangFactory.query();
@@ -57,20 +67,50 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         });
     };
     $scope.new();
-    $scope.create = function() {
-        console.log("supplier : ", JSON.stringify($scope.supplier));
-        $scope.supplier.$save(function() {
-            $scope.modalInstance.close();
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Supplier Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            if (process == "create" && field.name == "kode") {
+                field.warning = false;
+            }
+            if (field.warning && !!$scope.supplier[field.name]) {
+                warning = warning + field.header + " : " + $scope.supplier[field.name] + "\n";
+            }
         });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.supplier.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        console.log("supplier : ", JSON.stringify($scope.supplier));
-        $scope.supplier.$update(function() {
-            $scope.modalInstance.close();
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.supplier.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(supplier) {
-        var confirm = $window.confirm('Apakah Anda Yakin?');
+        $scope.supplier = supplier;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             supplier.$delete(function() {
                 if (!!$scope.modalInstance) {

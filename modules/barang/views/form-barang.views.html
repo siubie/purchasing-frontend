@@ -12,6 +12,7 @@
     </div>
     <br/>
     <form class=row name="barangForm">
+        <div ng-init="setForm(barangForm)">
         <div class="form-group col-xs-12" ng-if="!newForm">
             <label for="kode">Kode:&nbsp;</label>
             <span ng-bind="barang.kode"></span>
@@ -70,5 +71,6 @@
                 <span>&nbsp;Hapus</span>
             </button>
         </div>
+    </div>
     </form>
 </div>

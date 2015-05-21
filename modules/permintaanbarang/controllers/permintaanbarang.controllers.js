@@ -1,7 +1,7 @@
-angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, $log, barangFactory, departemenFactory, kategoriBarangFactory, permintaanBarangFactory) {
+angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, barangFactory, departemenFactory, kategoriBarangFactory, permintaanBarangFactory) {
     $scope.module = "permintaanBarang";
     $scope.access = {
-        create: true,
+        create: false,
         update: true,
         delete: true,
         expand: true,
@@ -9,63 +9,75 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         cart: true
     };
     $scope.fields = [{
-        "name": "nomor",
-        "header": "Nomor",
-        "type": "string"
+        name: "nomor",
+        header: "Nomor",
+        type: "string",
+        grid: true,
+        warning: true
     }, {
-        "name": "tanggal",
-        "header": "Tanggal",
-        "type": "date",
-        "filter": "longDate"
+        name: "tanggal",
+        header: "Tanggal",
+        type: "date",
+        filter: "longDate",
+        grid: true,
+        warning: true
     }, {
-        "name": "jenis",
-        "header": "Jenis",
-        "type": "jenis"
+        name: "jenis",
+        header: "Jenis",
+        type: "jenis",
+        grid: true,
+        warning: true
     }, {
-        "name": "kategori",
-        "header": "Kategori",
-        "type": "array"
+        name: "kategori",
+        header: "Kategori",
+        type: "array",
+        grid: true,
+        warning: true
     }, {
-        "name": "periode",
-        "header": "Periode",
-        "type": "periode"
+        name: "periode",
+        header: "Periode",
+        type: "periode",
+        grid: true,
+        warning: true
     }, {
-        "name": "status",
-        "header": "Status",
-        "type": "string"
+        name: "status",
+        header: "Status",
+        type: "string",
+        grid: true,
+        warning: false
     }];
     $scope.cartFields = [{
-        "name": "spp",
-        "type": "string",
-        "header": "Nomor SPP"
+        name: "spp",
+        type: "string",
+        header: "Nomor SPP"
     }, {
-        "name": "barang.kode",
-        "type": "string",
-        "header": "Kode Barang"
+        name: "barang.kode",
+        type: "string",
+        header: "Kode Barang"
     }, {
-        "name": "barang.nama",
-        "type": "string",
-        "header": "Nama Barang"
+        name: "barang.nama",
+        type: "string",
+        header: "Nama Barang"
     }, {
-        "name": "qty",
-        "type": "String",
-        "header": "Jumlah SPP",
+        name: "qty",
+        type: "String",
+        header: "Jumlah SPP",
     }];
     $scope.search = {
-        "kategori": "KOM",
-        "status": ""
+        kategori: "KOM",
+        status: ""
     };
     $scope.sort = {
-        "field": "nomor",
-        "order": true
+        field: "nomor",
+        order: true
     };
     $scope.cart = [];
     $scope.timestamp = {
-        "periode": new Date()
+        periode: new Date()
     };
     $scope.opened = {
-        "periode": false,
-        "tanggalButuh": []
+        periode: false,
+        tanggalButuh: []
     };
     $scope.query = function() {
         $scope.barangs = barangFactory.query();
@@ -118,6 +130,12 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                     $scope.permintaanBarang.editable = true;
             }
             angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
+                var minDate = new Date($scope.permintaanBarang.tanggal);
+                if (minDate.getDate() >= 25) {
+                    minDate.setMonth(minDate.getMonth() + 1);
+                }
+                minDate.setDate(25 + itemBarang.leadTime);
+                itemBarang.minDate = minDate;
                 switch (itemBarang.status) {
                     case "APPROVED":
                     case "REJECTED":
@@ -147,9 +165,16 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             $scope.permintaanBarang.kategori = $scope.katalogBarang.kategori;
             $scope.katalogBarangCart = JSON.parse(localStorage.katalogBarangCart);
             angular.forEach($scope.katalogBarangCart, function(itemBarang) {
+                var minDate = new Date($scope.permintaanBarang.tanggal);
+                if (minDate.getDate() >= 25) {
+                    minDate.setMonth(minDate.getMonth() + 1);
+                }
+                minDate.setDate(25 + itemBarang.leadTime);
                 $scope.permintaanBarang.sppItemsList.push({
                     barang: itemBarang.barang,
-                    tanggalButuh: $filter("date")((new Date() + itemBarang.leadTime), "yyyy-MM-dd"),
+                    tanggalButuh: $filter("date")(minDate, "yyyy-MM-dd"),
+                    leadTime: itemBarang.leadTime,
+                    minDate: minDate,
                     jumlah: 1,
                     sisa: 1,
                     status: "RECEIVED",
@@ -160,27 +185,60 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         }
     };
     $scope.new();
-    $scope.create = function() {
-        $scope.permintaanBarang.$save(function() {
-            $scope.modalInstance.close();
-            $log.info("permintaanBarang created");
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Permintaan Barang Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            if (process == "create" && field.name == "nomor") {
+                field.warning = false;
+            }
+            if (field.warning && !!$scope.permintaanBarang[field.name]) {
+                warning = warning + field.header + " : " + $scope.permintaanBarang[field.name] + "\n";
+            }
         });
+        warning = warning + "Item Barang : \n";
+        angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang, i) {
+            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
+        });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.permintaanBarang.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        $scope.permintaanBarang.$update(function() {
-            $scope.modalInstance.close();
-            $log.info("permintaanBarang updated");
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.permintaanBarang.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(permintaanBarang) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.permintaanBarang = permintaanBarang;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             permintaanBarang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
                 $scope.query();
-                $log.info("permintaanBarang deleted");
             });
         }
     };
@@ -198,7 +256,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                     $scope.modalInstance.close();
                 }
                 $scope.query();
-                $log.info("permintaanBarang approved");
             });
         }
     };
@@ -216,7 +273,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                     $scope.modalInstance.close();
                 }
                 $scope.query();
-                $log.info("permintaanBarang rejected");
             });
         }
     };
@@ -232,7 +288,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             permintaanBarang.$update(function() {
                 $scope.query();
                 $scope.get(permintaanBarang.nomor);
-                $log.info("item permintaanBarang approved");
             });
         }
     };
@@ -255,7 +310,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             permintaanBarang.$update(function() {
                 $scope.query();
                 $scope.get(permintaanBarang.nomor);
-                $log.info("item permintaanBarang rejected");
             });
         }
     };
@@ -338,24 +392,18 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             $scope.uncheckAll();
         });
     };
-    $scope.$watch("timestamp", function() {
+    $scope.$watch("timestamp.periode", function() {
         $scope.permintaanBarang.periode = $filter("date")($scope.timestamp.periode, "MM-yyyy");
-        if (($filter("date")($scope.timestamp.periode, "yyyyMMdd")) < ($filter("date")(new Date(), "yyyyMMdd"))) {
-            $scope.timestamp.periode = new Date();
-        }
-        angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
-            itemBarang.tanggalButuh = $filter("date")($scope.timestamp.periode, "yyyy-MM-dd");
-        });
-    }, true);
+    });
     $scope.$watch("permintaanBarang.kategori", function(newKategori, oldKategori) {
         if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
             $scope.permintaanBarang.sppItemsList = [];
             $scope.addDetail();
         }
     });
-    $scope.$watchCollection("permintaanBarang.sppItemsList", function() {
-        angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
-            itemBarang.tanggalButuh = $filter("date")(itemBarang.tanggalButuh, "yyyy-MM-dd");
-        });
-    }, true);
+    // $scope.$watchCollection("permintaanBarang.sppItemsList", function() {
+    //     angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
+    //         itemBarang.tanggalButuh = $filter("date")(itemBarang.tanggalButuh, "yyyy-MM-dd");
+    //     });
+    // }, true);
 });

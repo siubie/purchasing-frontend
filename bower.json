@@ -1,5 +1,5 @@
 {
-  "name": "purchasing",
+  name: "purchasing",
   "version": "0.0.0",
   "description": "purchasing front end",
   "main": "index.html",

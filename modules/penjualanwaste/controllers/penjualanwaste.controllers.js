@@ -1,7 +1,7 @@
 angular.module("penjualanWaste.controllers", []).controller("penjualanWasteController", function($scope, $window, $modal, $filter, wasteFactory, penjualanWasteFactory) {
     $scope.module = "penjualanWaste";
     $scope.access = {
-        create: true,
+        create: false,
         update: true,
         delete: true,
         expand: false,
@@ -9,25 +9,33 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         cart: false
     };
     $scope.fields = [{
-        "name": "nomor",
-        "type": "string",
-        "header": "Nomor"
+        name: "nomor",
+        type: "string",
+        header: "Nomor",
+        grid: true,
+        warning: true
     }, {
-        "name": "tanggal",
-        "type": "date",
-        "header": "Tanggal"
+        name: "tanggal",
+        type: "date",
+        header: "Tanggal",
+        grid: true,
+        warning: true
     }, {
-        "name": "nama",
-        "type": "string",
-        "header": "Nama"
+        name: "nama",
+        type: "string",
+        header: "Nama",
+        grid: true,
+        warning: true
     }, {
-        "name": "alamat",
-        "type": "string",
-        "header": "Alamat"
+        name: "alamat",
+        type: "string",
+        header: "Alamat",
+        grid: true,
+        warning: true
     }];
     $scope.sort = {
-        "field": "nomor",
-        "order": true
+        field: "nomor",
+        order: true
     };
     $scope.query = function() {
         $scope.wastes = wasteFactory.query();
@@ -64,20 +72,54 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         }
     };
     $scope.new();
-    $scope.create = function() {
-        console.log("penjualanWaste : ", JSON.stringify($scope.penjualanWaste));
-        $scope.penjualanWaste.$save(function() {
-            $scope.modalInstance.close();
+    $scope.warning = function(process) {
+        var warning = "Anda Akan ";
+        switch (process) {
+            case "create":
+                warning = warning + "Membuat ";
+                break;
+            case "update":
+                warning = warning + "Mengubah ";
+                break;
+            case "delete":
+                warning = warning + "Menghapus ";
+                break;
+        }
+        warning = warning + "Data Retur Barang Berikut : \n\n";
+        angular.forEach($scope.fields, function(field) {
+            if (process == "create" && field.name == "nomor") {
+                field.warning = false;
+            }
+            if (field.warning && !!$scope.penjualanWaste[field.name]) {
+                warning = warning + field.header + " : " + $scope.penjualanWaste[field.name] + "\n";
+            }
         });
+        warning = warning + "Item Barang : \n";
+        angular.forEach($scope.penjualanWaste.wasteItemsList, function(itemBarang, i) {
+            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.waste.nama + " " + itemBarang.jumlah + " " + itemBarang.waste.satuan + "\n";
+        });
+        warning = warning + "\nApakah Anda Yakin?";
+        return warning;
+    };
+    $scope.create = function() {
+        var confirm = $window.confirm($scope.warning("create"));
+        if (confirm) {
+            $scope.penjualanWaste.$save(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.update = function() {
-        console.log("penjualanWaste : ", JSON.stringify($scope.penjualanWaste));
-        $scope.penjualanWaste.$update(function() {
-            $scope.modalInstance.close();
-        });
+        var confirm = $window.confirm($scope.warning("update"));
+        if (confirm) {
+            $scope.penjualanWaste.$update(function() {
+                $scope.modalInstance.close();
+            });
+        }
     };
     $scope.delete = function(penjualanWaste) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.penjualanWaste = penjualanWaste;
+        var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
             penjualanWaste.$delete(function() {
                 if (!!$scope.modalInstance) {
