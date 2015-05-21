@@ -107,6 +107,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         if (confirm) {
             $scope.waste.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Waste Telah Dibuat...");
             });
         }
     };
@@ -115,6 +116,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         if (confirm) {
             $scope.waste.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Waste Telah Diubah...");
             });
         }
     };
@@ -126,6 +128,7 @@ angular.module("waste.controllers", []).controller("wasteController", function($
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Data Waste Telah Dihapus...");
                 $scope.query();
             });
         }

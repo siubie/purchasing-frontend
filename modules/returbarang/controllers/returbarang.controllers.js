@@ -144,6 +144,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         if (confirm) {
             $scope.returBarang.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Retur Barang Telah Dibuat...");
             });
         }
     };
@@ -152,6 +153,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         if (confirm) {
             $scope.returBarang.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Retur Barang Telah Diubah...");
             });
         }
     };
@@ -163,6 +165,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Data Retur Barang Telah Dihapus...");
                 $scope.query();
             });
         }

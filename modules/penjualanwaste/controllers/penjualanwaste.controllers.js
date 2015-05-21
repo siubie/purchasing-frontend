@@ -106,6 +106,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         if (confirm) {
             $scope.penjualanWaste.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Penjualan Waste Telah Dibuat...");
             });
         }
     };
@@ -114,6 +115,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         if (confirm) {
             $scope.penjualanWaste.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Penjualan Waste Telah Diubah...");
             });
         }
     };
@@ -125,6 +127,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Data Penjualan Waste Telah Dihapus...");
                 $scope.query();
             });
         }

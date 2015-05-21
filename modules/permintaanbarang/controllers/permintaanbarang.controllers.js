@@ -219,6 +219,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         if (confirm) {
             $scope.permintaanBarang.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Permintaan Barang Telah Dibuat...");
             });
         }
     };
@@ -227,6 +228,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         if (confirm) {
             $scope.permintaanBarang.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Permintaan Barang Telah Diubah...");
             });
         }
     };
@@ -238,6 +240,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Data Permintaan Barang Telah Dihapus...");
                 $scope.query();
             });
         }
@@ -255,6 +258,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Semua Item Permintaan Barang Telah Disetujui...");
                 $scope.query();
             });
         }
@@ -272,6 +276,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Semua Item Permintaan Barang Telah Ditolak...");
                 $scope.query();
             });
         }
@@ -286,6 +291,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 }
             });
             permintaanBarang.$update(function() {
+                toastr.success("Item Permintaan Barang Telah Disetujui...");
                 $scope.query();
                 $scope.get(permintaanBarang.nomor);
             });
@@ -308,6 +314,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 }
             });
             permintaanBarang.$update(function() {
+                toastr.success("Item Permintaan Barang Telah Ditolak...");
                 $scope.query();
                 $scope.get(permintaanBarang.nomor);
             });

@@ -161,6 +161,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         if (confirm) {
             $scope.katalogBarang.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Katalog Barang Telah Dibuat...");
             });
         }
     };
@@ -169,6 +170,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         if (confirm) {
             $scope.katalogBarang.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Katalog Barang Telah Diubah...");
             });
         }
     };
@@ -179,6 +181,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
             katalogBarang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
+                    toastr.success("Data Katalog Barang Telah Dihapus...");
                 }
                 $scope.query();
             });

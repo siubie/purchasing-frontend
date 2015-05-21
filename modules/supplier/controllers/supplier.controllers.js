@@ -97,6 +97,7 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         if (confirm) {
             $scope.supplier.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Supplier Telah Dibuat...");
             });
         }
     };
@@ -105,6 +106,7 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         if (confirm) {
             $scope.supplier.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Supplier Telah Diubah...");
             });
         }
     };
@@ -115,6 +117,7 @@ angular.module('supplier.controllers', []).controller("supplierController", func
             supplier.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
+                    toastr.success("Data Supplier Telah Dihapus...");
                 }
                 $scope.query();
             });

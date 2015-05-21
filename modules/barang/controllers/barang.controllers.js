@@ -167,6 +167,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         if (confirm) {
             $scope.barang.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Barang Telah Dibuat...");
             });
         }
     };
@@ -175,6 +176,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         if (confirm) {
             $scope.barang.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Barang Telah Diubah...");
             });
         }
     };
@@ -188,6 +190,7 @@ angular.module("barang.controllers", []).controller("barangController", function
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Data Barang Telah Dihapus...");
                 $scope.query();
             });
         }

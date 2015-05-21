@@ -146,6 +146,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         if (confirm) {
             $scope.penerimaanBarang.$save(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Penerimaan Barang Telah Dibuat...");
             });
         }
     };
@@ -154,6 +155,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         if (confirm) {
             $scope.penerimaanBarang.$update(function() {
                 $scope.modalInstance.close();
+                toastr.success("Data Penerimaan Barang Telah Diubah...");
             });
         }
     };
@@ -165,6 +167,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
+                toastr.success("Data Penerimaan Barang Telah Dihapus...");
                 $scope.query();
             });
         }
