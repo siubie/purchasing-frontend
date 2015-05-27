@@ -11,13 +11,13 @@ var todo = new Object({
         "informasi perubahan harga di SP",
         "gunakan return untuk fungsi dengan kembalian",
         "detail menggunakan view dari form",
-        "kategori diubah jadi golongan barang",
         "lengkapi field supplier",
         "spesifikasi hover di SPP",
         "scrollfix di item barang",
         "cek urutan input data setiap form di foxpro",
         "sp setelah supplier item barang baru yang lain",
-        "autofocus di semua form"
+        "autofocus di semua form",
+        "pindah login typeahead-on-select dan ng-change ke controller"
     ],
     bisnis: []
 });

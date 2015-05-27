@@ -254,13 +254,4 @@ angular.module("fyGrid", [])
             start = +start;
             if (!!input) return input.slice(start);
         };
-    })
-    .filter("periodeFilter", function() {
-        return function(input) {
-            if (!!input) {
-                var splitted = input.split("-");
-                var date = new Date(splitted[1], splitted[0] - 1, 15, 0, 0, 0, 0);
-                return date;
-            }
-        };
     });

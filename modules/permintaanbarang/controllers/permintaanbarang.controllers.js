@@ -1,7 +1,7 @@
-angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, barangFactory, departemenFactory, kategoriBarangFactory, satuanGudangFactory, permintaanBarangFactory) {
+angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, barangFactory, departemenFactory, kategoriBarangFactory, satuanGudangFactory, katalogBarangFactory, permintaanBarangFactory) {
     $scope.module = "permintaanBarang";
     $scope.access = {
-        create: false,
+        create: true,
         update: true,
         delete: true,
         expand: true,
@@ -86,6 +86,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             });
             $scope.kategoriBarangArray.sort();
         });
+        $scope.katalogBarangs = katalogBarangFactory.query();
         $scope.permintaanBarangs = permintaanBarangFactory.query(function() {
             angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
                 switch (permintaanBarang.status) {
@@ -205,7 +206,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i + 1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -316,6 +317,42 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             });
         }
     };
+    $scope.findHarga = function(kodeBarang) {
+        var newestHarga = new Date("1970-01-01");
+        var harga = 0;
+        angular.forEach($scope.katalogBarangs, function(katalogBarang) {
+            if (katalogBarang.barang.kode == kodeBarang) {
+                angular.forEach(katalogBarang.historyHarga, function(itemHarga) {
+                    itemHarga.tanggal = new Date(itemHarga.tanggal);
+                    if (itemHarga.tanggal > newestHarga) {
+                        harga = itemHarga.harga;
+                        newest = itemHarga.tanggal;
+                    }
+                    if (itemHarga.tanggal == newestHarga && itemHarga.harga > harga) {
+                        harga = itemHarga;
+                    }
+                });
+            }
+        });
+        return harga;
+    };
+    $scope.findLeadTime = function(kodeBarang) {
+        var leadTime = 0;
+        angular.forEach($scope.katalogBarangs, function(katalogBarang) {
+            if ((katalogBarang.barang.kode == kodeBarang) && (katalogBarang.leadTime > leadTime)) {
+                leadTime = katalogBarang.leadTime;
+            }
+        });
+        return leadTime;
+    };
+    $scope.calcMinDate = function(leadTime) {
+        var minDate = new Date($scope.permintaanBarang.tanggal);
+        if (minDate.getDate() >= 25) {
+            minDate.setMonth(minDate.getMonth() + 1);
+        }
+        minDate.setDate(25 + leadTime);
+        return minDate;
+    };
     $scope.openCreate = function() {
         $scope.newForm = true;
         $scope.cartSystem = false;
@@ -396,9 +433,4 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             $scope.addDetail();
         }
     });
-    // $scope.$watchCollection("permintaanBarang.sppItemsList", function() {
-    //     angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
-    //         itemBarang.tanggalButuh = $filter("date")(itemBarang.tanggalButuh, "yyyy-MM-dd");
-    //     });
-    // }, true);
 });

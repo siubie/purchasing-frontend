@@ -1,7 +1,7 @@
 angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, $http, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
-        create: false,
+        create: true,
         update: true,
         delete: true,
         expand: false,
@@ -44,7 +44,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         field: "nomor",
         order: true
     };
-    $scope.newForm = true;
     $scope.query = function() {
         $scope.suppliers = supplierFactory.query();
         $scope.permintaanBarangs = permintaanBarangFactory.query();
@@ -57,6 +56,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $http.jsonp("http://jsonrates.com/get/?base=IDR&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK").success(function(response) {
             $scope.kurs = response.rates;
         });
+        $scope.sppItemsList = [];
     };
     $scope.query();
     $scope.get = function(id) {
@@ -134,7 +134,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i + 1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -183,6 +183,30 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
         return totalCost;
     };
+    $scope.changeItemBarang = function (index, kodeBarang) {
+        angular.forEach($scope.sppItemsList[index], function(itemBarang) {
+            if (itemBarang.barang.kode == kodeBarang) {
+                $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.harga;
+                $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
+                $scope.pesananBarang.spItemsList[index].qty = itemBarang.jumlah;
+            }
+        });
+    };
+    $scope.openCreate = function() {
+        $scope.newForm = true;
+        $scope.cartSystem = false;
+        $scope.new();
+        $scope.addDetail();
+        $scope.modalInstance = $modal.open({
+            templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
+            size: 'lg',
+            backdrop: 'static',
+            scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.query();
+        });
+    };
     $scope.openRead = function(pesananBarang) {
         $scope.newForm = false;
         $scope.get(pesananBarang.nomor);
@@ -221,6 +245,15 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             backdrop: 'static',
             controller: "penerimaanBarangController",
             scope: $scope
+        });
+    };
+    $scope.addDetail = function() {
+        $scope.pesananBarang.spItemsList.push({
+            qty: 0,
+            harga: 0,
+            hargaKatalog: 0,
+            status: "RECEIVED",
+            editable: true
         });
     };
     $scope.removeDetail = function(index) {

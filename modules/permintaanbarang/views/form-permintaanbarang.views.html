@@ -43,12 +43,11 @@
                 </thead>
                 <tbody ng-repeat="itemBarang in permintaanBarang.sppItemsList">
                     <tr ng-if="itemBarang.editable">
-                        <td class="text-center" ng-if="!!cartSystem" ng-bind="itemBarang.barang.nama"></td>
+                        <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.barang.nama"></td>
                         <td class="input-group-sm" ng-if="!cartSystem">
                             <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
-                            typeahead-editable="false" required/>
+                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = findHarga($item.kode); itemBarang.leadTime = findLeadTime($item.kode); itemBarang.minDate = calcMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate" required/>
                         </td>
-                        <!-- <td class="text-center" ng-bind="itemBarang.barang.satuan"></td> -->
                         <td class="text-center input-group-sm">
                             <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" required>
                                 <option value="">-- Pilih Satuan --</option>
