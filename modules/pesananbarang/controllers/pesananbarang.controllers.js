@@ -88,6 +88,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                 $scope.pesananBarang.spItemsList.push({
                     spp: itemBarang.spp,
                     barang: itemBarang.barang,
+                    satuan: itemBarang.satuan,
                     qty: itemBarang.qty,
                     harga: itemBarang.harga,
                     hargaKatalog: itemBarang.hargaKatalog,
@@ -133,7 +134,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang, i) {
-            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -178,7 +179,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     $scope.totalCost = function() {
         var totalCost = 0;
         angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-            totalCost = totalCost + ((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100));
+            totalCost = totalCost + (((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100)) * itemBarang.qty);
         });
         return totalCost;
     };

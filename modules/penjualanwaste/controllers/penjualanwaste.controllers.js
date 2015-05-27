@@ -96,7 +96,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.penjualanWaste.wasteItemsList, function(itemBarang, i) {
-            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.waste.nama + " " + itemBarang.jumlah + " " + itemBarang.waste.satuan + "\n";
+            warning = warning + "     " + (i+1) + ". " + itemBarang.waste.nama + " " + itemBarang.jumlah + " " + itemBarang.waste.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;

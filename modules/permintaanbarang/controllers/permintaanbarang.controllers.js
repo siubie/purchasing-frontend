@@ -1,4 +1,4 @@
-angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, barangFactory, departemenFactory, kategoriBarangFactory, permintaanBarangFactory) {
+angular.module("permintaanBarang.controllers", []).controller("permintaanBarangController", function($scope, $window, $state, $modal, $filter, barangFactory, departemenFactory, kategoriBarangFactory, satuanGudangFactory, permintaanBarangFactory) {
     $scope.module = "permintaanBarang";
     $scope.access = {
         create: false,
@@ -34,12 +34,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         grid: true,
         warning: true
     }, {
-        name: "periode",
-        header: "Periode",
-        type: "periode",
-        grid: true,
-        warning: true
-    }, {
         name: "status",
         header: "Status",
         type: "string",
@@ -72,16 +66,19 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         order: true
     };
     $scope.cart = [];
-    $scope.timestamp = {
-        periode: new Date()
-    };
     $scope.opened = {
-        periode: false,
         tanggalButuh: []
     };
     $scope.query = function() {
         $scope.barangs = barangFactory.query();
         $scope.departemens = departemenFactory.query();
+        $scope.satuanGudangs = satuanGudangFactory.query(function() {
+            $scope.satuanGudangArray = [];
+            angular.forEach($scope.satuanGudangs, function(satuanGudang) {
+                $scope.satuanGudangArray.push(satuanGudang.satuan);
+            });
+            $scope.satuanGudangArray.sort();
+        });
         $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
             $scope.kategoriBarangArray = [];
             angular.forEach($scope.kategoriBarangs, function(kategoriBarang) {
@@ -155,7 +152,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             nomor: "SPP" + new Date().getTime(),
             tanggal: $filter("date")(new Date(), "yyyy-MM-dd"),
             jenis: false,
-            periode: $filter("date")($scope.timestamp.periode, "MM-yyyy"),
             status: "RECEIVED",
             sppItemsList: [],
             editable: true
@@ -209,7 +205,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang, i) {
-            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -375,11 +371,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
     $scope.removeDetail = function(index) {
         $scope.permintaanBarang.sppItemsList.splice(index, 1);
     };
-    $scope.openCalendar = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened.periode = true;
-    };
     $scope.openTanggalButuh = function($event, index) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -399,9 +390,6 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             $scope.uncheckAll();
         });
     };
-    $scope.$watch("timestamp.periode", function() {
-        $scope.permintaanBarang.periode = $filter("date")($scope.timestamp.periode, "MM-yyyy");
-    });
     $scope.$watch("permintaanBarang.kategori", function(newKategori, oldKategori) {
         if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
             $scope.permintaanBarang.sppItemsList = [];

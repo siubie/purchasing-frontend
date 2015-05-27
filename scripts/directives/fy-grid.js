@@ -171,6 +171,7 @@ angular.module("fyGrid", [])
                                             $scope.cart.push({
                                                 spp: item.nomor,
                                                 barang: itemBarang.barang,
+                                                satuan: itemBarang.satuan,
                                                 qty: itemBarang.sisa,
                                                 harga: itemBarang.harga,
                                                 hargaKatalog: itemBarang.harga

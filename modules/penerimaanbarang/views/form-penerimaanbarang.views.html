@@ -5,10 +5,10 @@
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
-        <h3>Buat Penerimaan Barang</h3>
+        <h3>Buat Penerimaan Barang (LPB)</h3>
     </div>
     <div ng-show="!newForm">
-        <h3>Ubah Penerimaan Barang</h3>
+        <h3>Ubah Penerimaan Barang (LPB)</h3>
     </div>
     <br/>
     <form class="row" name="penerimaanBarangForm">
@@ -72,7 +72,7 @@
                 <tr ng-repeat="itemBarang in penerimaanBarang.lpbItemsList">
                     <td class="text-center" ng-bind="itemBarang.spp"></td>
                     <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                    <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                    <td class="text-center" ng-bind="itemBarang.satuan"></td>
                     <td class="input-group-sm">
                         <input class="form-control text-center" type="number" name="qty" ng-model="itemBarang.qty" min="1" max="{{::itemBarang.qty}}" pattern="\d+" required/>
                     </td>

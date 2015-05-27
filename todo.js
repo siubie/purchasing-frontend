@@ -10,7 +10,14 @@ var todo = new Object({
         "ganti semua watch ke ngChange",
         "informasi perubahan harga di SP",
         "gunakan return untuk fungsi dengan kembalian",
-        "detail menggunakan view dari form"
+        "detail menggunakan view dari form",
+        "kategori diubah jadi golongan barang",
+        "lengkapi field supplier",
+        "spesifikasi hover di SPP",
+        "scrollfix di item barang",
+        "cek urutan input data setiap form di foxpro",
+        "sp setelah supplier item barang baru yang lain",
+        "autofocus di semua form"
     ],
     bisnis: []
 });

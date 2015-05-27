@@ -91,6 +91,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
                 $scope.penerimaanBarang.lpbItemsList.push({
                     barang: itemBarang.barang,
+                    satuan: itemBarang.satuan,
                     spp: itemBarang.spp,
                     qty: itemBarang.qty,
                     harga: itemBarang.harga,
@@ -136,7 +137,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang, i) {
-            warning = warning + "\t\t\t" + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;

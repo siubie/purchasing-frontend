@@ -39,7 +39,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         grid: true,
         warning: true
     }, {
-        name: "spesifikasiTambahan",
+        name: "spesifikasi",
         type: "string",
         header: "Spesifikasi",
         grid: false,
@@ -121,8 +121,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.barang = barangFactory.get({
             id: id
         }, function() {
-            $scope.spesifikasiUtama = {};
-            $scope.spesifikasiUtama = angular.fromJson($scope.barang.spesifikasiUtama);
+            $scope.spesifikasi = {};
             $scope.barang.editable = true;
         });
     };
@@ -131,7 +130,6 @@ angular.module("barang.controllers", []).controller("barangController", function
             kode: "BRG" + new Date().getTime(),
             editable: true
         });
-        $scope.spesifikasiUtama = {};
     };
     $scope.new();
     $scope.setForm = function(form) {
@@ -195,47 +193,45 @@ angular.module("barang.controllers", []).controller("barangController", function
             });
         }
     };
-    $scope.changeSpesifikasiUtama = function(spec, formName) {
+    $scope.changeSpesifikasi = function(spec, formName) {
         if (!spec) {
-            $scope.spesifikasiUtama[formName] = "";
+            $scope.spesifikasi[formName] = "";
         }
         switch ($scope.barang.kategori) {
             case "BNG":
                 $scope.barang.nama = "";
-                if (!!$scope.spesifikasiUtama.jenis) {
-                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasiUtama.jenis;
+                if (!!$scope.spesifikasi.jenis) {
+                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasi.jenis;
                 }
-                if (!!$scope.spesifikasiUtama.sistemNomor && $scope.spesifikasiUtama.sistemNomor != "D") {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.sistemNomor;
+                if (!!$scope.spesifikasi.sistemNomor && $scope.spesifikasi.sistemNomor != "D") {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.sistemNomor;
                 }
-                if (!!$scope.spesifikasiUtama.nomor) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.nomor;
+                if (!!$scope.spesifikasi.nomor) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.nomor;
                 }
-                if (!!$scope.spesifikasiUtama.sistemNomor && $scope.spesifikasiUtama.sistemNomor == "D") {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.sistemNomor;
+                if (!!$scope.spesifikasi.sistemNomor && $scope.spesifikasi.sistemNomor == "D") {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.sistemNomor;
                 }
-                if (!!$scope.spesifikasiUtama.proses) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.proses;
+                if (!!$scope.spesifikasi.proses) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.proses;
                 }
-                $scope.barang.jenis = $scope.spesifikasiUtama.jenis;
-                $scope.barang.spesifikasiUtama = JSON.stringify($scope.spesifikasiUtama);
+                $scope.barang.jenis = $scope.spesifikasi.jenis;
                 break;
             case "KIM":
                 $scope.barang.nama = "";
-                if (!!$scope.spesifikasiUtama.jenis) {
-                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasiUtama.jenis;
+                if (!!$scope.spesifikasi.jenis) {
+                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasi.jenis;
                 }
-                if (!!$scope.spesifikasiUtama.brand) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.brand;
+                if (!!$scope.spesifikasi.brand) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.brand;
                 }
-                if (!!$scope.spesifikasiUtama.warna) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.warna;
+                if (!!$scope.spesifikasi.warna) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.warna;
                 }
-                if (!!$scope.spesifikasiUtama.keterangan) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasiUtama.keterangan;
+                if (!!$scope.spesifikasi.keterangan) {
+                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.keterangan;
                 }
-                $scope.barang.jenis = $scope.spesifikasiUtama.jenis;
-                $scope.barang.spesifikasiUtama = JSON.stringify($scope.spesifikasiUtama);
+                $scope.barang.jenis = $scope.spesifikasi.jenis;
                 break;
         }
     };

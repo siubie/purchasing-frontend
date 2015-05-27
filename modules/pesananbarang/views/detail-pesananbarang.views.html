@@ -2,7 +2,7 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Pesanan Barang</h3>
+    <h3>Detail Pesanan Barang (SP)</h3>
     <table class="table table-bordered table-condensed">
         <tr>
             <td class="col-xs-6">
@@ -85,10 +85,10 @@
                     <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
                         <td class="text-center" ng-bind="itemBarang.spp"></td>
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                        <td class="text-center" ng-bind="itemBarang.satuan"></td>
                         <td class="text-center" ng-bind="itemBarang.qty"></td>
                         <td class="text-center" ng-bind="itemBarang.harga | number:2"></td>
-                        <td class="text-center" ng-bind="(itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100) | number:2"></td>
+                        <td class="text-center" ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.qty | number:2"></td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
                     </tr>
                     <tr>

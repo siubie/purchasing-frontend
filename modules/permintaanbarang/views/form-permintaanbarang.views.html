@@ -5,10 +5,10 @@
         <span class="glyphicon glyphicon-remove"></span>
     </button>
     <div ng-show="newForm">
-        <h3>Buat Permintaan Barang</h3>
+        <h3>Buat Permintaan Barang (SPP)</h3>
     </div>
     <div ng-show="!newForm">
-        <h3>Ubah Permintaan Barang</h3>
+        <h3>Ubah Permintaan Barang (SPP)</h3>
     </div>
     <br/>
     <form class="row" name="permintaanBarangForm">
@@ -16,26 +16,9 @@
             <label for="nomor">Nomor:&nbsp;</label>
             <span ng-bind="permintaanBarang.nomor"></span>
         </div>
-        <!-- <div class="form-group col-xs-4 input-group-sm">
-            <label for="departemen">Peminta</label>
-            <select class="form-control" id="departemen" name="departemen" ng-model="permintaanBarang.departemen" ng-options="departemen.departemen for departemen in departemens|orderBy: 'departemen.departemen' track by departemen.departemen" required>
-                <option value="">-- Pilih Departemen --</option>
-            </select>
-        </div> -->
         <div class="form-group col-xs-4 input-group-sm" ng-init="permintaanBarang.kategori='KOM'">
-            <label for="kategori">Kategori</label>
+            <label for="kategori">Kategori (Golongan)</label>
             <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem || !newForm" required></select>
-        </div>
-        <div class="form-group col-xs-4 input-group-sm">
-            <label for="periode">Periode:&nbsp;</label>
-            <span ng-bind="permintaanBarang.periode | periodeFilter | date: 'MMMM yyyy'"></span>
-            <span ng-model="timestamp.periode" datepicker-mode="'month'" datepicker-popup="MMMM yyyy" datepicker-options="{minMode: 'month', maxMode: 'year'}" init-date="permintaanBarang.tanggal" min-date="permintaanBarang.tanggal" is-open="opened.periode" current-text="Sekarang"
-            clear-text="Hapus" close-text="Tutup"></span>
-            <span>
-                <button class="btn btn-default btn-sm" type="button" ng-click="openCalendar($event)">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </button>
-            </span>
         </div>
         <div class="form-group col-xs-4 input-group-sm">
             <label for="jenis">
@@ -65,17 +48,13 @@
                             <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
                             typeahead-editable="false" required/>
                         </td>
-                        <!-- <td class="input-group-sm" ng-if="!cartSystem">
-                            <ui-select ng-model="itemBarang.barang" theme="bootstrap" required>
-                                <ui-select-match placeholder="Masukkan Barang...">
-                                    <span ng-bind="$select.selected.nama"></span>
-                                </ui-select-match>
-                                <ui-select-choices repeat="barang in barangs | filter:$select.search | filter:{kategori:permintaanBarang.kategori} | orderBy:'nama'">
-                                    <span ng-bind="barang.nama"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </td> -->
-                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                        <!-- <td class="text-center" ng-bind="itemBarang.barang.satuan"></td> -->
+                        <td class="text-center input-group-sm">
+                            <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" required>
+                                <option value="">-- Pilih Satuan --</option>
+                                <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang == itemBarang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
+                            </select>
+                        </td>
                         <td class="text-center input-group-sm">
                             <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa=itemBarang.jumlah" required/>
                         </td>
@@ -100,8 +79,8 @@
                     </tr>
                     <tr ng-if="!itemBarang.editable">
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.barang.jumlah"></td>
+                        <td class="text-center" ng-bind="itemBarang.satuan"></td>
+                        <td class="text-center" ng-bind="itemBarang.jumlah"></td>
                         <td class="text-center" ng-bind="itemBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
                         <td class="text-center" ng-bind="itemBarang.keterangan"></td>
                         <td></td>
