@@ -86,9 +86,9 @@
                         <td class="text-center" ng-bind="itemBarang.spp"></td>
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                         <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.qty"></td>
+                        <td class="text-center" ng-bind="itemBarang.jumlah"></td>
                         <td class="text-center" ng-bind="itemBarang.harga | number:2"></td>
-                        <td class="text-center" ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.qty | number:2"></td>
+                        <td class="text-center" ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.jumlah | number:2"></td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
                     </tr>
                     <tr>

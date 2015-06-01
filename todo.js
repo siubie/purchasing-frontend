@@ -17,7 +17,8 @@ var todo = new Object({
         "cek urutan input data setiap form di foxpro",
         "sp setelah supplier item barang baru yang lain",
         "autofocus di semua form",
-        "pindah login typeahead-on-select dan ng-change ke controller"
+        "pindah login typeahead-on-select dan ng-change ke controller",
+        "ubah sistem cari lead time dan harga menggunakan get"
     ],
     bisnis: []
 });

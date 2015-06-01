@@ -1,4 +1,4 @@
-angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, $http, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
+angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, $http, kategoriBarangFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
         create: true,
@@ -46,6 +46,13 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.query = function() {
         $scope.suppliers = supplierFactory.query();
+        $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
+            $scope.kategoriBarangArray = [];
+            angular.forEach($scope.kategoriBarangs, function(kategoriBarang) {
+                $scope.kategoriBarangArray.push(kategoriBarang.kode);
+            });
+            $scope.kategoriBarangArray.sort();
+        });
         $scope.permintaanBarangs = permintaanBarangFactory.query();
         $scope.pesananBarangs = pesananBarangFactory.query(function() {
             angular.forEach($scope.pesananBarangs, function(pesananBarang) {
@@ -89,7 +96,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                     spp: itemBarang.spp,
                     barang: itemBarang.barang,
                     satuan: itemBarang.satuan,
-                    qty: itemBarang.qty,
+                    jumlah: itemBarang.jumlah,
                     harga: itemBarang.harga,
                     hargaKatalog: itemBarang.hargaKatalog,
                     status: "RECEIVED"
@@ -134,7 +141,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i + 1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i + 1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -179,7 +186,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     $scope.totalCost = function() {
         var totalCost = 0;
         angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-            totalCost = totalCost + (((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100)) * itemBarang.qty);
+            totalCost = totalCost + (((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100)) * itemBarang.jumlah);
         });
         return totalCost;
     };
@@ -188,9 +195,21 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             if (itemBarang.barang.kode == kodeBarang) {
                 $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.harga;
                 $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
-                $scope.pesananBarang.spItemsList[index].qty = itemBarang.jumlah;
+                $scope.pesananBarang.spItemsList[index].jumlah = itemBarang.jumlah;
             }
         });
+    };
+    $scope.addDetail = function() {
+        $scope.pesananBarang.spItemsList.push({
+            jumlah: 0,
+            harga: 0,
+            hargaKatalog: 0,
+            status: "RECEIVED",
+            editable: true
+        });
+    };
+    $scope.removeDetail = function(index) {
+        $scope.pesananBarang.spItemsList.splice(index, 1);
     };
     $scope.openCreate = function() {
         $scope.newForm = true;
@@ -247,16 +266,10 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             scope: $scope
         });
     };
-    $scope.addDetail = function() {
-        $scope.pesananBarang.spItemsList.push({
-            qty: 0,
-            harga: 0,
-            hargaKatalog: 0,
-            status: "RECEIVED",
-            editable: true
-        });
-    };
-    $scope.removeDetail = function(index) {
-        $scope.pesananBarang.spItemsList.splice(index, 1);
-    };
+    $scope.$watch("pesananBarang.kategori", function(newKategori, oldKategori) {
+        if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
+            $scope.permintaanBarang.sppItemsList = [];
+            $scope.addDetail();
+        }
+    });
 });

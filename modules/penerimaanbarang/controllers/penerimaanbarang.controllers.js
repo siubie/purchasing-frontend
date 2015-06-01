@@ -93,7 +93,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                     barang: itemBarang.barang,
                     satuan: itemBarang.satuan,
                     spp: itemBarang.spp,
-                    qty: itemBarang.qty,
+                    jumlah: itemBarang.jumlah,
                     harga: itemBarang.harga,
                     status: "RECEIVED",
                 });
@@ -137,7 +137,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qty + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;

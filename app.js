@@ -33,6 +33,6 @@ angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
 
 angular.module('purchasing.services', []).factory('constFactory', function() {
     return {
-        env: "local"
+        env: "production"
     };
 });

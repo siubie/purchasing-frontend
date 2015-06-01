@@ -69,9 +69,9 @@
                 <tr ng-repeat="itemBarang in returBarang.returItemsList">
                     <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                     <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                    <td class="text-center" ng-bind="itemBarang.qtyDatang"></td>
+                    <td class="text-center" ng-bind="itemBarang.jumlahDatang"></td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="qtyRetur" ng-model="itemBarang.qtyRetur" min="1" max="{{itemBarang.qtyDatang}}" ng-max="itemBarang.qtyDatang" pattern="\d+" required/>
+                        <input class="form-control text-center" type="number" name="jumlahRetur" ng-model="itemBarang.jumlahRetur" min="1" max="{{itemBarang.jumlahDatang}}" ng-max="itemBarang.jumlahDatang" pattern="\d+" required/>
                     </td>
                     <td class="text-center" ng-bind="itemBarang.harga"></td>
                     <td class="input-group-sm">

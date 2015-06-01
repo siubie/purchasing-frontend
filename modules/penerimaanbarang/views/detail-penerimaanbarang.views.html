@@ -50,7 +50,10 @@
             <td>
                 <strong>Valuta</strong>
             </td>
-            <td ng-bind="penerimaanBarang.valuta"></td>
+            <td>
+                <span ng-bind="penerimaanBarang.valuta"></span>
+                <span> %</span>
+            </td>
         </tr>
         <tr>
             <td>
@@ -62,7 +65,7 @@
             <td>
                 <strong>Kurs</strong>
             </td>
-            <td ng-bind="penerimaanBarang.kurs"></td>
+            <td ng-bind="penerimaanBarang.kurs | number"></td>
         </tr>
         <tr>
             <td>
@@ -88,7 +91,7 @@
                         <td class="text-center" ng-bind="itemBarang.spp"></td>
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                         <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.qty"></td>
+                        <td class="text-center" ng-bind="itemBarang.jumlah"></td>
                         <td class="text-center" ng-bind="itemBarang.harga"></td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
                     </tr>

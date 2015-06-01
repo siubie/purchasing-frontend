@@ -17,11 +17,11 @@
                 <label for="kode">Kode:&nbsp;</label>
                 <span ng-bind="barang.kode"></span>
             </div>
-            <div class="form-group col-xs-12" ng-if="newForm" ng-show="!!spesifikasiForms[barang.kategori]">
+            <div class="form-group col-xs-12" ng-if="newForm" ng-show="!!spesifikasiFields[barang.kategori]">
                 <label for="nama">Nama:&nbsp;</label>
                 <span ng-bind="barang.nama"></span>
             </div>
-            <div class="form-group col-xs-12 input-group-sm" ng-show="!newForm || !spesifikasiForms[barang.kategori]">
+            <div class="form-group col-xs-12 input-group-sm" ng-show="!newForm || !spesifikasiFields[barang.kategori]">
                 <label for="nama">Nama</label>
                 <input class="form-control" id="nama" name="nama" ng-model="barang.nama" placeholder="Masukkan Nama.." required type="text" />
             </div>
@@ -38,7 +38,7 @@
                     <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang==barang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
                 </select>
             </div>
-            <div ng-repeat="form in spesifikasiForms[barang.kategori]" ng-if="newForm" ng-show="!!spesifikasiForms[barang.kategori]">
+            <div ng-repeat="form in spesifikasiFields[barang.kategori]" ng-if="newForm" ng-show="!!spesifikasiFields[barang.kategori]">
                 <div class="form-group col-xs-3 input-group-sm" ng-if="form.type=='text'">
                     <label for="{{form.name}}">{{form.header}}</label>
                     <input class="form-control" id="{{form.name}}" name="{{form.name}}" ng-change="changeSpesifikasi(spesifikasi[form.name],form.name)" ng-init="!spesifikasi[form.name] ? spesifikasi[form.name]='' : null" ng-model="spesifikasi[form.name]" ng-required="form.required"
@@ -48,7 +48,7 @@
                     <label for="{{form.name}}">{{form.header}}</label>
                     <select class="form-control" id="{{form.name}}" name="{{form.name}}" ng-change="changeSpesifikasi(spesifikasi[form.name],form.name)" ng-init="!spesifikasi[form.name] ? spesifikasi[form.name]='' : null" ng-model="spesifikasi[form.name]" ng-required="form.required">
                         <option value="">-- Pilih {{form.header}} --</option>
-                        <option ng-repeat="item in spesifikasi[barang.kategori][form.name]" ng-selected="item==spesifikasi[form.name]" value="{{item}}">{{item}}</option>
+                        <option ng-repeat="item in spesifikasiData[barang.kategori][form.name]" ng-selected="item==spesifikasi[form.name]" value="{{item}}">{{item}}</option>
                     </select>
                 </div>
             </div>

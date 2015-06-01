@@ -90,8 +90,8 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
                 $scope.returBarang.returItemsList.push({
                     barang: itemBarang.barang,
                     satuan: itemBarang.satuan,
-                    qtyDatang: itemBarang.qty,
-                    qtyRetur: 1,
+                    jumlahDatang: itemBarang.jumlah,
+                    jumlahRetur: 1,
                     harga: itemBarang.harga,
                     status: "RECEIVED"
                 });
@@ -135,7 +135,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.returBarang.returItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.qtyRetur + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlahRetur + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;

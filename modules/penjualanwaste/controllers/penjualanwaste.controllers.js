@@ -1,7 +1,7 @@
 angular.module("penjualanWaste.controllers", []).controller("penjualanWasteController", function($scope, $window, $modal, $filter, wasteFactory, penjualanWasteFactory) {
     $scope.module = "penjualanWaste";
     $scope.access = {
-        create: false,
+        create: true,
         update: true,
         delete: true,
         expand: false,
@@ -66,7 +66,8 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             angular.forEach($scope.wasteCart, function(itemWasteCart) {
                 $scope.penjualanWaste.wasteItemsList.push({
                     waste: itemWasteCart,
-                    jumlah: 1
+                    jumlah: 1,
+                    harga: 0
                 });
             });
         }
@@ -132,6 +133,22 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             });
         }
     };
+    $scope.totalCost = function() {
+        var totalCost = 0;
+        angular.forEach($scope.penjualanWaste.wasteItemsList, function(itemWaste) {
+            totalCost = totalCost + (itemWaste.harga * itemWaste.jumlah);
+        });
+        return totalCost;
+    };
+    $scope.addDetail = function(index) {
+        $scope.penjualanWaste.wasteItemsList.push({
+            jumlah: 1,
+            harga: 0
+        });
+    };
+    $scope.removeDetail = function(index) {
+        $scope.penjualanWaste.wasteItemsList.splice(index, 1);
+    };
     $scope.openCreate = function() {
         $scope.newForm = true;
         $scope.new();
@@ -172,13 +189,5 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         $scope.modalInstance.result.then(function() {
             $scope.query();
         });
-    };
-    $scope.addDetail = function(index) {
-        $scope.penjualanWaste.wasteItemsList.push({
-            jumlah: 1
-        });
-    };
-    $scope.removeDetail = function(index) {
-        $scope.penjualanWaste.wasteItemsList.splice(index, 1);
     };
 });

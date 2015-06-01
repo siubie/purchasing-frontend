@@ -53,7 +53,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         type: "string",
         header: "Nama Barang"
     }, {
-        name: "qty",
+        name: "jumlah",
         type: "String",
         header: "Jumlah SPP",
     }];

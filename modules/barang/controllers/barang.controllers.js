@@ -51,7 +51,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         grid: false,
         warning: false
     }];
-    $scope.spesifikasiForms = {
+    $scope.spesifikasiFields = {
         BNG: [{
             name: "jenis",
             type: "select",
@@ -96,12 +96,12 @@ angular.module("barang.controllers", []).controller("barangController", function
         }]
     };
     $scope.sort = {
-        field: "kode",
-        order: true
+        field: "nama",
+        order: false
     };
     $scope.query = function() {
         $scope.kategoriBarangs = kategoriBarangFactory.query();
-        $scope.spesifikasi = spesifikasiFactory;
+        $scope.spesifikasiData = spesifikasiFactory;
         $scope.satuanGudangs = satuanGudangFactory.query(function() {
             $scope.satuanGudangArray = [];
             angular.forEach($scope.satuanGudangs, function(satuanGudang) {
@@ -130,6 +130,7 @@ angular.module("barang.controllers", []).controller("barangController", function
             kode: "BRG" + new Date().getTime(),
             editable: true
         });
+        $scope.spesifikasi = {};
     };
     $scope.new();
     $scope.setForm = function(form) {
