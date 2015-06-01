@@ -14,6 +14,4 @@ RUN bower update --allow-root
 
 EXPOSE 80
 
-CMD ["-p 80"]
-
-ENTRYPOINT /usr/local/bin/http-server
+CMD "/usr/local/bin/http-server" "-p" "80"

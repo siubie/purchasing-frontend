@@ -8,7 +8,7 @@ angular.module('departemen.services', []).factory('departemenFactory', function(
             url = "http://dev.disyam.com:3000/purchasing/departemen/:id";
             break;
         case "production":
-            url = "http://192.168.15.95:8080/PurchasingApp/purchasing/departemen/:id";
+            url = "http://192.168.15.253:8080/PurchasingApp/purchasing/departemen/:id";
             break;
     }
     return $resource(url, {}, {
