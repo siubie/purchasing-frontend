@@ -1,14 +1,14 @@
 FROM docker.io/node:latest
 
-RUN mkdir -p /root/html
+RUN mkdir -p /root/app
 
-WORKDIR /root/html
+WORKDIR /root/app
 
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN npm install -g bower http-server
 
-ADD . /root/html
+ADD . /root/app
 
 RUN bower update --allow-root
 
