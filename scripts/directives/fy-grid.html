@@ -60,6 +60,7 @@
                         <strong>Kategori</strong>
                     </span>
                     <select class="form-control" ng-model="search.kategori" ng-change="uncheckAll()">
+                        <option value="">Semua</option>
                         <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==search.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
                     </select>
                 </span>
@@ -98,7 +99,7 @@
     <table class="table table-bordered table-condensed" ng-init="page.current=1" ng-show="page.current>0 && page.current<=page.max">
         <thead>
             <tr>
-                <th class="text-center" ng-if="access.selection">
+                <th class="text-center" ng-if="access.selection" ng-hide="module == 'permintaanBarang' && search.kategori == ''">
                     <input type="checkbox" ng-model="page.selectedAll" ng-change="checkDisplayed()">
                 </th>
                 <th class="text-center" ng-if="access.expand">
@@ -122,7 +123,7 @@
         </thead>
         <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
             <tr>
-                <td class="text-center" ng-if="access.selection">
+                <td class="text-center" ng-if="access.selection" ng-hide="module == 'permintaanBarang' && search.kategori == ''">
                     <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-show="!(module == 'permintaanBarang' && item.status != 'APPROVED')">
                 </td>
                 <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
@@ -224,7 +225,7 @@
                 <td colspan="8">
                     <table class="table table-condensed table-bordered table-table-striped">
                         <tr>
-                            <th ng-if="item.status=='APPROVED'"></th>
+                            <th ng-show="item.status=='APPROVED' && search.kategori!=''"></th>
                             <th class="text-center">Nama Barang</th>
                             <th class="text-center">Jumlah</th>
                             <th class="text-center">Tanggal Butuh</th>
@@ -232,7 +233,7 @@
                             <th class="text-center">Sisa</th>
                         </tr>
                         <tr ng-repeat="itemBarang in item.sppItemsList">
-                            <td class="text-center" ng-if="item.status=='APPROVED'">
+                            <td class="text-center" ng-show="item.status=='APPROVED' && search.kategori!=''">
                                 <input type="checkbox" ng-model="itemBarang.selected" ng-if="itemBarang.status=='APPROVED'" ng-change="!itemBarang.selected?item.selected=false:null">
                             </td>
                             <td class="text-center" ng-bind="itemBarang.barang.nama"></td>

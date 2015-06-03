@@ -268,7 +268,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.$watch("pesananBarang.kategori", function(newKategori, oldKategori) {
         if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
-            $scope.permintaanBarang.sppItemsList = [];
+            $scope.pesananBarang.spItemsList = [];
             $scope.addDetail();
         }
     });

@@ -58,7 +58,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         header: "Jumlah SPP",
     }];
     $scope.search = {
-        kategori: "KOM",
+        kategori: "",
         status: ""
     };
     $scope.sort = {

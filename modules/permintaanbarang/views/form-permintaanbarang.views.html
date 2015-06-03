@@ -1,6 +1,6 @@
 <div class="modal-body">
-    <!-- <span ng-bind="cartSystem|json"></span>
-    <br/> -->
+    <span ng-bind="permintaanBarang.kategori|json"></span>
+    <br/>
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -16,9 +16,12 @@
             <label for="nomor">Nomor:&nbsp;</label>
             <span ng-bind="permintaanBarang.nomor"></span>
         </div>
-        <div class="form-group col-xs-4 input-group-sm" ng-init="permintaanBarang.kategori='KOM'">
+        <div class="form-group col-xs-4 input-group-sm">
             <label for="kategori">Kategori (Golongan)</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem || !newForm" required></select>
+            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem || !newForm"
+            required>
+                <option value="">Semua</option>
+            </select>
         </div>
         <div class="form-group col-xs-4 input-group-sm">
             <label for="jenis">
@@ -46,29 +49,30 @@
                         <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.barang.nama"></td>
                         <td class="input-group-sm" ng-if="!cartSystem">
                             <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
-                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = findHarga($item.kode); itemBarang.leadTime = findLeadTime($item.kode); itemBarang.minDate = calcMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate" required/>
+                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = findHarga($item.kode); itemBarang.leadTime = findLeadTime($item.kode); itemBarang.minDate = calcMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
+                            ng-disabled="!permintaanBarang.kategori" required/>
                         </td>
                         <td class="text-center input-group-sm">
-                            <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" required>
+                            <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" ng-disabled="!permintaanBarang.kategori" required>
                                 <option value="">-- Pilih Satuan --</option>
                                 <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang == itemBarang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
                             </select>
                         </td>
                         <td class="text-center input-group-sm">
-                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa=itemBarang.jumlah" required/>
+                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa=itemBarang.jumlah" ng-disabled="!permintaanBarang.kategori" required/>
                         </td>
                         <td class="text-center">
                             <span ng-bind="itemBarang.tanggalButuh | date: 'dd MMMM yyyy'"></span>
                             <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="itemBarang.minDate" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
                             </span>
                             <span>
-                                <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)" ng-disabled="!permintaanBarang.kategori">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </button>
                             </span>
                         </td>
                         <td class="input-group-sm">
-                            <textarea class="form-control" ng-model="itemBarang.keterangan"></textarea>
+                            <textarea class="form-control" ng-model="itemBarang.keterangan" ng-disabled="!permintaanBarang.kategori"></textarea>
                         </td>
                         <td class="text-center">
                             <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="permintaanBarang.sppItemsList.length<=1">
@@ -83,7 +87,6 @@
                         <td class="text-center" ng-bind="itemBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
                         <td class="text-center" ng-bind="itemBarang.keterangan"></td>
                         <td></td>
-                    </tr>
                     </tr>
                 </tbody>
             </table>

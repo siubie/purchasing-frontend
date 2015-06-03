@@ -24,7 +24,7 @@
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="supplier">Supplier</label>
-            <select class="form-control" id="supplier" name="supplier" ng-model="pesananBarang.supplier" ng-options="supplier.nama for supplier in suppliers | filter:{kategori:kategori} | orderBy: 'nama' track by supplier.nama" ng-disabled="!kategori" required>
+            <select class="form-control" id="supplier" name="supplier" ng-model="pesananBarang.supplier" ng-options="supplier.nama for supplier in suppliers | filter:{kategori:pesananBarang.kategori} | orderBy: 'nama' track by supplier.nama" ng-disabled="!pesananBarang.kategori" required>
                 <option value="">-- Pilih Supplier --</option>
             </select>
         </div>
@@ -73,7 +73,7 @@
                     <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.spp"></td>
                     <td class="input-group-sm" ng-if="!cartSystem">
                         <input type="text" class="form-control" id="spp" name="spp" placeholder="Masukkan Nomor SPP.." ng-model="itemBarang.spp" typeahead="permintaanBarang.nomor for permintaanBarang in permintaanBarangs | filter:{kategori:pesananBarang.kategori} | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'"
-                        typeahead-editable="false" typeahead-on-select="sppItemsList[$index] = $item.sppItemsList" required/>
+                        typeahead-editable="false" typeahead-on-select="sppItemsList[$index] = $item.sppItemsList" ng-disabled="!pesananBarang.kategori" required/>
                     </td>
                     <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.barang.nama"></td>
                     <td class="input-group-sm" ng-if="!cartSystem">
@@ -83,10 +83,10 @@
                     </td>
                     <td class="text-center" ng-bind="itemBarang.satuan"></td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" max="{{::itemBarang.jumlah}}" pattern="\d+" required/>
+                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" max="{{::itemBarang.jumlah}}" pattern="\d+" ng-disabled="!pesananBarang.kategori" required/>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" required/>
+                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" ng-disabled="!pesananBarang.kategori" required/>
                     </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="pesananBarang.spItemsList.length<=1">
