@@ -60,9 +60,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             });
         });
         $scope.items = $scope.pesananBarangs;
-        $http.jsonp("http://jsonrates.com/get/?base=IDR&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK").success(function(response) {
-            $scope.kurs = response.rates;
-        });
+        // $http.jsonp("http://jsonrates.com/get/?base=IDR&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK").success(function(response) {
+        //     $scope.kurs = response.rates;
+        // });
         $scope.sppItemsList = [];
     };
     $scope.query();

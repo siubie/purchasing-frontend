@@ -1,7 +1,7 @@
-angular.module("returBarang.controllers", []).controller("returBarangController", function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, returBarangFactory) {
+angular.module("returBarang.controllers", []).controller("returBarangController", function($scope, $window, $state, $modal, $filter, penerimaanBarangFactory, returBarangFactory) {
     $scope.module = "returBarang";
     $scope.access = {
-        create: false,
+        create: true,
         update: true,
         delete: true,
         expand: false,
@@ -52,6 +52,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         order: true
     };
     $scope.query = function() {
+        $scope.penerimaanBarangs = penerimaanBarangFactory.query();
         $scope.returBarangs = returBarangFactory.query(function() {
             angular.forEach($scope.returBarangs, function(returBarang) {
                 returBarang.editable = true;
@@ -68,24 +69,24 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         });
     };
     $scope.new = function() {
-        if (!!localStorage.penerimaanBarang) {
+        $scope.returBarang = new returBarangFactory({
+            nomor: "LPBR" + new Date().getTime(),
+            tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
+            status: "RECEIVED",
+            returItemsList: [],
+            editable: true
+        });
+        if (($scope.cartSystem && !!localStorage.penerimaanBarang) || $scope.input) {
             var penerimaanBarang = JSON.parse(localStorage.penerimaanBarang);
-            $scope.returBarang = new returBarangFactory({
-                nomor: "LPBR" + new Date().getTime(),
-                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-                tanggalDatang: penerimaanBarang.tanggalDatang,
-                lpb: penerimaanBarang.nomor,
-                sp: penerimaanBarang.sp,
-                supplier: penerimaanBarang.supplier,
-                nomorSj: penerimaanBarang.nomorSj,
-                diskon: penerimaanBarang.diskon,
-                kurs: penerimaanBarang.kurs,
-                valuta: penerimaanBarang.valuta,
-                valutaBayar: penerimaanBarang.valutaBayar,
-                status: "RECEIVED",
-                returItemsList: [],
-                editable: true
-            });
+            $scope.returBarang.tanggalDatang = penerimaanBarang.tanggalDatang;
+            $scope.returBarang.lpb = penerimaanBarang.nomor;
+            $scope.returBarang.sp = penerimaanBarang.sp;
+            $scope.returBarang.supplier = penerimaanBarang.supplier;
+            $scope.returBarang.nomorSj = penerimaanBarang.nomorSj;
+            $scope.returBarang.diskon = penerimaanBarang.diskon;
+            $scope.returBarang.kurs = penerimaanBarang.kurs;
+            $scope.returBarang.valuta = penerimaanBarang.valuta;
+            $scope.returBarang.valutaBayar = penerimaanBarang.valutaBayar;
             angular.forEach(penerimaanBarang.lpbItemsList, function(itemBarang) {
                 $scope.returBarang.returItemsList.push({
                     barang: itemBarang.barang,
@@ -99,6 +100,11 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         }
     };
     $scope.new();
+    $scope.inputPenerimaanBarang = function(penerimaanBarang) {
+        localStorage.setItem("penerimaanBarang", JSON.stringify(penerimaanBarang));
+        $scope.input = true;
+        $scope.new();
+    };
     $scope.warning = function(process) {
         var warning = "Anda Akan ";
         switch (process) {
@@ -135,7 +141,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.returBarang.returItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlahRetur + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i + 1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlahRetur + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -171,6 +177,21 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             });
         }
     };
+    $scope.openCreate = function() {
+        $scope.newForm = true;
+        $scope.cartSystem = false;
+        $scope.input = false;
+        $scope.new();
+        $scope.modalInstance = $modal.open({
+            templateUrl: "modules/returbarang/views/form-returbarang.views.html",
+            size: "lg",
+            backdrop: "static",
+            scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.query();
+        });
+    };
     $scope.openRead = function(returBarang) {
         $scope.get(returBarang.nomor);
         $scope.modalInstance = $modal.open({
@@ -193,6 +214,9 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             size: "lg",
             backdrop: "static",
             scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.query();
         });
     };
     $scope.removeDetail = function(index) {

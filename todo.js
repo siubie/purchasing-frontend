@@ -18,7 +18,8 @@ var todo = new Object({
         "sp setelah supplier item barang baru yang lain",
         "autofocus di semua form",
         "pindah login typeahead-on-select dan ng-change ke controller",
-        "ubah sistem cari lead time dan harga menggunakan get"
+        "ubah sistem cari lead time dan harga menggunakan get",
+        "cek dependensi semua modul"
     ],
     bisnis: []
 });

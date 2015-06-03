@@ -1,7 +1,7 @@
-angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangController", function($scope, $window, $state, $modal, $filter, supplierFactory, permintaanBarangFactory, penerimaanBarangFactory) {
+angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangController", function($scope, $window, $state, $modal, $filter, pesananBarangFactory, penerimaanBarangFactory) {
     $scope.module = "penerimaanBarang";
     $scope.access = {
-        create: false,
+        create: true,
         update: true,
         delete: true,
         expand: false,
@@ -56,6 +56,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         "tanggalDatang": false
     };
     $scope.query = function() {
+        $scope.pesananBarangs = pesananBarangFactory.query();
         $scope.penerimaanBarangs = penerimaanBarangFactory.query(function() {
             angular.forEach($scope.penerimaanBarangs, function(penerimaanBarang) {
                 penerimaanBarang.editable = true;
@@ -72,22 +73,22 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         });
     };
     $scope.new = function() {
-        if (!!localStorage.pesananBarang) {
-            pesananBarang = JSON.parse(localStorage.pesananBarang);
-            $scope.penerimaanBarang = new penerimaanBarangFactory({
-                nomor: "LPB" + new Date().getTime(),
-                tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-                tanggalDatang: $filter("date")(new Date(), "yyyy-MM-dd"),
-                sp: pesananBarang.nomor,
-                supplier: pesananBarang.supplier,
-                diskon: pesananBarang.diskon,
-                kurs: pesananBarang.kurs,
-                valuta: pesananBarang.valuta,
-                valutaBayar: pesananBarang.valutaBayar,
-                status: "RECEIVED",
-                lpbItemsList: [],
-                editable: true
-            });
+        $scope.penerimaanBarang = new penerimaanBarangFactory({
+            nomor: "LPB" + new Date().getTime(),
+            tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
+            tanggalDatang: $filter("date")(new Date(), "yyyy-MM-dd"),
+            status: "RECEIVED",
+            lpbItemsList: [],
+            editable: true
+        });
+        if (($scope.cartSystem && !!localStorage.pesananBarang) || $scope.input) {
+            var pesananBarang = JSON.parse(localStorage.pesananBarang);
+            $scope.penerimaanBarang.sp = pesananBarang.nomor;
+            $scope.penerimaanBarang.supplier = pesananBarang.supplier;
+            $scope.penerimaanBarang.diskon = pesananBarang.diskon;
+            $scope.penerimaanBarang.kurs = pesananBarang.kurs;
+            $scope.penerimaanBarang.valuta = pesananBarang.valuta;
+            $scope.penerimaanBarang.valutaBayar = pesananBarang.valutaBayar;
             angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
                 $scope.penerimaanBarang.lpbItemsList.push({
                     barang: itemBarang.barang,
@@ -101,6 +102,11 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.new();
+    $scope.inputPesananBarang = function(pesananBarang) {
+        localStorage.setItem("pesananBarang", JSON.stringify(pesananBarang));
+        $scope.input = true;
+        $scope.new();
+    };
     $scope.warning = function(process) {
         var warning = "Anda Akan ";
         switch (process) {
@@ -137,7 +143,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
+            warning = warning + "     " + (i + 1) + ". " + itemBarang.barang.nama + " " + itemBarang.jumlah + " " + itemBarang.barang.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -172,6 +178,20 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                 $scope.query();
             });
         }
+    };
+    $scope.openCreate = function() {
+        $scope.newForm = true;
+        $scope.cartSystem = false;
+        $scope.new();
+        $scope.modalInstance = $modal.open({
+            templateUrl: "modules/penerimaanbarang/views/form-penerimaanbarang.views.html",
+            size: "lg",
+            backdrop: "static",
+            scope: $scope
+        });
+        $scope.modalInstance.result.then(function() {
+            $scope.query();
+        });
     };
     $scope.openRead = function(penerimaanBarang) {
         $scope.get(penerimaanBarang.nomor);

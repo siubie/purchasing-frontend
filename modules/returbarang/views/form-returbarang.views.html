@@ -1,4 +1,4 @@
-<div class="modal-body">
+<div class="modal-body container-fluid">
     <!-- <span ng-bind="returBarang|json"></span>
     <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
@@ -11,89 +11,98 @@
         <h3>Ubah Retur Barang (LPBR)</h3>
     </div>
     <br/>
-    <form class="row" name="returBarangForm">
-        <div class="form-group col-xs-12" ng-if="!newForm">
-            <label for="nomor">Nomor:&nbsp;</label>
-            <span ng-bind="returBarang.nomor"></span>
+    <form name="returBarangForm">
+        <div class="row">
+            <div class="form-group col-xs-12" ng-if="!newForm">
+                <label for="nomor">Nomor:&nbsp;</label>
+                <span ng-bind="returBarang.nomor"></span>
+            </div>
+            <div class="form-group col-xs-4" ng-if="cartSystem">
+                <label for="lpb">Nomor LPB:&nbsp;</label>
+                <span ng-bind="returBarang.lpb"></span>
+            </div>
+            <div class="form-group col-xs-4 input-group-sm" ng-if="!cartSystem">
+                <label for="lpb">Nomor LPB:&nbsp;</label>
+                <input type="text" class="form-control" id="lpb" name="lpb" placeholder="Masukkan Nomor LPB.." ng-model="returBarang.lpb" typeahead="penerimaanBarang.nomor for penerimaanBarang in penerimaanBarangs | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'"
+                typeahead-editable="false" typeahead-on-select="inputPenerimaanBarang($item)" required/>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="tanggalDatang">Tanggal Datang:&nbsp;</label>
+                <span ng-bind="returBarang.tanggalDatang | date:'longDate'"></span>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="sp">Nomor SP:&nbsp;</label>
+                <span ng-bind="returBarang.sp"></span>
+            </div>
         </div>
-        <div class="form-group col-xs-4">
-            <label for="lpb">Nomor LPB:&nbsp;</label>
-            <span ng-bind="returBarang.lpb"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="tanggalDatang">Tanggal Datang:&nbsp;</label>
-            <span ng-bind="returBarang.tanggalDatang"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="sp">Nomor SP:&nbsp;</label>
-            <span ng-bind="returBarang.sp"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="supplier">Supplier:&nbsp;</label>
-            <span ng-bind="returBarang.supplier.nama"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="diskon">Diskon:&nbsp;</label>
-            <span ng-bind="returBarang.diskon"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="valuta">Valuta:&nbsp;</label>
-            <span ng-bind="returBarang.valuta"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
-            <span ng-bind="returBarang.valutaBayar"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="kurs">Kurs:&nbsp;</label>
-            <span ng-bind="returBarang.kurs"></span>
-        </div>
-        <div class="form-group col-xs-4">
-            <label for="nomorSj">Nomor Surat Jalan:&nbsp;</label>
-            <span ng-bind="returBarang.nomorSj"></span>
-        </div>
-        <div class="form-group col-xs-12 input-group-sm">
-            <table class="table table-bordered table-condensed">
-                <tr>
-                    <th class="text-center" colspan=8>Item Barang</th>
-                </tr>
-                <tr>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">Satuan</th>
-                    <th class="text-center">Jumlah Datang</th>
-                    <th class="text-center">Jumlah Retur</th>
-                    <th class="text-center">Harga</th>
-                    <th class="text-center">Alasan</th>
-                    <th class="text-center">Pilihan</th>
-                </tr>
-                <tr ng-repeat="itemBarang in returBarang.returItemsList">
-                    <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                    <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                    <td class="text-center" ng-bind="itemBarang.jumlahDatang"></td>
-                    <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="jumlahRetur" ng-model="itemBarang.jumlahRetur" min="1" max="{{itemBarang.jumlahDatang}}" ng-max="itemBarang.jumlahDatang" pattern="\d+" required/>
-                    </td>
-                    <td class="text-center" ng-bind="itemBarang.harga"></td>
-                    <td class="input-group-sm">
-                        <textarea class="form-control" id="alasan" name="alasan" placeholder="Masukkan Alasan.." ng-model="itemBarang.alasan"></textarea>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="returBarang.returItemsList.length<=1">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-xs-12" ng-if="returBarang.editable">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="returBarangForm.$invalid||!returBarang.returItemsList.length">
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-                <span>&nbsp;Simpan</span>
-            </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="delete(returBarang)" ng-if="access.delete&&!newForm">
-                <span class="glyphicon glyphicon-trash"></span>
-                <span>&nbsp;Hapus</span>
-            </button>
+        <div class="row">
+            <div class="form-group col-xs-4">
+                <label for="supplier">Supplier:&nbsp;</label>
+                <span ng-bind="returBarang.supplier.nama"></span>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="diskon">Diskon:&nbsp;</label>
+                <span ng-bind="returBarang.diskon"></span>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="valuta">Valuta:&nbsp;</label>
+                <span ng-bind="returBarang.valuta"></span>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
+                <span ng-bind="returBarang.valutaBayar"></span>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="kurs">Kurs:&nbsp;</label>
+                <span ng-bind="returBarang.kurs"></span>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="nomorSj">Nomor Surat Jalan:&nbsp;</label>
+                <span ng-bind="returBarang.nomorSj"></span>
+            </div>
+            <div class="form-group col-xs-12 input-group-sm">
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <th class="text-center" colspan=8>Item Barang</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Nama</th>
+                        <th class="text-center">Satuan</th>
+                        <th class="text-center">Jumlah Datang</th>
+                        <th class="text-center">Jumlah Retur</th>
+                        <th class="text-center">Harga</th>
+                        <th class="text-center">Alasan</th>
+                        <th class="text-center">Pilihan</th>
+                    </tr>
+                    <tr ng-repeat="itemBarang in returBarang.returItemsList">
+                        <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                        <td class="text-center" ng-bind="itemBarang.satuan"></td>
+                        <td class="text-center" ng-bind="itemBarang.jumlahDatang"></td>
+                        <td class="input-group-sm">
+                            <input class="form-control text-center" type="number" name="jumlahRetur" ng-model="itemBarang.jumlahRetur" min="1" max="{{itemBarang.jumlahDatang}}" ng-max="itemBarang.jumlahDatang" pattern="\d+" required/>
+                        </td>
+                        <td class="text-center" ng-bind="itemBarang.harga"></td>
+                        <td class="input-group-sm">
+                            <textarea class="form-control" id="alasan" name="alasan" placeholder="Masukkan Alasan.." ng-model="itemBarang.alasan"></textarea>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="returBarang.returItemsList.length<=1">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-xs-12" ng-if="returBarang.editable">
+                <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="returBarangForm.$invalid||!returBarang.returItemsList.length">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    <span>&nbsp;Simpan</span>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="delete(returBarang)" ng-if="access.delete&&!newForm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    <span>&nbsp;Hapus</span>
+                </button>
+            </div>
         </div>
     </form>
 </div>
