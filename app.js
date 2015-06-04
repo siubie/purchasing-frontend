@@ -28,11 +28,11 @@ angular.module("purchasingApp", [
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/pesananbarang/");
+    $urlRouterProvider.otherwise("/permintaanbarang/");
 });
 
 angular.module('purchasing.services', []).factory('constFactory', function() {
     return {
-        env: "local"
+        env: "production"
     };
 });

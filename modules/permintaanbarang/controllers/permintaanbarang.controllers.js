@@ -66,6 +66,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 switch (permintaanBarang.status) {
                     case "APPROVED":
                     case "REJECTED":
+                    case "CLOSE":
                         permintaanBarang.editable = false;
                         break;
                     default:
@@ -75,6 +76,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                     switch (itemBarang.status) {
                         case "APPROVED":
                         case "REJECTED":
+                        case "CLOSE":
                             itemBarang.editable = false;
                             break;
                         default:
@@ -93,6 +95,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             switch ($scope.permintaanBarang.status) {
                 case "APPROVED":
                 case "REJECTED":
+                case "CLOSE":
                     $scope.permintaanBarang.editable = false;
                     break;
                 default:
@@ -108,6 +111,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 switch (itemBarang.status) {
                     case "APPROVED":
                     case "REJECTED":
+                    case "CLOSE":
                         itemBarang.editable = false;
                         break;
                     default:
@@ -138,6 +142,12 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 break;
             case "delete":
                 warning = warning + "Menghapus ";
+                break;
+            case "approve":
+                warning = warning + "Menyetujui ";
+                break;
+            case "reject":
+                warning = warning + "Menolak ";
                 break;
         }
         warning = warning + "Data Permintaan Barang Berikut : \n\n";
@@ -266,15 +276,12 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         var newestHarga = new Date("1970-01-01");
         var harga = 0;
         angular.forEach($scope.katalogBarangs, function(katalogBarang) {
-            if (katalogBarang.barang.kode == kodeBarang) {
+            if (katalogBarang.barang.kode == kodeBarang && !!katalogBarang.historyHarga) {
                 angular.forEach(katalogBarang.historyHarga, function(itemHarga) {
                     itemHarga.tanggal = new Date(itemHarga.tanggal);
-                    if (itemHarga.tanggal > newestHarga) {
+                    if (itemHarga.tanggal.getTime() > newestHarga.getTime()) {
                         harga = itemHarga.harga;
-                        newest = itemHarga.tanggal;
-                    }
-                    if (itemHarga.tanggal == newestHarga && itemHarga.harga > harga) {
-                        harga = itemHarga;
+                        newestHarga = new Date(itemHarga.tanggal.getTime());
                     }
                 });
             }

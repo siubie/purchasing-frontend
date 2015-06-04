@@ -34,7 +34,7 @@
             <label for="diskon">Diskon</label>
             <input type="number" class="form-control text-center" id="diskon" name="diskon" ng-model="pesananBarang.diskon" min="0" required />
         </div>
-        <!-- <div class="form-group col-xs-2 input-group-sm">
+        <div class="form-group col-xs-2 input-group-sm">
             <label for="valuta">Valuta</label>
             <select class="form-control" id="valuta" name="valuta" ng-model="pesananBarang.valuta" ng-options="valuta as valuta for (valuta,rate) in kurs" ng-change="getRate()" required>
                 <option value="">-- Pilih Valuta --</option>
@@ -45,15 +45,15 @@
             <select class="form-control" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" ng-options="valuta as valuta for (valuta,rate) in kurs" ng-change="getRate()" required>
                 <option value="">-- Pilih Valuta --</option>
             </select>
-        </div> -->
-        <div class="form-group col-xs-2 input-group-sm">
+        </div>
+        <!-- <div class="form-group col-xs-2 input-group-sm">
             <label for="valuta">Valuta:&nbsp;</label>
             <span ng-bind="pesananBarang.valuta"></span>
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
             <span ng-bind="pesananBarang.valutaBayar"></span>
-        </div>
+        </div> -->
         <div class="form-group col-xs-2 input-group-sm">
             <label for="kurs">Kurs:&nbsp;</label>
             <span ng-bind="pesananBarang.kurs"></span>
