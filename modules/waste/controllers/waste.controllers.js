@@ -1,12 +1,9 @@
-angular.module("waste.controllers", []).controller("wasteController", function($scope, $window, $modal, wasteFactory, satuanGudangFactory) {
+angular.module("waste.controllers", []).controller("wasteController", function($modal, $scope, $window, satuanGudangFactory, wasteFactory) {
     $scope.module = "waste";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: true,
-        cart: true
+        delete: true
     };
     $scope.fields = [{
         name: "kode",
@@ -27,21 +24,8 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         grid: true,
         warning: true
     }];
-    $scope.cartFields = [{
-        name: "kode",
-        type: "string",
-        header: "Kode Waste"
-    }, {
-        name: "nama",
-        type: "string",
-        header: "Nama Waste"
-    }, {
-        name: "satuan",
-        type: "String",
-        header: "Satuan",
-    }];
     $scope.sort = {
-        field: "kode",
+        field: "nama",
         order: false
     };
     $scope.query = function() {
@@ -67,9 +51,6 @@ angular.module("waste.controllers", []).controller("wasteController", function($
             $scope.waste.editable = true;
         });
     };
-    if (!!localStorage.wasteCart) {
-        $scope.cart = JSON.parse(localStorage.wasteCart);
-    }
     $scope.new = function() {
         $scope.waste = new wasteFactory({
             kode: "WST" + new Date().getTime(),
@@ -171,20 +152,6 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         });
         $scope.modalInstance.result.then(function() {
             $scope.query();
-        });
-    };
-    $scope.openCreatePenjualanWaste = function() {
-        $scope.newForm = true;
-        $scope.cartSystem = true;
-        $scope.modalInstance = $modal.open({
-            templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
-            size: "lg",
-            backdrop: "static",
-            controller: "penjualanWasteController",
-            scope: $scope
-        });
-        $scope.modalInstance.result.then(function() {
-            $scope.uncheckAll();
         });
     };
 });

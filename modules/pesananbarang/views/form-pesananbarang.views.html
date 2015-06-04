@@ -1,6 +1,8 @@
 <div class="modal-body">
-    <!-- <span ng-bind="sppItemsList|json"></span>
-    <br/> -->
+    <!-- <span ng-repeat="item in pesananBarang.spItemsList">
+        <span ng-bind="item|json"></span>
+        <br/>
+    </span> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -18,7 +20,7 @@
         </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="kategori">Kategori (Golongan)</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="pesananBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem || !newForm" required>
+            <select class="form-control" id="kategori" name="kategori" ng-model="pesananBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="!newForm" required>
                 <option value="">-- Pilih Kategori --</option>
             </select>
         </div>
@@ -78,14 +80,12 @@
                     <th class="text-center">Pilihan</th>
                 </tr>
                 <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
-                    <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.spp"></td>
-                    <td class="input-group-sm" ng-if="!cartSystem">
+                    <td class="input-group-sm">
                         <input type="text" class="form-control" id="spp" name="spp" placeholder="Masukkan Nomor SPP.." ng-model="itemBarang.spp" typeahead="permintaanBarang.nomor for permintaanBarang in permintaanBarangs | filter:{kategori:pesananBarang.kategori} | filter:{status:'APPROVED'} | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'"
-                        typeahead-editable="false" typeahead-on-select="sppItemsList[$index] = $item.sppItemsList" ng-disabled="!pesananBarang.kategori" required/>
+                        typeahead-editable="false" ng-disabled="!pesananBarang.kategori" required/>
                     </td>
-                    <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.barang.nama"></td>
-                    <td class="input-group-sm" ng-if="!cartSystem">
-                        <select class="form-control" ng-model="itemBarang.barang" ng-options="itemSpp.barang as itemSpp.barang.nama for itemSpp in sppItemsList[$index] | orderBy:'barang.nama'" ng-change="changeItemBarang($index, itemBarang.barang.kode)" ng-disabled="!sppItemsList[$index].length">
+                    <td class="input-group-sm">
+                        <select class="form-control" ng-model="itemBarang.barang" ng-options="barang as barang.nama for barang in getBarangs(itemBarang.spp) | orderBy:'nama' track by barang.nama" ng-change="getItemBarang($index, itemBarang.spp, itemBarang.barang.kode)" ng-disabled="!itemBarang.spp">
                             <option value="">-- Pilih Barang --</option>
                         </select>
                     </td>
@@ -103,7 +103,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="button" class="btn btn-default btn-sm" ng-if="!cartSystem" ng-click="addDetail()">
+            <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
                 <span class="glyphicon glyphicon-plus"></span>
                 <span>Tambah Item</span>
             </button>

@@ -2,7 +2,7 @@ angular.module('penjualanWaste.services', []).factory('penjualanWasteFactory', f
     var url = "";
     switch (constFactory.env) {
         case "local":
-            url = "http://localhost:3000/purchasing/penjualanwaste/:id";
+            url = "http://192.168.15.248:3000/purchasing/penjualanwaste/:id";
             break;
         case "development":
             url = "http://dev.disyam.com:3000/purchasing/penjualanwaste/:id";

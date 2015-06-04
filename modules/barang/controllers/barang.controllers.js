@@ -1,12 +1,9 @@
-angular.module("barang.controllers", []).controller("barangController", function($scope, $window, $modal, barangFactory, kategoriBarangFactory, satuanGudangFactory, spesifikasiFactory) {
+angular.module("barang.controllers", []).controller("barangController", function($modal, $scope, $window, barangFactory, kategoriBarangFactory, satuanGudangFactory, spesifikasiFactory) {
     $scope.module = "barang";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: false,
-        cart: false
+        delete: true
     };
     $scope.fields = [{
         name: "kode",
@@ -236,8 +233,11 @@ angular.module("barang.controllers", []).controller("barangController", function
                 break;
         }
     };
+    $scope.changeView = function(view) {
+        $scope.view = view;
+    };
     $scope.openCreate = function() {
-        $scope.newForm = true;
+        $scope.view = "create";
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",
@@ -250,10 +250,11 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openRead = function(barang) {
+        $scope.view = "read";
         $scope.get(barang.kode);
         $scope.modalInstance = $modal.open({
-            templateUrl: "modules/barang/views/detail-barang.views.html",
-            size: "md",
+            templateUrl: "modules/barang/views/form-barang.views.html",
+            size: "lg",
             backdrop: "static",
             scope: $scope
         });
@@ -264,7 +265,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         });
     };
     $scope.openUpdate = function(barang) {
-        $scope.newForm = false;
+        $scope.view = "update";
         $scope.get(barang.kode);
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/barang/views/form-barang.views.html",

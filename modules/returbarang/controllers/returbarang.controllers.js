@@ -1,12 +1,9 @@
-angular.module("returBarang.controllers", []).controller("returBarangController", function($scope, $window, $state, $modal, $filter, penerimaanBarangFactory, returBarangFactory) {
+angular.module("returBarang.controllers", []).controller("returBarangController", function($filter, $modal, $scope, $window, penerimaanBarangFactory, returBarangFactory) {
     $scope.module = "returBarang";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: false,
-        cart: false
+        delete: true
     };
     $scope.fields = [{
         name: "nomor",
@@ -68,7 +65,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             $scope.returBarang.editable = true;
         });
     };
-    $scope.new = function() {
+    $scope.new = function(penerimaanBarang) {
         $scope.returBarang = new returBarangFactory({
             nomor: "LPBR" + new Date().getTime(),
             tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
@@ -76,8 +73,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             returItemsList: [],
             editable: true
         });
-        if (($scope.cartSystem && !!localStorage.penerimaanBarang) || $scope.input) {
-            var penerimaanBarang = JSON.parse(localStorage.penerimaanBarang);
+        if (!!penerimaanBarang) {
             $scope.returBarang.tanggalDatang = penerimaanBarang.tanggalDatang;
             $scope.returBarang.lpb = penerimaanBarang.nomor;
             $scope.returBarang.sp = penerimaanBarang.sp;
@@ -100,11 +96,6 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         }
     };
     $scope.new();
-    $scope.inputPenerimaanBarang = function(penerimaanBarang) {
-        localStorage.setItem("penerimaanBarang", JSON.stringify(penerimaanBarang));
-        $scope.input = true;
-        $scope.new();
-    };
     $scope.warning = function(process) {
         var warning = "Anda Akan ";
         switch (process) {
@@ -179,7 +170,6 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
     };
     $scope.openCreate = function() {
         $scope.newForm = true;
-        $scope.cartSystem = false;
         $scope.input = false;
         $scope.new();
         $scope.modalInstance = $modal.open({

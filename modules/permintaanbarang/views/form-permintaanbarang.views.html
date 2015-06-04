@@ -18,9 +18,8 @@
         </div>
         <div class="form-group col-xs-4 input-group-sm">
             <label for="kategori">Kategori (Golongan)</label>
-            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="cartSystem || !newForm"
-            required>
-                <option value="">Semua</option>
+            <select class="form-control" id="kategori" name="kategori" ng-model="permintaanBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" required>
+                <option value="">-- Pilih Kategori --</option>
             </select>
         </div>
         <div class="form-group col-xs-4 input-group-sm">
@@ -46,10 +45,9 @@
                 </thead>
                 <tbody ng-repeat="itemBarang in permintaanBarang.sppItemsList">
                     <tr ng-if="itemBarang.editable">
-                        <td class="text-center" ng-if="cartSystem" ng-bind="itemBarang.barang.nama"></td>
-                        <td class="input-group-sm" ng-if="!cartSystem">
+                        <td class="input-group-sm">
                             <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
-                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = findHarga($item.kode); itemBarang.leadTime = findLeadTime($item.kode); itemBarang.minDate = calcMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
+                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
                             ng-disabled="!permintaanBarang.kategori" required/>
                         </td>
                         <td class="text-center input-group-sm">
@@ -90,7 +88,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-default btn-sm" ng-if="!cartSystem" ng-click="addDetail()">
+            <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
                 <span class="glyphicon glyphicon-plus"></span>
                 <span>Tambah Item</span>
             </button>

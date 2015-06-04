@@ -1,12 +1,9 @@
-angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangController", function($scope, $window, $state, $modal, $filter, pesananBarangFactory, penerimaanBarangFactory) {
+angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangController", function($filter, $modal, $scope, $window, penerimaanBarangFactory, pesananBarangFactory) {
     $scope.module = "penerimaanBarang";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: false,
-        cart: false
+        delete: true
     };
     $scope.fields = [{
         name: "nomor",
@@ -72,7 +69,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             $scope.penerimaanBarang.editable = true;
         });
     };
-    $scope.new = function() {
+    $scope.new = function(pesananBarang) {
         $scope.penerimaanBarang = new penerimaanBarangFactory({
             nomor: "LPB" + new Date().getTime(),
             tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
@@ -81,8 +78,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             lpbItemsList: [],
             editable: true
         });
-        if (($scope.cartSystem && !!localStorage.pesananBarang) || $scope.input) {
-            var pesananBarang = JSON.parse(localStorage.pesananBarang);
+        if (!!pesananBarang) {
             $scope.penerimaanBarang.sp = pesananBarang.nomor;
             $scope.penerimaanBarang.supplier = pesananBarang.supplier;
             $scope.penerimaanBarang.diskon = pesananBarang.diskon;
@@ -102,11 +98,6 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.new();
-    $scope.inputPesananBarang = function(pesananBarang) {
-        localStorage.setItem("pesananBarang", JSON.stringify(pesananBarang));
-        $scope.input = true;
-        $scope.new();
-    };
     $scope.warning = function(process) {
         var warning = "Anda Akan ";
         switch (process) {
@@ -181,7 +172,6 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     };
     $scope.openCreate = function() {
         $scope.newForm = true;
-        $scope.cartSystem = false;
         $scope.new();
         $scope.modalInstance = $modal.open({
             templateUrl: "modules/penerimaanbarang/views/form-penerimaanbarang.views.html",
@@ -218,17 +208,6 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         });
         $scope.modalInstance.result.then(function() {
             $scope.query();
-        });
-    };
-    $scope.openCreateReturBarang = function(penerimaanBarang) {
-        $scope.newForm = true;
-        localStorage.setItem("penerimaanBarang", JSON.stringify(penerimaanBarang));
-        $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/returbarang/views/form-returbarang.views.html',
-            size: 'lg',
-            backdrop: 'static',
-            controller: "returBarangController",
-            scope: $scope
         });
     };
     $scope.removeDetail = function(index) {

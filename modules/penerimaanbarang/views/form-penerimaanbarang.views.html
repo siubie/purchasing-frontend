@@ -17,14 +17,10 @@
                 <label for="nomor">Nomor:&nbsp;</label>
                 <span ng-bind="penerimaanBarang.nomor"></span>
             </div>
-            <div class="form-group col-xs-4" ng-if="cartSystem">
-                <label for="sp">Nomor SP:&nbsp;</label>
-                <span ng-bind="penerimaanBarang.sp"></span>
-            </div>
-            <div class="form-group col-xs-4 input-group-sm" ng-if="!cartSystem">
+            <div class="form-group col-xs-4 input-group-sm">
                 <label for="sp">Nomor SP:&nbsp;</label>
                 <input type="text" class="form-control" id="sp" name="sp" placeholder="Masukkan Nomor SP.." ng-model="penerimaanBarang.sp" typeahead="pesananBarang.nomor for pesananBarang in pesananBarangs | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'" typeahead-editable="false"
-                typeahead-on-select="inputPesananBarang($item)" required/>
+                typeahead-on-select="new($item)" required/>
             </div>
             <div class="form-group col-xs-4 input-group-sm">
                 <label for="periode">Tanggal Datang:&nbsp;</label>

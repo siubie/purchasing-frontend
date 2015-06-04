@@ -1,44 +1,45 @@
 <div class="modal-body">
-    <!-- <span ng-bind="newForm|json"></span>
+    <!-- <span ng-bind="access|json"></span>
+    <br/>
+    <span ng-bind="view|json"></span>
     <br/> -->
     <button class="btn btn-default btn-xs pull-right" ng-click="$dismiss()" type="button">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <div ng-show="newForm">
+    <div ng-if="view=='create'">
         <h3>Buat Master Barang</h3>
     </div>
-    <div ng-show="!newForm">
-        <h3>Ubah Master Barang</h3>
+    <div ng-if="view=='read'">
+        <h3>Detail Master Barang
+            <span ng-bind="barang.kode"></span>
+        </h3>
+    </div>
+    <div ng-if="view=='update'">
+        <h3>Ubah Master Barang
+            <span ng-bind="barang.kode"></span>
+        </h3>
     </div>
     <br/>
     <form class=row name="barangForm">
         <div ng-init="setForm(barangForm)">
-            <div class="form-group col-xs-12" ng-if="!newForm">
-                <label for="kode">Kode:&nbsp;</label>
-                <span ng-bind="barang.kode"></span>
-            </div>
-            <div class="form-group col-xs-12" ng-if="newForm" ng-show="!!spesifikasiFields[barang.kategori]">
-                <label for="nama">Nama:&nbsp;</label>
-                <span ng-bind="barang.nama"></span>
-            </div>
-            <div class="form-group col-xs-12 input-group-sm" ng-show="!newForm || !spesifikasiFields[barang.kategori]">
+            <div class="form-group col-xs-12 input-group-sm">
                 <label for="nama">Nama</label>
-                <input class="form-control" id="nama" name="nama" ng-model="barang.nama" placeholder="Masukkan Nama.." required type="text" />
+                <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." required ng-disabled="view=='read' || (view=='create' && !!spesifikasiFields[barang.kategori])" ng-model="barang.nama" />
             </div>
             <div class="form-group col-xs-6 input-group-sm">
                 <label for="kategori">Kategori (Golongan)</label>
-                <select class="form-control" id="kategori" name="kategori" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs| orderBy:'kategori'" required>
+                <select class="form-control" id="kategori" name="kategori" required ng-disabled="view=='read'" ng-model="barang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs| orderBy:'kategori'">
                     <option value="">-- Pilih Kategori --</option>
                 </select>
             </div>
             <div class="form-group col-xs-6 input-group-sm">
                 <label for="satuan">Satuan</label>
-                <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" required>
+                <select class="form-control" id="satuan" name="satuan" ng-model="barang.satuan" ng-disabled="view=='read'" required>
                     <option value="">-- Pilih Satuan --</option>
                     <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang==barang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
                 </select>
             </div>
-            <div ng-repeat="form in spesifikasiFields[barang.kategori]" ng-if="newForm" ng-show="!!spesifikasiFields[barang.kategori]">
+            <div ng-repeat="form in spesifikasiFields[barang.kategori]" ng-if="view=='create'" ng-show="!!spesifikasiFields[barang.kategori]">
                 <div class="form-group col-xs-3 input-group-sm" ng-if="form.type=='text'">
                     <label for="{{form.name}}">{{form.header}}</label>
                     <input class="form-control" id="{{form.name}}" name="{{form.name}}" ng-change="changeSpesifikasi(spesifikasi[form.name],form.name)" ng-init="!spesifikasi[form.name] ? spesifikasi[form.name]='' : null" ng-model="spesifikasi[form.name]" ng-required="form.required"
@@ -54,18 +55,26 @@
             </div>
             <div class="form-group col-xs-12 input-group-sm">
                 <label for="spesifikasi">Spesifikasi</label>
-                <textarea class="form-control" id="spesifikasi" name="spesifikasi" ng-model="barang.spesifikasi" placeholder="Masukkan Spesifikasi.."></textarea>
+                <textarea class="form-control" id="spesifikasi" name="spesifikasi" ng-model="barang.spesifikasi" placeholder="Masukkan Spesifikasi.." ng-disabled="view=='read'"></textarea>
             </div>
             <div class="form-group col-xs-12 input-group-sm">
                 <label for="deskripsi">Deskripsi</label>
-                <textarea class="form-control" id="deskripsi" name="deskripsi" ng-model="barang.deskripsi" placeholder="Masukkan Deskripsi.."></textarea>
+                <textarea class="form-control" id="deskripsi" name="deskripsi" ng-model="barang.deskripsi" placeholder="Masukkan Deskripsi.." ng-disabled="view=='read'"></textarea>
             </div>
             <div class="col-xs-12" ng-if="barang.editable">
-                <button class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="barangForm.$invalid" type="submit">
+                <button type="submit" class="btn btn-default btn-sm" ng-if="view=='create' && access.create" ng-disabled="barangForm.$invalid" ng-click="create()">
                     <span class="glyphicon glyphicon-floppy-disk"></span>
                     <span>&nbsp;Simpan</span>
                 </button>
-                <button class="btn btn-default btn-sm" ng-click="delete(barang)" ng-if="!newForm" type="button">
+                <button type="submit" class="btn btn-default btn-sm" ng-if="view=='update' && access.update" ng-disabled="barangForm.$invalid" ng-click="update()">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    <span>&nbsp;Simpan</span>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-if="view=='read' && access.update" ng-click="changeView('update')">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    <span>&nbsp;Ubah</span>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-if="view!='create' && access.delete" ng-click="delete(barang)">
                     <span class="glyphicon glyphicon-trash"></span>
                     <span>&nbsp;Hapus</span>
                 </button>

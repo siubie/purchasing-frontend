@@ -1,12 +1,9 @@
-angular.module('supplier.controllers', []).controller("supplierController", function($scope, $window, $state, $modal, $filter, kategoriBarangFactory, supplierFactory) {
+angular.module('supplier.controllers', []).controller("supplierController", function($modal, $scope, $window, kategoriBarangFactory, supplierFactory) {
     $scope.module = "supplier";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: false,
-        cart: false
+        delete: true
     };
     $scope.fields = [{
         name: "kode",
@@ -40,7 +37,7 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         warning: true
     }];
     $scope.sort = {
-        field: "kode",
+        field: "nama",
         order: false
     };
     $scope.query = function() {

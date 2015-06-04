@@ -1,84 +1,37 @@
-angular.module("katalogBarang.controllers", []).controller("katalogBarangController", function($scope, $window, $modal, $filter, kategoriBarangFactory, katalogBarangFactory, barangFactory, supplierFactory) {
+angular.module("katalogBarang.controllers", []).controller("katalogBarangController", function($scope, $window, $modal, kategoriBarangFactory, barangFactory, supplierFactory, katalogBarangFactory) {
     $scope.module = "katalogBarang";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: true,
-        selection: true,
-        cart: true
+        delete: true
     };
     $scope.fields = [{
-        name: "kode",
-        type: "string",
-        header: "Kode",
-        grid: true,
-        warning: false
-    }, {
-        name: "nama",
-        type: "string",
-        header: "Nama",
-        grid: true,
-        warning: false
-    }, {
-        name: "kategori",
-        type: "string",
-        header: "Kategori",
-        grid: true,
-        warning: false
-    }, {
-        name: "satuan",
-        type: "string",
-        header: "Satuan",
-        grid: true,
-        warning: false
-    }, {
         name: "barang.nama",
         type: "string",
         header: "Barang",
-        grid: false,
+        grid: true,
         warning: true
     }, {
         name: "supplier.nama",
         type: "string",
         header: "Supplier",
-        grid: false,
+        grid: true,
         warning: true
     }, {
         name: "alias",
         type: "string",
         header: "Alias",
-        grid: false,
+        grid: true,
         warning: true
     }, {
         name: "leadTime",
         type: "string",
         header: "Lead Time",
-        grid: false,
+        grid: true,
         warning: true
     }];
-    $scope.cartFields = [{
-        name: "barang.kode",
-        type: "string",
-        header: "Kode"
-    }, {
-        name: "barang.kategori",
-        type: "string",
-        header: "Kategori"
-    }, {
-        name: "barang.nama",
-        type: "string",
-        header: "Nama Barang"
-    }, {
-        name: "barang.satuan",
-        type: "string",
-        header: "Satuan",
-    }];
-    $scope.search = {
-        "kategori": "KOM"
-    };
     $scope.sort = {
-        field: "kode",
+        field: "barang.nama",
         order: false,
         detailField: "hargaSupplier.tanggal",
         detailOrder: false
@@ -98,10 +51,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
                 katalogBarang.editable = true;
             });
         });
-        $scope.items = $scope.barangs;
-        if (!!$scope.page) {
-            $scope.page.expandedAll = false;
-        }
+        $scope.items = $scope.katalogBarangs;
     };
     $scope.query();
     $scope.get = function(id1, id2) {
@@ -112,9 +62,6 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
             $scope.katalogBarang.editable = true;
         });
     };
-    if (!!localStorage.katalogBarangCart) {
-        $scope.cart = JSON.parse(localStorage.katalogBarangCart);
-    }
     $scope.new = function() {
         $scope.katalogBarang = new katalogBarangFactory({
             hargaSupplier: [],
@@ -225,20 +172,6 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         });
         $scope.modalInstance.result.then(function() {
             $scope.query();
-        });
-    };
-    $scope.openCreatePermintaanBarang = function() {
-        $scope.cartSystem = true;
-        $scope.newForm = true;
-        $scope.modalInstance = $modal.open({
-            templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
-            size: "lg",
-            backdrop: "static",
-            controller: "permintaanBarangController",
-            scope: $scope
-        });
-        $scope.modalInstance.result.then(function() {
-            $scope.uncheckAll();
         });
     };
 });

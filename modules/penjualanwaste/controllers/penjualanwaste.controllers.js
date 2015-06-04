@@ -1,12 +1,9 @@
-angular.module("penjualanWaste.controllers", []).controller("penjualanWasteController", function($scope, $window, $modal, $filter, wasteFactory, penjualanWasteFactory) {
+angular.module("penjualanWaste.controllers", []).controller("penjualanWasteController", function($filter, $modal, $scope, $window, penjualanWasteFactory, wasteFactory) {
     $scope.module = "penjualanWaste";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: false,
-        cart: false
+        delete: true
     };
     $scope.fields = [{
         name: "nomor",
@@ -61,16 +58,6 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             wasteItemsList: [],
             editable: true
         });
-        if ($scope.cartSystem && !!localStorage.wasteCart) {
-            $scope.wasteCart = JSON.parse(localStorage.wasteCart);
-            angular.forEach($scope.wasteCart, function(itemWasteCart) {
-                $scope.penjualanWaste.wasteItemsList.push({
-                    waste: itemWasteCart,
-                    jumlah: 1,
-                    harga: 0
-                });
-            });
-        }
     };
     $scope.new();
     $scope.warning = function(process) {
@@ -97,7 +84,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         });
         warning = warning + "Item Barang : \n";
         angular.forEach($scope.penjualanWaste.wasteItemsList, function(itemBarang, i) {
-            warning = warning + "     " + (i+1) + ". " + itemBarang.waste.nama + " " + itemBarang.jumlah + " " + itemBarang.waste.satuan + "\n";
+            warning = warning + "     " + (i + 1) + ". " + itemBarang.waste.nama + " " + itemBarang.jumlah + " " + itemBarang.waste.satuan + "\n";
         });
         warning = warning + "\nApakah Anda Yakin?";
         return warning;
@@ -133,12 +120,12 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             });
         }
     };
-    $scope.totalCost = function() {
-        var totalCost = 0;
+    $scope.getTotalCost = function() {
+        var getTotalCost = 0;
         angular.forEach($scope.penjualanWaste.wasteItemsList, function(itemWaste) {
-            totalCost = totalCost + (itemWaste.harga * itemWaste.jumlah);
+            getTotalCost = getTotalCost + (itemWaste.harga * itemWaste.jumlah);
         });
-        return totalCost;
+        return getTotalCost;
     };
     $scope.addDetail = function(index) {
         $scope.penjualanWaste.wasteItemsList.push({

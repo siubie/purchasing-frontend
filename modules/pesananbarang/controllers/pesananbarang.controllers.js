@@ -1,12 +1,9 @@
-angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($scope, $window, $state, $modal, $filter, $http, kategoriBarangFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
+angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($filter, $http, $modal, $scope, $window, kategoriBarangFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
         create: true,
         update: true,
-        delete: true,
-        expand: false,
-        selection: false,
-        cart: false
+        delete: true
     };
     $scope.fields = [{
         name: "nomor",
@@ -71,6 +68,13 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             id: id
         }, function() {
             $scope.pesananBarang.editable = true;
+            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang, i) {
+                angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
+                    if (itemBarang.spp == permintaanBarang.nomor) {
+                        $scope.sppItemsList[i] = permintaanBarang.sppItemsList;
+                    }
+                });
+            });
         });
     };
     $scope.new = function() {
@@ -87,22 +91,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             spItemsList: [],
             editable: true
         });
-        if ($scope.cartSystem && !!localStorage.permintaanBarangCart) {
-            $scope.permintaanBarang = JSON.parse(localStorage.permintaanBarang);
-            $scope.pesananBarang.kategori = $scope.permintaanBarang.kategori;
-            $scope.permintaanBarangCart = JSON.parse(localStorage.permintaanBarangCart);
-            angular.forEach($scope.permintaanBarangCart, function(itemBarang) {
-                $scope.pesananBarang.spItemsList.push({
-                    spp: itemBarang.spp,
-                    barang: itemBarang.barang,
-                    satuan: itemBarang.satuan,
-                    jumlah: itemBarang.jumlah,
-                    harga: itemBarang.harga,
-                    hargaKatalog: itemBarang.hargaKatalog,
-                    status: "RECEIVED"
-                });
-            });
-        }
     };
     $scope.new();
     $scope.warning = function(process) {
@@ -183,21 +171,36 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             $scope.pesananBarang.kurs = Number(response.rate);
         });
     };
-    $scope.totalCost = function() {
-        var totalCost = 0;
-        angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-            totalCost = totalCost + (((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100)) * itemBarang.jumlah);
-        });
-        return totalCost;
-    };
-    $scope.changeItemBarang = function (index, kodeBarang) {
-        angular.forEach($scope.sppItemsList[index], function(itemBarang) {
-            if (itemBarang.barang.kode == kodeBarang) {
-                $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.harga;
-                $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
-                $scope.pesananBarang.spItemsList[index].jumlah = itemBarang.jumlah;
+    $scope.getBarangs = function(nomorSpp) {
+        var barangs = [];
+        angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
+            if (nomorSpp == permintaanBarang.nomor) {
+                angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
+                    barangs.push(itemBarang.barang);
+                });
             }
         });
+        return barangs;
+    };
+    $scope.getItemBarang = function(index, nomorSpp, kodeBarang) {
+        angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
+            if (nomorSpp == permintaanBarang.nomor) {
+                angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
+                    if (kodeBarang == itemBarang.barang.kode) {
+                        $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.harga;
+                        $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
+                        $scope.pesananBarang.spItemsList[index].jumlah = itemBarang.jumlah;
+                    }
+                });
+            }
+        });
+    };
+    $scope.getTotalCost = function() {
+        var getTotalCost = 0;
+        angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+            getTotalCost = getTotalCost + (((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100)) * itemBarang.jumlah);
+        });
+        return getTotalCost;
     };
     $scope.addDetail = function() {
         $scope.pesananBarang.spItemsList.push({
@@ -213,7 +216,6 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.openCreate = function() {
         $scope.newForm = true;
-        $scope.cartSystem = false;
         $scope.new();
         $scope.addDetail();
         $scope.modalInstance = $modal.open({
@@ -254,20 +256,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             $scope.query();
         });
     };
-    $scope.openCreatePenerimaanBarang = function(pesananBarang) {
-        $scope.newForm = true;
-        $scope.cartSystem = true;
-        localStorage.setItem("pesananBarang", JSON.stringify(pesananBarang));
-        $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/penerimaanbarang/views/form-penerimaanbarang.views.html',
-            size: 'lg',
-            backdrop: 'static',
-            controller: "penerimaanBarangController",
-            scope: $scope
-        });
-    };
     $scope.$watch("pesananBarang.kategori", function(newKategori, oldKategori) {
         if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
+            $scope.pesananBarang.supplier = "";
             $scope.pesananBarang.spItemsList = [];
             $scope.addDetail();
         }

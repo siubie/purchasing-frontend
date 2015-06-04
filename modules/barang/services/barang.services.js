@@ -2,7 +2,7 @@ angular.module("barang.services", []).factory("barangFactory", function($resourc
         var url = "";
         switch (constFactory.env) {
             case "local":
-                url = "http://localhost:3000/purchasing/barang/:id";
+                url = "http://192.168.15.248:3000/purchasing/barang/:id";
                 break;
             case "development":
                 url = "http://dev.disyam.com:3000/purchasing/barang/:id";

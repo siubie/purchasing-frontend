@@ -1,10 +1,10 @@
 <div class="form-inline">
-    <!-- <span ng-repeat="item in cart">
+    <!-- <span ng-repeat="item in items">
         <span ng-bind="item|json"></span>
         <br/>
         <br/>
-    </span> -->
-    <br/>
+    </span>
+    <br/> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
         <select class="form-control" ng-model="page.items" ng-init="page.items=25" ng-change="page.current=1">
             <option value="5">5</option>
@@ -20,71 +20,19 @@
     </button>
     <button class="btn btn-default btn-sm" type="button" ng-click="query()">
         <span class="glyphicon glyphicon-refresh"></span>
-        <span>&nbsp;Refresh</span>
+        <span>&nbsp;Update Data</span>
     </button>
     <span class="pull-right">
-        <span class="input-group input-group-sm" dropdown ng-if="access.cart" ng-show="!!items.length">
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-shopping-cart"></span>
-            </span>
-            <button type="button" class="form-control btn btn-default dropdown-toggle" ng-disabled="!cart.length" dropdown-toggle>
-                <span ng-bind="cart.length"></span>
-                <span>Item&nbsp;</span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href ng-click="detailCart()">Detail</a>
-                </li>
-                <li ng-if="module=='katalogBarang'"><a href ng-click="openCreatePermintaanBarang()">Buat SPP</a>
-                </li>
-                <li ng-if="module=='permintaanBarang'"><a href ng-click="openCreatePesananBarang()">Buat SP</a>
-                </li>
-                <li ng-if="module=='waste'"><a href ng-click="openCreatePenjualanWaste()">Buat Penjualan Waste</a>
-                </li>
-                <li><a href ng-click="clearCart()">Kosongkan</a>
-                </li>
-            </ul>
-        </span>
-        <span ng-switch="module" ng-show="!!items.length">
-            <span class="input-group input-group-sm" ng-switch-when="katalogBarang">
-                <span class="input-group-addon">
-                    <strong>Kategori</strong>
+        <span ng-show="!!items.length">
+            <span class="input-group input-group-sm">
+                <span class="input-group-addon" ng-show="!search.$">
+                    <span class="glyphicon glyphicon-search"></span>
                 </span>
-                <select class="form-control" ng-model="search.kategori" ng-change="uncheckAll()">
-                    <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==search.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
-                </select>
-            </span>
-            <span ng-switch-when="permintaanBarang">
-                <span class="input-group input-group-sm">
-                    <span class="input-group-addon">
-                        <strong>Kategori</strong>
-                    </span>
-                    <select class="form-control" ng-model="search.kategori" ng-change="uncheckAll()">
-                        <option value="">Semua</option>
-                        <option ng-repeat="kategoriBarang in kategoriBarangArray" ng-selected="kategoriBarang==search.kategori" value="{{kategoriBarang}}">{{kategoriBarang}}</option>
-                    </select>
+                <span class="input-group-addon" ng-show="!!search.$" ng-click="search.$=''">
+                    <span class="glyphicon glyphicon-remove"></span>
                 </span>
-                <span class="input-group input-group-sm">
-                    <span class="input-group-addon">
-                        <strong>Status</strong>
-                    </span>
-                    <select class="form-control" ng-model="search.status">
-                        <option value="">Semua</option>
-                        <option value="RECEIVED">Diterima</option>
-                        <option value="APPROVED">Disetujui</option>
-                        <option value="REJECTED">Ditolak</option>
-                    </select>
-                </span>
+                <input type="text" class="form-control" ng-model="search.$" />
             </span>
-        </span>
-        <span class="input-group input-group-sm" ng-show="!!items.length">
-            <span class="input-group-addon" ng-show="!search.$">
-                <span class="glyphicon glyphicon-search"></span>
-            </span>
-            <span class="input-group-addon" ng-show="!!search.$" ng-click="search.$=''">
-                <span class="glyphicon glyphicon-remove"></span>
-            </span>
-            <input type="text" class="form-control" ng-model="search.$" />
         </span>
     </span>
 </div>
@@ -97,155 +45,58 @@
         <br/>
     </h5>
     <table class="table table-bordered table-condensed" ng-init="page.current=1" ng-show="page.current>0 && page.current<=page.max">
-        <thead>
-            <tr>
-                <th class="text-center" ng-if="access.selection" ng-hide="module == 'permintaanBarang' && search.kategori == ''">
-                    <input type="checkbox" ng-model="page.selectedAll" ng-change="checkDisplayed()">
-                </th>
-                <th class="text-center" ng-if="access.expand">
-                    <button type="button" class="btn btn-default btn-xs" ng-show="!page.expandedAll" ng-click="page.expandedAll=true">
-                        <span class="glyphicon glyphicon-plus"></span>
+        <tr>
+            <th class="text-center" ng-repeat="field in fields" ng-if="field.grid" ng-click="sort.field == field.name ? sort.order =! sort.order : null ; sort.field = field.name">
+                <span>
+                    <span ng-bind="field.header"></span>
+                    <span>&nbsp;</span>
+                    <span ng-show="sort.field == '{{field.name}}' && sort.order" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sort.field == '{{field.name}}' && !sort.order" class="glyphicon glyphicon-triangle-top"></span>
+                </span>
+            </th>
+            <th class="text-center">Pilihan</th>
+        </tr>
+        <tr ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
+            <td ng-repeat="field in fields" ng-if="field.grid">
+                <span ng-if=" field.type=='string'">
+                    <span ng-bind="item.{{field.name}} | limitTo:'30'"></span>
+                    <span ng-show="item.{{field.name}}.length>30">...</span>
+                </span>
+                <span ng-if="field.type=='date'">
+                    <span ng-bind="item.{{field.name}} | date:field.filter"></span>
+                </span>
+                <span ng-if="field.type=='array'">
+                    <span ng-bind="item.{{field.name}}"></span>
+                </span>
+                <span ng-if="field.type=='jenis'">
+                    <span ng-if="item.jenis">EMERGENCY</span>
+                    <span ng-if="!item.jenis">RUTIN</span>
+                </span>
+                <span ng-if="field.type=='ppn'">
+                    <span ng-if="item.ppn">YA</span>
+                    <span ng-if="!item.ppn">TIDAK</span>
+                </span>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
+                    <span class="glyphicon glyphicon-zoom-in"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="access.update&&item.editable">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete&&item.editable">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <span ng-if="module=='permintaanBarang'&&item.editable">
+                    <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveAllItem(item)">
+                        <span class="glyphicon glyphicon-ok"></span>
                     </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="page.expandedAll" ng-click="page.expandedAll=false">
-                        <span class="glyphicon glyphicon-minus"></span>
+                    <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="rejectAllItem(item)">
+                        <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                </th>
-                <th class="text-center" ng-repeat="field in fields" ng-if="field.grid" ng-click="sort.field == field.name ? sort.order =! sort.order : null ; sort.field = field.name">
-                    <span >
-                        <span ng-bind="field.header"></span>
-                        <span>&nbsp;</span>
-                        <span ng-show="sort.field == '{{field.name}}' && sort.order" class="glyphicon glyphicon-triangle-bottom"></span>
-                        <span ng-show="sort.field == '{{field.name}}' && !sort.order" class="glyphicon glyphicon-triangle-top"></span>
-                    </span>
-                </th>
-                <th class="text-center" ng-if="module!='katalogBarang'">Pilihan</th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="item in displayed = (filtered = (items | filter: search) | orderBy: sort.field: sort.order | startFrom: (page.current-1)*page.items | limitTo:page.items)">
-            <tr>
-                <td class="text-center" ng-if="access.selection" ng-hide="module == 'permintaanBarang' && search.kategori == ''">
-                    <input type="checkbox" ng-model="item.selected" ng-change="checkItem(item.selected,item)" ng-show="!(module == 'permintaanBarang' && item.status != 'APPROVED')">
-                </td>
-                <td class="text-center" ng-if="module=='katalogBarang'" ng-init="item.expanded=false">
-                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded && !!item.katalogLength" ng-click="item.expanded=true">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded && !!item.katalogLength" ng-click="item.expanded=false">
-                        <span class="glyphicon glyphicon-minus"></span>
-                    </button>
-                </td>
-                <td class="text-center" ng-if="module=='permintaanBarang'" ng-init="item.expanded=false">
-                    <button type="button" class="btn btn-default btn-xs" ng-show="!item.expanded" ng-click="item.expanded=true">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="item.expanded" ng-click="item.expanded=false">
-                        <span class="glyphicon glyphicon-minus"></span>
-                    </button>
-                </td>
-                <td ng-repeat="field in fields" ng-if="field.grid">
-                    <span ng-if=" field.type=='string'">
-                        <span ng-bind="item.{{field.name}} | limitTo:'30'"></span>
-                        <span ng-show="item.{{field.name}}.length>30">...</span>
-                    </span>
-                    <span ng-if="field.type=='date'">
-                        <span ng-bind="item.{{field.name}} | date:field.filter"></span>
-                    </span>
-                    <span ng-if="field.type=='array'">
-                        <span ng-bind="item.{{field.name}}"></span>
-                    </span>
-                    <span ng-if="field.type=='jenis'">
-                        <span ng-if="item.jenis">EMERGENCY</span>
-                        <span ng-if="!item.jenis">RUTIN</span>
-                    </span>
-                    <span ng-if="field.type=='periode'">
-                        <span ng-bind="item.{{field.name}} | periodeFilter | date:'MMMM yyyy'"></span>
-                    </span>
-                    <span ng-if="field.type=='ppn'">
-                        <span ng-if="item.ppn">YA</span>
-                        <span ng-if="!item.ppn">TIDAK</span>
-                    </span>
-                </td>
-                <td class="text-center" ng-if="module!='katalogBarang'">
-                    <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(item)">
-                        <span class="glyphicon glyphicon-zoom-in"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(item)" ng-if="access.update&&item.editable">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete&&item.editable">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                    <span ng-if="module=='permintaanBarang'&&item.editable">
-                        <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveAllItem(item)">
-                            <span class="glyphicon glyphicon-ok"></span>
-                        </button>
-                        <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="rejectAllItem(item)">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </span>
-                    <button type="button" class="btn btn-default btn-xs" title="Buat LPB" ng-click="openCreatePenerimaanBarang(item)" ng-if="module=='pesananBarang'">
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs" title="Buat Retur" ng-click="openCreateReturBarang(item)" ng-if="module=='penerimaanBarang'">
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                    </button>
-                </td>
-            </tr>
-            <tr ng-if="module=='katalogBarang'" ng-show="item.expanded&&item.katalogLength" ng-init="filterKatalog.barang.kode=item.kode">
-                <td></td>
-                <td colspan="5">
-                    <table class="table table-condensed table-bordered table-table-striped">
-                        <tr>
-                            <th class="text-center">Supplier</th>
-                            <th class="text-center">Alias</th>
-                            <th class="text-center">Lead Time</th>
-                            <th class="text-center">Pilihan</th>
-                        </tr>
-                        <tr ng-repeat="katalogBarang in katalogFiltered = (katalogBarangs|filter:filterKatalog|orderBy:'supplier.kode':false)" ng-init="$parent.item.katalogLength=!!katalogFiltered.length">
-                            <td class="text-center" ng-bind="katalogBarang.supplier.nama"></td>
-                            <td class="text-center" ng-bind="katalogBarang.alias"></td>
-                            <td class="text-center" ng-bind="katalogBarang.leadTime"></td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-default btn-xs" title="Detail" ng-click="openRead(katalogBarang)">
-                                    <span class="glyphicon glyphicon-zoom-in"></span>
-                                </button>
-                                <button type="button" class="btn btn-default btn-xs" title="Edit" ng-click="openUpdate(katalogBarang)">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                                <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(katalogBarang)">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr ng-if="module=='permintaanBarang'" ng-show="item.expanded">
-                <td></td>
-                <td colspan="8">
-                    <table class="table table-condensed table-bordered table-table-striped">
-                        <tr>
-                            <th ng-show="item.status=='APPROVED' && search.kategori!=''"></th>
-                            <th class="text-center">Nama Barang</th>
-                            <th class="text-center">Jumlah</th>
-                            <th class="text-center">Tanggal Butuh</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Sisa</th>
-                        </tr>
-                        <tr ng-repeat="itemBarang in item.sppItemsList">
-                            <td class="text-center" ng-show="item.status=='APPROVED' && search.kategori!=''">
-                                <input type="checkbox" ng-model="itemBarang.selected" ng-if="itemBarang.status=='APPROVED'" ng-change="!itemBarang.selected?item.selected=false:null">
-                            </td>
-                            <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                            <td class="text-center" ng-bind="itemBarang.jumlah"></td>
-                            <td class="text-center" ng-bind="itemBarang.tanggalButuh|date: 'dd MMMM yyyy'"></td>
-                            <td class="text-center" ng-bind="itemBarang.status"></td>
-                            <td class="text-center" ng-bind="itemBarang.sisa"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
+                </span>
+            </td>
+        </tr>
     </table>
     <div class="form-inline" ng-show="!!filtered.length">
         <span class="pull-right">
@@ -276,7 +127,7 @@
                         </strong>
                     </span>
                     <span class="input-group-btn">
-                        <button type="button" class="form-control btn btn-default" ng-click="page.current=( page.current+1)" ng-disabled="currentPageForm.$invalid||page.current==page.max">
+                        <button type="button" class="form-control btn btn-default" ng-click="page.current=(page.current+1)" ng-disabled="currentPageForm.$invalid||page.current==page.max">
                             <span class="glyphicon glyphicon-forward"></span>
                         </button>
                         <button type="button" class="form-control btn btn-default" ng-click="page.current=page.max" ng-disabled="currentPageForm.$invalid || page.current==page.max">
