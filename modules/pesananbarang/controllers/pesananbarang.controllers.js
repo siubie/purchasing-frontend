@@ -176,7 +176,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
             if (nomorSpp == permintaanBarang.nomor) {
                 angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
-                    barangs.push(itemBarang.barang);
+                    if (itemBarang.status == "APPROVED") {
+                        barangs.push(itemBarang.barang);
+                    }
                 });
             }
         });
