@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <!-- <span ng-bind="permintaanBarang.kategori|json"></span>
+    <!-- <span ng-bind="getBarangs(permintaanBarang.kategori)|json"></span>
     <br/> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
@@ -46,10 +46,15 @@
                 <tbody ng-repeat="itemBarang in permintaanBarang.sppItemsList">
                     <tr ng-if="itemBarang.editable">
                         <td class="input-group-sm">
-                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
+                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in getBarangs(permintaanBarang.kategori) | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
                             typeahead-editable="false" typeahead-on-select="itemBarang.harga = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
                             ng-disabled="!permintaanBarang.kategori" required/>
                         </td>
+                        <!-- <td class="input-group-sm">
+                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
+                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
+                            ng-disabled="!permintaanBarang.kategori" required/>
+                        </td> -->
                         <td class="text-center input-group-sm">
                             <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" ng-disabled="!permintaanBarang.kategori" required>
                                 <option value="">-- Pilih Satuan --</option>

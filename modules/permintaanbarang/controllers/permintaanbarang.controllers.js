@@ -198,7 +198,8 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         }
     };
     $scope.approveAllItem = function(permintaanBarang) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.permintaanBarang = permintaanBarang;
+        var confirm = $window.confirm($scope.warning("approve"));
         if (confirm) {
             permintaanBarang.status = "APPROVED";
             angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
@@ -216,7 +217,8 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         }
     };
     $scope.rejectAllItem = function(permintaanBarang) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+        $scope.permintaanBarang = permintaanBarang;
+        var confirm = $window.confirm($scope.warning("reject"));
         if (confirm) {
             permintaanBarang.status = "REJECTED";
             angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
@@ -304,6 +306,16 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         }
         minDate.setDate(25 + leadTime);
         return minDate;
+    };
+    $scope.getBarangs = function(kategori) {
+        var barangs = [];
+        angular.forEach($scope.katalogBarangs, function(katalogBarang) {
+            if (katalogBarang.barang.kategori == kategori) {
+                barangs.push(katalogBarang.barang);
+            }
+        });
+        barangs = $filter('unique')(barangs, 'kode');
+        return barangs;
     };
     $scope.openCreate = function() {
         $scope.newForm = true;

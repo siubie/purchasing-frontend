@@ -4,6 +4,7 @@ angular.module("purchasingApp", [
     "ngResource",
     "ui.router",
     "ui.select",
+    "ui.utils",
     "ui.bootstrap.transition",
     "ui.bootstrap.modal",
     "ui.bootstrap.datepicker",
