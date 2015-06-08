@@ -18,7 +18,9 @@ var todo = new Object({
         "pindah fungsi typeahead-on-select dan ng-change ke controller",
         "ubah sistem cari lead time dan harga menggunakan get",
         "kode barang di judul form",
-        "grid di detail barang"
+        "grid di detail barang",
     ],
-    bisnis: []
+    bisnis: [
+        "jenis per kategori"
+    ]
 });

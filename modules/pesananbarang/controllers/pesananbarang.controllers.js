@@ -41,6 +41,16 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         field: "nomor",
         order: true
     };
+    $http({
+        method: "JSONP",
+        url: "http://jsonrates.com/get/?base=IDR&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK",
+        timeout: "2000"
+    }).success(function(response) {
+        $scope.kurs = response.rates;
+    }).error(function() {
+        alert("Proses Mengambil data Kurs Timeout!!!");
+        delete $scope.kurs;
+    });
     $scope.query = function() {
         $scope.suppliers = supplierFactory.query();
         $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
@@ -53,27 +63,46 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.permintaanBarangs = permintaanBarangFactory.query();
         $scope.pesananBarangs = pesananBarangFactory.query(function() {
             angular.forEach($scope.pesananBarangs, function(pesananBarang) {
-                pesananBarang.editable = true;
+                switch (pesananBarang.status) {
+                    case "NEW":
+                        pesananBarang.editable = true;
+                        break;
+                    default:
+                        pesananBarang.editable = false;
+                }
+                angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
+                    switch (itemBarang.status) {
+                        case "NEW":
+                            itemBarang.editable = true;
+                            break;
+                        default:
+                            itemBarang.editable = false;
+                    }
+                });
             });
         });
         $scope.items = $scope.pesananBarangs;
-        $http.jsonp("http://jsonrates.com/get/?base=IDR&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK").success(function(response) {
-            $scope.kurs = response.rates;
-        });
-        $scope.sppItemsList = [];
     };
     $scope.query();
     $scope.get = function(id) {
         $scope.pesananBarang = pesananBarangFactory.get({
             id: id
         }, function() {
-            $scope.pesananBarang.editable = true;
-            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang, i) {
-                angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
-                    if (itemBarang.spp == permintaanBarang.nomor) {
-                        $scope.sppItemsList[i] = permintaanBarang.sppItemsList;
-                    }
-                });
+            switch ($scope.pesananBarang.status) {
+                case "NEW":
+                    $scope.pesananBarang.editable = true;
+                    break;
+                default:
+                    $scope.pesananBarang.editable = false;
+            }
+            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+                switch (itemBarang.status) {
+                    case "NEW":
+                        itemBarang.editable = true;
+                        break;
+                    default:
+                        itemBarang.editable = false;
+                }
             });
         });
     };
@@ -86,7 +115,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             kurs: 1,
             valuta: "IDR",
             valutaBayar: "IDR",
-            status: "RECEIVED",
+            status: "NEW",
             syaratBayar: 0,
             spItemsList: [],
             editable: true
@@ -104,6 +133,12 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
                 break;
             case "delete":
                 warning = warning + "Menghapus ";
+                break;
+            case "approve":
+                warning = warning + "Menyetujui ";
+                break;
+            case "reject":
+                warning = warning + "Menolak ";
                 break;
         }
         warning = warning + "Data Pesanan Barang Berikut : \n\n";
@@ -165,6 +200,83 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             });
         }
     };
+    $scope.approveAllItem = function(pesananBarang) {
+        $scope.pesananBarang = pesananBarang;
+        var confirm = $window.confirm($scope.warning("approve"));
+        if (confirm) {
+            $scope.pesananBarang.status = "APPROVED";
+            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+                if (itemBarang.editable) {
+                    itemBarang.status = "APPROVED";
+                }
+            });
+            pesananBarang.$update(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
+                toastr.success("Semua Item Permintaan Barang Telah Disetujui...");
+                $scope.query();
+            });
+        }
+    };
+    $scope.rejectAllItem = function(pesananBarang) {
+        $scope.pesananBarang = pesananBarang;
+        var confirm = $window.confirm($scope.warning("reject"));
+        if (confirm) {
+            $scope.pesananBarang.status = "REJECTED";
+            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+                if (itemBarang.editable) {
+                    itemBarang.status = "REJECTED";
+                }
+            });
+            $scope.pesananBarang.$update(function() {
+                if (!!$scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
+                toastr.success("Semua Item Permintaan Barang Telah Ditolak...");
+                $scope.query();
+            });
+        }
+    };
+    $scope.approveItem = function(pesananBarang, itemBarangToApprove) {
+        var confirm = $window.confirm("Apakah Anda Yakin?");
+        if (confirm) {
+            pesananBarang.status = "APPROVED";
+            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+                if (itemBarang === itemBarangToApprove) {
+                    itemBarang.status = "APPROVED";
+                }
+            });
+            pesananBarang.$update(function() {
+                toastr.success("Item Permintaan Barang Telah Disetujui...");
+                $scope.query();
+                $scope.get(pesananBarang.nomor);
+            });
+        }
+    };
+    $scope.rejectItem = function(pesananBarang, itemBarangToReject) {
+        var confirm = $window.confirm("Apakah Anda Yakin?");
+        var allRejected = 0;
+        if (confirm) {
+            angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
+                if (itemBarang.status == "REJECTED") {
+                    allRejected++;
+                }
+                if (itemBarang === itemBarangToReject) {
+                    itemBarang.status = "REJECTED";
+                    allRejected++;
+                }
+                if (allRejected == pesananBarang.spItemsList.length) {
+                    pesananBarang.status = "REJECTED";
+                }
+            });
+            pesananBarang.$update(function() {
+                toastr.success("Item Permintaan Barang Telah Ditolak...");
+                $scope.query();
+                $scope.get(pesananBarang.nomor);
+            });
+        }
+    };
     $scope.getRate = function() {
         var url = "http://jsonrates.com/get/?from=" + $scope.pesananBarang.valuta + "&to=" + $scope.pesananBarang.valutaBayar + "&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK";
         $http.jsonp(url).success(function(response) {
@@ -210,7 +322,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             jumlah: 0,
             harga: 0,
             hargaKatalog: 0,
-            status: "RECEIVED",
+            status: "NEW",
             editable: true
         });
     };

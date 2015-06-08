@@ -64,23 +64,19 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         $scope.permintaanBarangs = permintaanBarangFactory.query(function() {
             angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
                 switch (permintaanBarang.status) {
-                    case "APPROVED":
-                    case "REJECTED":
-                    case "CLOSE":
-                        permintaanBarang.editable = false;
+                    case "RECEIVED":
+                        permintaanBarang.editable = true;
                         break;
                     default:
-                        permintaanBarang.editable = true;
+                        permintaanBarang.editable = false;
                 }
                 angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
                     switch (itemBarang.status) {
-                        case "APPROVED":
-                        case "REJECTED":
-                        case "CLOSE":
-                            itemBarang.editable = false;
+                        case "RECEIVED":
+                            itemBarang.editable = true;
                             break;
                         default:
-                            itemBarang.editable = true;
+                            itemBarang.editable = false;
                     }
                 });
             });
@@ -93,13 +89,11 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             id: id
         }, function() {
             switch ($scope.permintaanBarang.status) {
-                case "APPROVED":
-                case "REJECTED":
-                case "CLOSE":
-                    $scope.permintaanBarang.editable = false;
+                case "RECEIVED":
+                    $scope.permintaanBarang.editable = true;
                     break;
                 default:
-                    $scope.permintaanBarang.editable = true;
+                    $scope.permintaanBarang.editable = false;
             }
             angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
                 var minDate = new Date($scope.permintaanBarang.tanggal);
@@ -109,13 +103,11 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 minDate.setDate(25 + itemBarang.leadTime);
                 itemBarang.minDate = minDate;
                 switch (itemBarang.status) {
-                    case "APPROVED":
-                    case "REJECTED":
-                    case "CLOSE":
-                        itemBarang.editable = false;
+                    case "RECEIVED":
+                        itemBarang.editable = true;
                         break;
                     default:
-                        itemBarang.editable = true;
+                        itemBarang.editable = false;
                 }
             });
         });

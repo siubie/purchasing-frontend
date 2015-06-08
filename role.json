@@ -1,0 +1,33 @@
+{
+    "user": "A4509",
+    "nama": "Disyam Adityana Putra",
+    "departemen": "EDP",
+    "module": [
+        "spp": [{
+            "method": "GET",
+            "access": true
+        }, {
+            "method": "POST",
+            "access": true
+        }, {
+            "method": "PUT",
+            "access": false
+        }, {
+            "method": "DELETE",
+            "access": false
+        }],
+        "sp": [{
+            "method": "GET",
+            "access": true
+        }, {
+            "method": "POST",
+            "access": true
+        }, {
+            "method": "PUT",
+            "access": false
+        }, {
+            "method": "DELETE",
+            "access": false
+        }],
+    ]
+}

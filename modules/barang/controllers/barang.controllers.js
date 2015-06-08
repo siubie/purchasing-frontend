@@ -1,4 +1,4 @@
-angular.module("barang.controllers", []).controller("barangController", function($modal, $scope, $window, barangFactory, kategoriBarangFactory, satuanGudangFactory, spesifikasiFactory) {
+angular.module("barang.controllers", []).controller("barangController", function($modal, $scope, $window, barangFactory, jenisBarangFactory, kategoriBarangFactory, satuanGudangFactory) {
     $scope.module = "barang";
     $scope.access = {
         create: true,
@@ -48,57 +48,13 @@ angular.module("barang.controllers", []).controller("barangController", function
         grid: false,
         warning: false
     }];
-    $scope.spesifikasiFields = {
-        BNG: [{
-            name: "jenis",
-            type: "select",
-            header: "Jenis",
-            required: true
-        }, {
-            name: "sistemNomor",
-            type: "select",
-            header: "Sistem Penomoran",
-            required: true
-        }, {
-            name: "nomor",
-            type: "text",
-            header: "Nomor Benang",
-            required: true
-        }, {
-            name: "proses",
-            type: "select",
-            header: "Proses",
-            required: false
-        }],
-        KIM: [{
-            name: "jenis",
-            type: "select",
-            header: "Jenis",
-            required: true
-        }, {
-            name: "brand",
-            type: "text",
-            header: "Brand",
-            required: true
-        }, {
-            name: "warna",
-            type: "text",
-            header: "Warna",
-            required: false
-        }, {
-            name: "keterangan",
-            type: "text",
-            header: "Keterangan",
-            required: false
-        }]
-    };
     $scope.sort = {
         field: "nama",
         order: false
     };
     $scope.query = function() {
         $scope.kategoriBarangs = kategoriBarangFactory.query();
-        $scope.spesifikasiData = spesifikasiFactory;
+        $scope.jenisBarangs = jenisBarangFactory;
         $scope.satuanGudangs = satuanGudangFactory.query(function() {
             $scope.satuanGudangArray = [];
             angular.forEach($scope.satuanGudangs, function(satuanGudang) {
@@ -130,9 +86,6 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.spesifikasi = {};
     };
     $scope.new();
-    $scope.setForm = function(form) {
-        $scope.barangForm = form;
-    };
     $scope.warning = function(process) {
         var warning = "Anda Akan ";
         switch (process) {
@@ -191,48 +144,6 @@ angular.module("barang.controllers", []).controller("barangController", function
             });
         }
     };
-    $scope.changeSpesifikasi = function(spec, formName) {
-        if (!spec) {
-            $scope.spesifikasi[formName] = "";
-        }
-        switch ($scope.barang.kategori) {
-            case "BNG":
-                $scope.barang.nama = "";
-                if (!!$scope.spesifikasi.jenis) {
-                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasi.jenis;
-                }
-                if (!!$scope.spesifikasi.sistemNomor && $scope.spesifikasi.sistemNomor != "D") {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.sistemNomor;
-                }
-                if (!!$scope.spesifikasi.nomor) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.nomor;
-                }
-                if (!!$scope.spesifikasi.sistemNomor && $scope.spesifikasi.sistemNomor == "D") {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.sistemNomor;
-                }
-                if (!!$scope.spesifikasi.proses) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.proses;
-                }
-                $scope.barang.jenis = $scope.spesifikasi.jenis;
-                break;
-            case "KIM":
-                $scope.barang.nama = "";
-                if (!!$scope.spesifikasi.jenis) {
-                    $scope.barang.nama = $scope.barang.nama + $scope.spesifikasi.jenis;
-                }
-                if (!!$scope.spesifikasi.brand) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.brand;
-                }
-                if (!!$scope.spesifikasi.warna) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.warna;
-                }
-                if (!!$scope.spesifikasi.keterangan) {
-                    $scope.barang.nama = $scope.barang.nama + " " + $scope.spesifikasi.keterangan;
-                }
-                $scope.barang.jenis = $scope.spesifikasi.jenis;
-                break;
-        }
-    };
     $scope.changeView = function(view) {
         $scope.view = view;
     };
@@ -279,11 +190,7 @@ angular.module("barang.controllers", []).controller("barangController", function
     };
     $scope.$watch("barang.kategori", function(newKategori, oldKategori) {
         if (!!oldKategori && !!newKategori) {
-            $scope.new();
-            $scope.barang.kategori = newKategori;
-            if (!!$scope.barangForm) {
-                $scope.barangForm.$setPristine();
-            }
+            delete $scope.barang.jenis;
         }
     });
 });

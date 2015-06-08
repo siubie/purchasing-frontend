@@ -86,14 +86,16 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             $scope.penerimaanBarang.valuta = pesananBarang.valuta;
             $scope.penerimaanBarang.valutaBayar = pesananBarang.valutaBayar;
             angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
-                $scope.penerimaanBarang.lpbItemsList.push({
-                    barang: itemBarang.barang,
-                    satuan: itemBarang.satuan,
-                    spp: itemBarang.spp,
-                    jumlah: itemBarang.jumlah,
-                    harga: itemBarang.harga,
-                    status: "RECEIVED",
-                });
+                if (itemBarang.status == "APPROVED") {
+                    $scope.penerimaanBarang.lpbItemsList.push({
+                        barang: itemBarang.barang,
+                        satuan: itemBarang.satuan,
+                        spp: itemBarang.spp,
+                        jumlah: itemBarang.jumlah,
+                        harga: itemBarang.harga,
+                        status: "RECEIVED",
+                    });
+                }
             });
         }
     };

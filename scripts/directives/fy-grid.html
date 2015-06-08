@@ -6,7 +6,7 @@
     </span>
     <br/> -->
     <span ng-show="!!items.length" class="input-group input-group-sm">
-        <select class="form-control" ng-model="page.items" ng-init="page.items=25" ng-change="page.current=1">
+        <select class="form-control" ng-model="page.items" ng-init="page.items=10" ng-change="page.current=1">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -87,7 +87,7 @@
                 <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete&&item.editable">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
-                <span ng-if="module=='permintaanBarang'&&item.editable">
+                <span ng-if="(module=='permintaanBarang' || module=='pesananBarang')&&item.editable">
                     <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveAllItem(item)">
                         <span class="glyphicon glyphicon-ok"></span>
                     </button>

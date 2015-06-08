@@ -3,6 +3,7 @@
         <span ng-bind="item|json"></span>
         <br/>
     </span> -->
+    <!-- <span ng-bind="kurs|json"></span> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -34,29 +35,33 @@
             <label for="diskon">Diskon</label>
             <input type="number" class="form-control text-center" id="diskon" name="diskon" ng-model="pesananBarang.diskon" min="0" required />
         </div>
-        <div class="form-group col-xs-2 input-group-sm">
+        <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs">
             <label for="valuta">Valuta</label>
             <select class="form-control" id="valuta" name="valuta" ng-model="pesananBarang.valuta" ng-options="valuta as valuta for (valuta,rate) in kurs" ng-change="getRate()" required>
                 <option value="">-- Pilih Valuta --</option>
             </select>
         </div>
-        <div class="form-group col-xs-2 input-group-sm">
+        <div class="form-group col-xs-2 input-group-sm"ng-if="!kurs">
+            <label for="valuta">Valuta:&nbsp;</label>
+            <input type="text" class="form-control text-center" id="valuta" name="valuta" ng-model="pesananBarang.valuta"  ng-pattern="/^[A-Z]{3,3}$/" required />
+        </div>
+        <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs">
             <label for="valutaBayar">Valuta Bayar</label>
             <select class="form-control" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" ng-options="valuta as valuta for (valuta,rate) in kurs" ng-change="getRate()" required>
                 <option value="">-- Pilih Valuta --</option>
             </select>
         </div>
-        <!-- <div class="form-group col-xs-2 input-group-sm">
-            <label for="valuta">Valuta:&nbsp;</label>
-            <span ng-bind="pesananBarang.valuta"></span>
-        </div>
-        <div class="form-group col-xs-2 input-group-sm">
+        <div class="form-group col-xs-2 input-group-sm"ng-if="!kurs">
             <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
-            <span ng-bind="pesananBarang.valutaBayar"></span>
-        </div> -->
-        <div class="form-group col-xs-2 input-group-sm">
+            <input type="text" class="form-control text-center" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" ng-pattern="/^[A-Z]{3,3}$/" required />
+        </div>
+        <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs">
             <label for="kurs">Kurs:&nbsp;</label>
             <span ng-bind="pesananBarang.kurs"></span>
+        </div>
+        <div class="form-group col-xs-2 input-group-sm"ng-if="!kurs">
+            <label for="kurs">Kurs:&nbsp;</label>
+            <input type="number" class="form-control text-center" id="kurs" name="kurs" min="0" ng-model="pesananBarang.kurs" required />
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="syaratBayar">Syarat Bayar</label>

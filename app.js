@@ -29,7 +29,7 @@ angular.module("purchasingApp", [
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/permintaanbarang/");
+    $urlRouterProvider.otherwise("/barang/");
 });
 
 angular.module('purchasing.services', []).factory('constFactory', function() {

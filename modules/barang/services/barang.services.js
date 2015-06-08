@@ -26,41 +26,31 @@ angular.module("barang.services", []).factory("barangFactory", function($resourc
             }
         });
     })
-    .factory("spesifikasiFactory", function() {
-        var spesifikasi = {
-            "BNG": {
-                "jenis": [
-                    "ACRYLIC",
-                    "COTTON",
-                    "CVC",
-                    "FIBER",
-                    "FILAMEN",
-                    "MAMILON",
-                    "MERCERIZED",
-                    "MODAL",
-                    "MODAL COTTON",
-                    "MONOFILAMENT",
-                    "NYLON"
-                ],
-                "sistemNomor": [
-                    "D",
-                    "Ne",
-                    "Nm",
-                    "Td"
-                ],
-                "proses": [
-                    "CARDED",
-                    "COMBED",
-                    "MERCERIZED"
-                ],
-            },
-            "KIM": {
-                "jenis": [
-                    "ACID DYES",
-                    "AUXILLIRIES",
-                    "BAHAN PEMBANTU"
-                ]
-            }
+    .factory("jenisBarangFactory", function() {
+        var jenis = {
+            "BNG": [
+                "ACRYLIC",
+                "COTTON",
+                "CVC",
+                "FIBER",
+                "FILAMEN",
+                "MAMILON",
+                "MERCERIZED",
+                "MODAL",
+                "MODAL COTTON",
+                "MONOFILAMENT",
+                "NYLON"
+            ],
+            "KIM": [
+                "ACID DYES",
+                "AUXILLIRIES",
+                "BAHAN PEMBANTU"
+            ],
+            "KOM": [
+                "CONSUMABLES",
+                "NETWORK",
+                "SPAREPART"
+            ]
         };
-        return spesifikasi;
+        return jenis;
     });
