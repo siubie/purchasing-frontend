@@ -2,60 +2,50 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Pesanan Barang (SP)</h3>
+    <h3>Detail Pesanan Barang (SP)
+        <span ng-bind="pesananBarang.nomor"></span>
+    </h3>
     <table class="table table-bordered table-condensed">
-        <tr>
-            <td class="col-xs-6">
-                <strong>Nomor</strong>
-            </td>
-            <td class="col-xs-6" ng-bind="pesananBarang.nomor"></td>
-        </tr>
         <tr>
             <td>
                 <strong>Tanggal</strong>
             </td>
             <td ng-bind="pesananBarang.tanggal | date:'longDate'"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Supplier</strong>
             </td>
             <td ng-bind="pesananBarang.supplier.nama"></td>
         </tr>
         <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>PPN</strong>
             </td>
-            <td>
+            <td class="col-xs-4">
                 <div ng-if="pesananBarang.jenis">YA</div>
                 <div ng-if="!pesananBarang.jenis">TIDAK</div>
             </td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Diskon</strong>
             </td>
-            <td ng-bind="pesananBarang.diskon"></td>
+            <td class="col-xs-4">
+                <span ng-bind="pesananBarang.diskon"></span>%
+            </td>
         </tr>
-        <tr>
+        <!-- <tr>
             <td>
                 <strong>Valuta</strong>
             </td>
             <td ng-bind="pesananBarang.valuta"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Valuta Bayar</strong>
             </td>
             <td ng-bind="pesananBarang.valutaBayar"></td>
-        </tr>
+        </tr> -->
         <tr>
             <td>
                 <strong>Kurs</strong>
             </td>
             <td ng-bind="pesananBarang.kurs"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Syarat Bayar</strong>
             </td>
@@ -65,13 +55,13 @@
             <td>
                 <strong>Status</strong>
             </td>
-            <td ng-bind="pesananBarang.status"></td>
+            <td colspan="3" ng-bind="pesananBarang.status"></td>
         </tr>
         <tr>
-            <td colspan=2>
+            <td colspan="8">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=8 class="text-center">Item Barang</th>
+                        <th colspan="8" class="text-center">Item Barang</th>
                     </tr>
                     <tr>
                         <th class="text-center">Nomor SPP</th>
@@ -89,12 +79,16 @@
                         <td class="text-center" ng-bind="itemBarang.satuan"></td>
                         <td class="text-center" ng-bind="itemBarang.jumlah"></td>
                         <td class="text-center">
+                            <span ng-bind="pesananBarang.valuta"></span>
                             <span ng-bind="itemBarang.harga | number:2"></span>
-                            <span ng-if="itemBarang.harga > itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-up" title="Harga Naik dari {{itemBarang.hargaKatalog | number:2}}"></span>
-                            <span ng-if="itemBarang.harga == itemBarang.hargaKatalog" class="glyphicon glyphicon-minus" title="Harga Tetap"></span>
-                            <span ng-if="itemBarang.harga < itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-down" title="Harga Turun dari {{itemBarang.hargaKatalog | number:2}}"></span>
+                            <span ng-if="itemBarang.harga * pesananBarang.kurs > itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-up" title="Harga Naik dari IDR {{itemBarang.hargaKatalog | number:2}}"></span>
+                            <span ng-if="itemBarang.harga * pesananBarang.kurs == itemBarang.hargaKatalog" class="glyphicon glyphicon-minus" title="Harga Tetap"></span>
+                            <span ng-if="itemBarang.harga * pesananBarang.kurs < itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-down" title="Harga Turun dari IDR {{itemBarang.hargaKatalog | number:2}}"></span>
                         </td>
-                        <td class="text-center" ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.jumlah | number:2"></td>
+                        <td class="text-center">
+                            <span ng-bind="pesananBarang.valutaBayar"></span>
+                            <span ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.jumlah | number:2"></span>
+                        </td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
                         <td class="text-center" ng-if="itemBarang.editable" ng-init="pesananBarang.someEditable=true">
                             <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveItem(pesananBarang, itemBarang)">
@@ -107,10 +101,13 @@
                         <td ng-if="!itemBarang.editable && pesananBarang.someEditable"></td>
                     </tr>
                     <tr>
-                        <td colspan=5 class="text-center">
+                        <td colspan="5" class="text-center">
                             <strong>Total</strong>
                         </td>
-                        <td class="text-center" ng-bind="getTotalCost() | number:2"></td>
+                        <td class="text-center">
+                            <span ng-bind="pesananBarang.valutaBayar"></span>
+                            <span ng-bind="getTotalCost() | number:2"></span>
+                        </td>
                         <td>
                     </tr>
                 </table>

@@ -84,7 +84,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         }
         warning = warning + "Data Katalog Barang Berikut : \n\n";
         angular.forEach($scope.fields, function(field) {
-            var fieldName = field.name.split('.');
+            var fieldName = field.name.split(".");
             if (field.warning) {
                 switch (fieldName.length) {
                     case 1:

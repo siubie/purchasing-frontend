@@ -2,37 +2,31 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Master Supplier</h3>
+    <h3>Detail Master Supplier
+        <span ng-bind="supplier.kode"></span>
+    </h3>
     <table class="table table-bordered table-condensed">
-        <tr>
-            <td>
-                <strong>Kode</strong>
-            </td>
-            <td ng-bind="supplier.kode"></td>
-        </tr>
         <tr>
             <td>
                 <strong>Nama</strong>
             </td>
-            <td ng-bind="supplier.nama"></td>
+            <td colspan="3" ng-bind="supplier.nama"></td>
         </tr>
         <tr>
             <td>
                 <strong>Alamat</strong>
             </td>
-            <td ng-bind="supplier.alamat"></td>
+            <td colspan="3" ng-bind="supplier.alamat"></td>
         </tr>
         <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Telepon</strong>
             </td>
-            <td ng-bind="supplier.nomorTelepon"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-4" ng-bind="supplier.nomorTelepon"></td>
+            <td class="col-xs-2">
                 <strong>Kategori</strong>
             </td>
-            <td ng-bind="supplier.kategori"></td>
+            <td class="col-xs-4" ng-bind="supplier.kategori"></td>
         </tr>
     </table>
     <div ng-if="supplier.editable">

@@ -2,25 +2,19 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Permintaan Barang</h3>
+    <h3>Detail Permintaan Barang (SPP)
+        <span ng-bind="permintaanBarang.nomor"></span>
+    </h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <td class="col-xs-6">
-                <strong>Nomor</strong>
-            </td>
-            <td class="col-xs-6" ng-bind="permintaanBarang.nomor"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Tanggal</strong>
             </td>
-            <td ng-bind="permintaanBarang.tanggal | date:'longDate'"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-4" ng-bind="permintaanBarang.tanggal | date:'longDate'"></td>
+            <td class="col-xs-2">
                 <strong>Jenis</strong>
             </td>
-            <td>
+            <td class="col-xs-4">
                 <div ng-if="permintaanBarang.emergency">EMERGENCY</div>
                 <div ng-if="!permintaanBarang.emergency">RUTIN</div>
             </td>
@@ -30,18 +24,16 @@
                 <strong>Kategori</strong>
             </td>
             <td ng-bind="permintaanBarang.kategori"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Status</strong>
             </td>
             <td ng-bind="permintaanBarang.status"></td>
         </tr>
         <tr>
-            <td colspan=2>
+            <td colspan="4">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=7 class="text-center">Item Barang</th>
+                        <th colspan="9" class="text-center">Item Barang</th>
                     </tr>
                     <tr>
                         <th class="text-center">Nama</th>
@@ -69,7 +61,7 @@
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         </td>
-                        <td ng-if="!itemBarang.editable&&permintaanBarang.someEditable"></td>
+                        <td ng-if="!itemBarang.editable && permintaanBarang.someEditable"></td>
                     </tr>
                 </table>
             </td>

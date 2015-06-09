@@ -1,4 +1,4 @@
-angular.module('pesananBarang.controllers', []).controller('pesananBarangController', function($filter, $http, $modal, $scope, $window, kategoriBarangFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
+angular.module("pesananBarang.controllers", []).controller("pesananBarangController", function($filter, $http, $modal, $scope, $window, kategoriBarangFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
         create: true,
@@ -146,7 +146,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             if (process == "create" && field.name == "nomor") {
                 field.warning = false;
             }
-            var fieldName = field.name.split('.');
+            var fieldName = field.name.split(".");
             if (field.warning) {
                 switch (fieldName.length) {
                     case 1:
@@ -279,8 +279,16 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     };
     $scope.getRate = function() {
         var url = "http://jsonrates.com/get/?from=" + $scope.pesananBarang.valuta + "&to=" + $scope.pesananBarang.valutaBayar + "&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK";
-        $http.jsonp(url).success(function(response) {
+        $http({
+            method: "JSONP",
+            url: url,
+            timeout: "1"
+        }).success(function(response) {
             $scope.pesananBarang.kurs = Number(response.rate);
+            $scope.timeoutConversion = false;
+        }).error(function() {
+            alert("ERROR : Proses Konversi Kurs Timeout!!!");
+            $scope.timeoutConversion = true;
         });
     };
     $scope.getBarangs = function(nomorSpp) {
@@ -334,9 +342,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.new();
         $scope.addDetail();
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
-            size: 'lg',
-            backdrop: 'static',
+            templateUrl: "modules/pesananbarang/views/form-pesananbarang.views.html",
+            size: "lg",
+            backdrop: "static",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -347,9 +355,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.newForm = false;
         $scope.get(pesananBarang.nomor);
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/pesananbarang/views/detail-pesananbarang.views.html',
-            size: 'lg',
-            backdrop: 'static',
+            templateUrl: "modules/pesananbarang/views/detail-pesananbarang.views.html",
+            size: "lg",
+            backdrop: "static",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -362,9 +370,9 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
         $scope.newForm = false;
         $scope.get(pesananBarang.nomor);
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/pesananbarang/views/form-pesananbarang.views.html',
-            size: 'lg',
-            backdrop: 'static',
+            templateUrl: "modules/pesananbarang/views/form-pesananbarang.views.html",
+            size: "lg",
+            backdrop: "static",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

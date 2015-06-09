@@ -8,13 +8,11 @@
         <h3>Buat Penjualan Waste</h3>
     </div>
     <div ng-show="!newForm">
-        <h3>Ubah Penjualan Waste</h3>
+        <h3>Ubah Penjualan Waste
+            <span ng-bind="penjualanWaste.nomor"></span>
+        </h3>
     </div>
     <form class="row" name="penjualanWasteForm">
-        <div class="form-group col-xs-12" ng-if="!newForm">
-            <label for="nomor">Nomor:&nbsp;</label>
-            <span ng-bind="penjualanWaste.nomor"></span>
-        </div>
         <div class="form-group col-xs-6 input-group-sm">
             <label for="nama">Nama</label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama.." ng-model="penjualanWaste.nama" required/>
@@ -26,7 +24,7 @@
         <div class="form-group col-xs-12 input-group-sm">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan=5>Item Waste</th>
+                    <th class="text-center" colspan="5">Item Waste</th>
                 </tr>
                 <tr>
                     <th class="text-center">Nama Barang</th>

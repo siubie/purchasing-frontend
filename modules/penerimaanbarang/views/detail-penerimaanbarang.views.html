@@ -2,33 +2,25 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Penerimaan Barang (LPB)</h3>
+    <h3>Detail Penerimaan Barang (LPB)
+        <span ng-bind="penerimaanBarang.nomor"></span>
+    </h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <td class="col-xs-6">
-                <strong>Nomor</strong>
-            </td>
-            <td class="col-xs-6" ng-bind="penerimaanBarang.nomor"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Tanggal Dibuat</strong>
             </td>
-            <td ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-4" ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
+            <td class="col-xs-2">
                 <strong>Tanggal Datang</strong>
             </td>
-            <td ng-bind="penerimaanBarang.tanggalDatang | date:'longDate'"></td>
+            <td class="col-xs-4" ng-bind="penerimaanBarang.tanggalDatang | date:'longDate'"></td>
         </tr>
         <tr>
             <td>
                 <strong>Nomor SP</strong>
             </td>
             <td ng-bind="penerimaanBarang.sp"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Supplier</strong>
             </td>
@@ -39,14 +31,11 @@
                 <strong>Nomor Surat Jalan</strong>
             </td>
             <td ng-bind="penerimaanBarang.nomorSj"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Diskon</strong>
             </td>
             <td>
-                <span ng-bind="penerimaanBarang.diskon"></span>
-                <span> %</span>
+                <span ng-bind="penerimaanBarang.diskon"></span>%
             </td>
         </tr>
         <tr>
@@ -54,8 +43,6 @@
                 <strong>Valuta</strong>
             </td>
             <td ng-bind="penerimaanBarang.valuta"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Valuta Bayar</strong>
             </td>
@@ -66,18 +53,16 @@
                 <strong>Kurs</strong>
             </td>
             <td ng-bind="penerimaanBarang.kurs | number"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Status</strong>
             </td>
             <td ng-bind="penerimaanBarang.status"></td>
         </tr>
         <tr>
-            <td colspan=2>
+            <td colspan="4">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=6 class="text-center">Item Barang</th>
+                        <th colspan="6" class="text-center">Item Barang</th>
                     </tr>
                     <tr>
                         <th class="text-center">Nomor SPP</th>

@@ -118,7 +118,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             if (process == "create" && field.name == "nomor") {
                 field.warning = false;
             }
-            var fieldName = field.name.split('.');
+            var fieldName = field.name.split(".");
             if (field.warning) {
                 switch (fieldName.length) {
                     case 1:

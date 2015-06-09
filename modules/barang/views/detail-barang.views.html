@@ -5,69 +5,36 @@
     <h3>Detail Master Barang
         <span ng-bind="barang.kode"></span>
     </h3>
-    <!-- <table class="table table-bordered table-condensed">
-        <tr>
-            <td class="col-xs-6">
-                <strong>Kode</strong>
-            </td>
-            <td class="col-xs-6" ng-bind="barang.kode"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Kategori</strong>
-            </td>
-            <td ng-bind="barang.kategori"></td>
-        </tr>
+    <table class="table table-bordered table-condensed">
         <tr>
             <td>
                 <strong>Nama</strong>
             </td>
-            <td ng-bind="barang.nama"></td>
+            <td colspan="3" ng-bind="barang.nama"></td>
         </tr>
         <tr>
-            <td>
+            <td class="col-xs-2">
+                <strong>Kategori</strong>
+            </td>
+            <td class="col-xs-4" ng-bind="barang.kategori"></td>
+            <td class="col-xs-2">
                 <strong>Satuan</strong>
             </td>
-            <td ng-bind="barang.satuan"></td>
+            <td class="col-xs-4" ng-bind="barang.satuan"></td>
         </tr>
         <tr>
             <td>
                 <strong>Spesifikasi</strong>
             </td>
-            <td ng-bind="barang.spesifikasi"></td>
+            <td colspan="3" ng-bind="barang.spesifikasi"></td>
         </tr>
         <tr>
             <td>
                 <strong>Deskripsi</strong>
             </td>
-            <td ng-bind="barang.deskripsi"></td>
+            <td colspan="3" ng-bind="barang.deskripsi"></td>
         </tr>
-    </table> -->
-    <br/>
-    <div class="form-group col-xs-12 input-group-sm">
-        <label for="nama">Nama:</label>
-        <div ng-bind="barang.nama"></div>
-    </div>
-    <div class="form-group col-xs-4 input-group-sm">
-        <label for="kategori">Kategori:</label>
-        <div ng-bind="barang.kategori"></div>
-    </div>
-    <div class="form-group col-xs-4 input-group-sm">
-        <label for="jenis">Jenis:</label>
-        <div ng-bind="barang.jenis"></div>
-    </div>
-    <div class="form-group col-xs-4 input-group-sm">
-        <label for="satuan">Satuan:</label>
-        <div ng-bind="barang.satuan"></div>
-    </div>
-    <div class="form-group col-xs-12 input-group-sm" ng-if="barang.spesifikasi">
-        <label for="spesifikasi">Spesifikasi:</label>
-        <div ng-bind="barang.spesifikasi"></div>
-    </div>
-    <div class="form-group col-xs-12 input-group-sm" ng-if="barang.deskripsi">
-        <label for="deskripsi">Deskripsi:</label>
-        <div ng-bind="barang.deskripsi"></div>
-    </div>
+    </table>
     <div ng-if="barang.editable">
         <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="barangForm.$invalid">
             <span class="glyphicon glyphicon-floppy-disk"></span>

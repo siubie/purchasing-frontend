@@ -2,33 +2,25 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Retur Barang (LPBR)</h3>
+    <h3>Detail Retur Barang (LPBR)
+        <span ng-bind="returBarang.nomor"></span>
+    </h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <td class="col-xs-6">
-                <strong>Nomor Penerimaan Barang</strong>
-            </td>
-            <td class="col-xs-6" ng-bind="returBarang.nomor"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Tanggal Retur</strong>
             </td>
-            <td ng-bind="returBarang.tanggalBuat | date:'longDate'"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Tanggal Kedatangan Barang</strong>
+            <td class="col-xs-4" ng-bind="returBarang.tanggalBuat | date:'longDate'"></td>
+            <td class="col-xs-2">
+                <strong>Tanggal Datang</strong>
             </td>
-            <td ng-bind="returBarang.tanggalDatang | date:'longDate'"></td>
+            <td class="col-xs-4" ng-bind="returBarang.tanggalDatang | date:'longDate'"></td>
         </tr>
         <tr>
             <td>
                 <strong>Nomor LPB</strong>
             </td>
             <td ng-bind="returBarang.lpb"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Nomor SP</strong>
             </td>
@@ -39,26 +31,18 @@
                 <strong>Supplier</strong>
             </td>
             <td ng-bind="returBarang.supplier.nama"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Nomor Surat Jalan</strong>
-            </td>
-            <td ng-bind="returBarang.nomorSj"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Diskon</strong>
             </td>
-            <td ng-bind="returBarang.diskon"></td>
+            <td>
+                <span ng-bind="returBarang.diskon"></span>%
+            </td>
         </tr>
         <tr>
             <td>
                 <strong>Valuta</strong>
             </td>
             <td ng-bind="returBarang.valuta"></td>
-        </tr>
-        <tr>
             <td>
                 <strong>Valuta Bayar</strong>
             </td>
@@ -69,19 +53,23 @@
                 <strong>Kurs</strong>
             </td>
             <td ng-bind="returBarang.kurs"></td>
+            <td>
+                <strong>Nomor Surat Jalan</strong>
+            </td>
+            <td ng-bind="returBarang.nomorSj"></td>
         </tr>
         <tr>
             <td>
                 <strong>Status</strong>
             </td>
-            <td ng-bind="returBarang.status"></td>
+            <td colspan="3" ng-bind="returBarang.status"></td>
         </tr>
         <tr>
             <tr>
-                <td colspan=2>
+                <td colspan="4">
                     <table class="table table-bordered table-condensed">
                         <tr>
-                            <th colspan=7 class="text-center">Item Barang</th>
+                            <th colspan="7" class="text-center">Item Barang</th>
                         </tr>
                         <tr>
                             <th class="text-center">Nama</th>

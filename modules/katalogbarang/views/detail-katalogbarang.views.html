@@ -2,37 +2,35 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Katalog Barang</h3>
+    <h3>Detail Katalog</h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <td class="col-xs-6">
+            <td>
                 <strong>Nama Barang</strong>
             </td>
-            <td class="col-xs-6" ng-bind="katalogBarang.barang.nama"></td>
+            <td colspan="3" ng-bind="katalogBarang.barang.nama"></td>
         </tr>
         <tr>
             <td>
                 <strong>Supplier</strong>
             </td>
-            <td ng-bind="katalogBarang.supplier.nama"></td>
+            <td colspan="3" ng-bind="katalogBarang.supplier.nama"></td>
         </tr>
         <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Alias</strong>
             </td>
-            <td ng-bind="katalogBarang.alias"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-4" ng-bind="katalogBarang.alias"></td>
+            <td class="col-xs-2">
                 <strong>Lead Time</strong>
             </td>
-            <td ng-bind="katalogBarang.leadTime | number"></td>
+            <td class="col-xs-4" ng-bind="katalogBarang.leadTime | number"></td>
         </tr>
         <tr ng-if="!!katalogBarang.historyHarga.length">
-            <td colspan=2>
+            <td colspan="4">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan=4 class="text-center">History Harga</th>
+                        <th colspan="4" class="text-center">History Harga</th>
                     </tr>
                     <tr>
                         <th class="text-center">Tanggal</th>

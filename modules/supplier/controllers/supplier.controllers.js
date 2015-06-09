@@ -1,4 +1,4 @@
-angular.module('supplier.controllers', []).controller("supplierController", function($modal, $scope, $window, kategoriBarangFactory, supplierFactory) {
+angular.module("supplier.controllers", []).controller("supplierController", function($modal, $scope, $window, kategoriBarangFactory, supplierFactory) {
     $scope.module = "supplier";
     $scope.access = {
         create: true,
@@ -124,9 +124,9 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         $scope.newForm = true;
         $scope.new();
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/supplier/views/form-supplier.views.html',
-            size: 'md',
-            backdrop: 'static',
+            templateUrl: "modules/supplier/views/form-supplier.views.html",
+            size: "lg",
+            backdrop: "static",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -136,9 +136,9 @@ angular.module('supplier.controllers', []).controller("supplierController", func
     $scope.openRead = function(supplier) {
         $scope.get(supplier.kode);
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/supplier/views/detail-supplier.views.html',
-            size: 'md',
-            backdrop: 'static',
+            templateUrl: "modules/supplier/views/detail-supplier.views.html",
+            size: "lg",
+            backdrop: "static",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -151,9 +151,9 @@ angular.module('supplier.controllers', []).controller("supplierController", func
         $scope.newForm = false;
         $scope.get(supplier.kode);
         $scope.modalInstance = $modal.open({
-            templateUrl: 'modules/supplier/views/form-supplier.views.html',
-            size: 'md',
-            backdrop: 'static',
+            templateUrl: "modules/supplier/views/form-supplier.views.html",
+            size: "lg",
+            backdrop: "static",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

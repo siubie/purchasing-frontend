@@ -2,25 +2,19 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Master Waste</h3>
+    <h3>Detail Master Waste
+        <span ng-bind="waste.kode"></span>
+    </h3>
     <table class="table table-bordered table-condensed">
         <tr>
-            <td class="col-xs-6">
-                <strong>Kode</strong>
-            </td>
-            <td class="col-xs-6" ng-bind="waste.kode"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-2">
                 <strong>Nama</strong>
             </td>
-            <td ng-bind="waste.nama"></td>
-        </tr>
-        <tr>
-            <td>
+            <td class="col-xs-4" ng-bind="waste.nama"></td>
+            <td class="col-xs-2">
                 <strong>Satuan</strong>
             </td>
-            <td ng-bind="waste.satuan"></td>
+            <td class="col-xs-4" ng-bind="waste.satuan"></td>
         </tr>
     </table>
     <div ng-if="waste.editable">

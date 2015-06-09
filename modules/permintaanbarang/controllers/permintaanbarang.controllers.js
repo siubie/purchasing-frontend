@@ -20,7 +20,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         warning: true
     }, {
         name: "emergency",
-        header: "emergency",
+        header: "Jenis",
         type: "emergency",
         grid: true,
         warning: true
@@ -306,7 +306,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
                 barangs.push(katalogBarang.barang);
             }
         });
-        barangs = $filter('unique')(barangs, 'kode');
+        barangs = $filter("unique")(barangs, "kode");
         return barangs;
     };
     $scope.openCreate = function() {
