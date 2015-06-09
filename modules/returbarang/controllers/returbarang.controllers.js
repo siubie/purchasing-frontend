@@ -68,7 +68,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
     $scope.new = function(penerimaanBarang) {
         $scope.returBarang = new returBarangFactory({
             nomor: "LPBR" + new Date().getTime(),
-            tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
+            tanggalBuat: new Date(),
             status: "RECEIVED",
             returItemsList: [],
             editable: true

@@ -19,9 +19,9 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         grid: true,
         warning: true
     }, {
-        name: "jenis",
-        header: "Jenis",
-        type: "jenis",
+        name: "emergency",
+        header: "emergency",
+        type: "emergency",
         grid: true,
         warning: true
     }, {
@@ -115,8 +115,8 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
     $scope.new = function() {
         $scope.permintaanBarang = new permintaanBarangFactory({
             nomor: "SPP" + new Date().getTime(),
-            tanggal: $filter("date")(new Date(), "yyyy-MM-dd"),
-            jenis: false,
+            tanggal: new Date(),
+            emergency: false,
             status: "RECEIVED",
             sppItemsList: [],
             editable: true
@@ -352,11 +352,11 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
     };
     $scope.addDetail = function(index) {
         $scope.permintaanBarang.sppItemsList.push({
-            tanggalButuh: $filter("date")(new Date(), "yyyy-MM-dd"),
+            tanggalButuh: new Date(),
             jumlah: 1,
             sisa: 1,
             status: "RECEIVED",
-            harga: 0,
+            hargaKatalog: 0,
             editable: true
         });
     };

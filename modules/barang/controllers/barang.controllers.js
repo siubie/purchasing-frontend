@@ -164,7 +164,7 @@ angular.module("barang.controllers", []).controller("barangController", function
         $scope.view = "read";
         $scope.get(barang.kode);
         $scope.modalInstance = $modal.open({
-            templateUrl: "modules/barang/views/form-barang.views.html",
+            templateUrl: "modules/barang/views/detail-barang.views.html",
             size: "lg",
             backdrop: "static",
             scope: $scope

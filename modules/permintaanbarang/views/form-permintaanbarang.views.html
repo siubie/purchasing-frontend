@@ -23,9 +23,9 @@
             </select>
         </div>
         <div class="form-group col-xs-4 input-group-sm">
-            <label for="jenis">
+            <label for="emergency">
                 <span>Emergency:&nbsp;</span>
-                <input type="checkbox" id="jenis" name="jenis" ng-model="permintaanBarang.jenis" />
+                <input type="checkbox" id="emergency" name="emergency" ng-model="permintaanBarang.emergency" />
             </label>
         </div>
         <div class="form-group col-xs-12 input-group-sm">
@@ -47,14 +47,8 @@
                     <tr ng-if="itemBarang.editable">
                         <td class="input-group-sm">
                             <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in getBarangs(permintaanBarang.kategori) | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
-                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
-                            ng-disabled="!permintaanBarang.kategori" required/>
+                            typeahead-editable="false" typeahead-on-select="itemBarang.hargaKatalog = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate" ng-disabled="!permintaanBarang.kategori" required/>
                         </td>
-                        <!-- <td class="input-group-sm">
-                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in barangs | filter:{kategori:permintaanBarang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
-                            typeahead-editable="false" typeahead-on-select="itemBarang.harga = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
-                            ng-disabled="!permintaanBarang.kategori" required/>
-                        </td> -->
                         <td class="text-center input-group-sm">
                             <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" ng-disabled="!permintaanBarang.kategori" required>
                                 <option value="">-- Pilih Satuan --</option>

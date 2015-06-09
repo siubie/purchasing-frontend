@@ -54,7 +54,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
     $scope.new = function() {
         $scope.penjualanWaste = new penjualanWasteFactory({
             nomor: "PW" + new Date().getTime(),
-            tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
+            tanggal: new Date(),
             wasteItemsList: [],
             editable: true
         });

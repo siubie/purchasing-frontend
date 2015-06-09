@@ -72,8 +72,8 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     $scope.new = function(pesananBarang) {
         $scope.penerimaanBarang = new penerimaanBarangFactory({
             nomor: "LPB" + new Date().getTime(),
-            tanggalBuat: $filter("date")(new Date(), "yyyy-MM-dd"),
-            tanggalDatang: $filter("date")(new Date(), "yyyy-MM-dd"),
+            tanggalBuat: new Date(),
+            tanggalDatang: new Date(),
             status: "RECEIVED",
             lpbItemsList: [],
             editable: true
@@ -220,7 +220,4 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         $event.stopPropagation();
         $scope.opened.tanggalDatang = true;
     };
-    $scope.$watch('penerimaanBarang.tanggalDatang', function() {
-        $scope.penerimaanBarang.tanggalDatang = $filter('date')($scope.penerimaanBarang.tanggalDatang, 'yyyy-MM-dd');
-    });
 });

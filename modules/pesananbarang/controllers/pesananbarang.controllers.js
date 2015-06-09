@@ -48,7 +48,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     }).success(function(response) {
         $scope.kurs = response.rates;
     }).error(function() {
-        alert("Proses Mengambil data Kurs Timeout!!!");
+        alert("ERROR : Proses Mengambil data Kurs Timeout!!!");
         delete $scope.kurs;
     });
     $scope.query = function() {
@@ -109,7 +109,7 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
     $scope.new = function() {
         $scope.pesananBarang = new pesananBarangFactory({
             nomor: "SP" + new Date().getTime(),
-            tanggal: $filter('date')(new Date(), 'yyyy-MM-dd'),
+            tanggal: new Date(),
             ppn: false,
             diskon: 0,
             kurs: 1,
@@ -301,8 +301,8 @@ angular.module('pesananBarang.controllers', []).controller('pesananBarangControl
             if (nomorSpp == permintaanBarang.nomor) {
                 angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
                     if (kodeBarang == itemBarang.barang.kode) {
-                        $scope.pesananBarang.spItemsList[index].harga = itemBarang.harga;
-                        $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.harga;
+                        $scope.pesananBarang.spItemsList[index].harga = itemBarang.hargaKatalog;
+                        $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.hargaKatalog;
                         $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
                         $scope.pesananBarang.spItemsList[index].jumlah = itemBarang.jumlah;
                     }

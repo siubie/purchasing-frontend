@@ -88,7 +88,12 @@
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                         <td class="text-center" ng-bind="itemBarang.satuan"></td>
                         <td class="text-center" ng-bind="itemBarang.jumlah"></td>
-                        <td class="text-center" ng-bind="itemBarang.harga | number:2"></td>
+                        <td class="text-center">
+                            <span ng-bind="itemBarang.harga | number:2"></span>
+                            <span ng-if="itemBarang.harga > itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-up" title="Harga Naik dari {{itemBarang.hargaKatalog | number:2}}"></span>
+                            <span ng-if="itemBarang.harga == itemBarang.hargaKatalog" class="glyphicon glyphicon-minus" title="Harga Tetap"></span>
+                            <span ng-if="itemBarang.harga < itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-down" title="Harga Turun dari {{itemBarang.hargaKatalog | number:2}}"></span>
+                        </td>
                         <td class="text-center" ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.jumlah | number:2"></td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
                         <td class="text-center" ng-if="itemBarang.editable" ng-init="pesananBarang.someEditable=true">

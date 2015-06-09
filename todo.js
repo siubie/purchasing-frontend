@@ -7,7 +7,6 @@ var todo = new Object({
         "pengesahan di semua modul",
         "validasi input number di setiap modul (min dan max)",
         "ganti semua watch ke ngChange",
-        "informasi perubahan harga di SP",
         "gunakan return untuk fungsi dengan kembalian",
         "lengkapi field supplier",
         "spesifikasi hover di SPP",

@@ -87,14 +87,14 @@
                 <button type="button" class="btn btn-default btn-xs" title="Delete" ng-click="delete(item)" ng-if="access.delete&&item.editable">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
-                <span ng-if="(module=='permintaanBarang' || module=='pesananBarang')&&item.editable">
+                <!-- <span ng-if="(module=='permintaanBarang' || module=='pesananBarang')&&item.editable">
                     <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveAllItem(item)">
                         <span class="glyphicon glyphicon-ok"></span>
                     </button>
                     <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="rejectAllItem(item)">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                </span>
+                </span> -->
             </td>
         </tr>
     </table>

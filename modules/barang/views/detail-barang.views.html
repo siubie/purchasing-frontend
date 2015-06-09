@@ -2,8 +2,10 @@
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-    <h3>Detail Master Barang</h3>
-    <table class="table table-bordered table-condensed">
+    <h3>Detail Master Barang
+        <span ng-bind="barang.kode"></span>
+    </h3>
+    <!-- <table class="table table-bordered table-condensed">
         <tr>
             <td class="col-xs-6">
                 <strong>Kode</strong>
@@ -40,7 +42,32 @@
             </td>
             <td ng-bind="barang.deskripsi"></td>
         </tr>
-    </table>
+    </table> -->
+    <br/>
+    <div class="form-group col-xs-12 input-group-sm">
+        <label for="nama">Nama:</label>
+        <div ng-bind="barang.nama"></div>
+    </div>
+    <div class="form-group col-xs-4 input-group-sm">
+        <label for="kategori">Kategori:</label>
+        <div ng-bind="barang.kategori"></div>
+    </div>
+    <div class="form-group col-xs-4 input-group-sm">
+        <label for="jenis">Jenis:</label>
+        <div ng-bind="barang.jenis"></div>
+    </div>
+    <div class="form-group col-xs-4 input-group-sm">
+        <label for="satuan">Satuan:</label>
+        <div ng-bind="barang.satuan"></div>
+    </div>
+    <div class="form-group col-xs-12 input-group-sm" ng-if="barang.spesifikasi">
+        <label for="spesifikasi">Spesifikasi:</label>
+        <div ng-bind="barang.spesifikasi"></div>
+    </div>
+    <div class="form-group col-xs-12 input-group-sm" ng-if="barang.deskripsi">
+        <label for="deskripsi">Deskripsi:</label>
+        <div ng-bind="barang.deskripsi"></div>
+    </div>
     <div ng-if="barang.editable">
         <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="barangForm.$invalid">
             <span class="glyphicon glyphicon-floppy-disk"></span>
