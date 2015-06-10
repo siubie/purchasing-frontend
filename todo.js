@@ -3,21 +3,24 @@ var todo = new Object({
         "test unit"
     ],
     bug: [],
+    priority: [
+        "fungsi approval",
+        "pengesahan di semua modul transaksi",
+        "duplicate di item transaksi"
+    ],
     feature: [
-        "pengesahan di semua modul",
         "validasi input number di setiap modul (min dan max)",
         "gunakan return untuk fungsi dengan kembalian",
         "lengkapi field supplier",
         "spesifikasi hover di SPP",
         "scrollfix di item barang",
-        "cek urutan input data setiap form di foxpro",
         "autofocus di semua form",
-        "pindah fungsi typeahead-on-select dan ng-change ke controller",
-        "duplicate di item transaksi",
-        "informasi pada data kosong"
+        "informasi pada data kosong",
     ],
     bisnis: [
         "jenis dipakai apa tidak",
-        "jenis per kategori"
+        "jenis per kategori",
+        "harga di lpb dan retur",
+        "analisa proses input data bandingkan dengan existing"
     ]
 });

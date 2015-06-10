@@ -55,7 +55,7 @@
                             </select>
                         </td>
                         <td class="text-center input-group-sm">
-                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa=itemBarang.jumlah" ng-disabled="!permintaanBarang.kategori" required/>
+                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa = itemBarang.jumlah" ng-disabled="!permintaanBarang.kategori" required/>
                         </td>
                         <td class="text-center">
                             <span ng-bind="itemBarang.tanggalButuh | date: 'dd MMMM yyyy'"></span>
@@ -68,7 +68,7 @@
                             </span>
                         </td>
                         <td class="input-group-sm">
-                            <textarea class="form-control" ng-model="itemBarang.keterangan" ng-disabled="!permintaanBarang.kategori"></textarea>
+                            <textarea class="form-control" ng-model="itemBarang.keterangan" ng-disabled="!permintaanBarang.kategori" capitalize></textarea>
                         </td>
                         <td class="text-center">
                             <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="permintaanBarang.sppItemsList.length<=1">

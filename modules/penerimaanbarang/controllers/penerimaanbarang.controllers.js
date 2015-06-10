@@ -179,6 +179,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             templateUrl: "modules/penerimaanbarang/views/form-penerimaanbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -191,6 +192,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             templateUrl: "modules/penerimaanbarang/views/detail-penerimaanbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -206,6 +208,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             templateUrl: "modules/penerimaanbarang/views/form-penerimaanbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

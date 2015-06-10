@@ -176,6 +176,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             templateUrl: "modules/returbarang/views/form-returbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -188,6 +189,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             templateUrl: "modules/returbarang/views/detail-returbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -203,6 +205,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             templateUrl: "modules/returbarang/views/form-returbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

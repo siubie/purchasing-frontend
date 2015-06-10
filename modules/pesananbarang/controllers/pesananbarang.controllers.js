@@ -345,6 +345,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             templateUrl: "modules/pesananbarang/views/form-pesananbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -358,6 +359,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             templateUrl: "modules/pesananbarang/views/detail-pesananbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -373,6 +375,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             templateUrl: "modules/pesananbarang/views/form-pesananbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

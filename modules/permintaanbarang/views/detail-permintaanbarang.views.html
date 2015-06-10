@@ -54,10 +54,10 @@
                         <td class="text-center" ng-bind="itemBarang.sisa"></td>
                         <td class="text-center" ng-bind="itemBarang.keterangan"></td>
                         <td class="text-center" ng-if="itemBarang.editable" ng-init="permintaanBarang.someEditable=true">
-                            <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approveItem(permintaanBarang, itemBarang)">
+                            <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approve(permintaanBarang, itemBarang.barang.kode)">
                                 <span class="glyphicon glyphicon-ok"></span>
                             </button>
-                            <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="rejectItem(permintaanBarang, itemBarang)">
+                            <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(permintaanBarang, itemBarang.barang.kode)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         </td>
@@ -72,11 +72,11 @@
             <span class="glyphicon glyphicon-floppy-disk"></span>
             <span>&nbsp;Ubah</span>
         </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="approveAllItem(permintaanBarang)" ng-if="access.update">
+        <button class="btn btn-default btn-sm" type="button" ng-click="approve(permintaanBarang)" ng-if="access.update">
             <span class="glyphicon glyphicon-ok"></span>
             <span>&nbsp;Setujui</span>
         </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="rejectAllItem(permintaanBarang)" ng-if="access.update">
+        <button class="btn btn-default btn-sm" type="button" ng-click="reject(permintaanBarang)" ng-if="access.update">
             <span class="glyphicon glyphicon-remove"></span>
             <span>&nbsp;Tolak</span>
         </button>

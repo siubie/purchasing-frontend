@@ -144,6 +144,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -156,6 +157,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             templateUrl: "modules/penjualanwaste/views/detail-penjualanwaste.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -171,6 +173,7 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
             templateUrl: "modules/penjualanwaste/views/form-penjualanwaste.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {

@@ -227,17 +227,25 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             });
         }
     };
-    $scope.approveItem = function(permintaanBarang, itemBarangToApprove) {
+    $scope.approve = function(permintaanBarang, kodeBarang) {
+        $scope.permintaanBarang = permintaanBarang;
         var confirm = $window.confirm("Apakah Anda Yakin?");
+        var toast = "";
         if (confirm) {
-            permintaanBarang.status = "APPROVED";
+            $scope.permintaanBarang.status = "APPROVED";
             angular.forEach($scope.permintaanBarang.sppItemsList, function(itemBarang) {
-                if (itemBarang === itemBarangToApprove) {
+                if (!!kodeBarang) {
+                    if (itemBarang === kodeBarang) {
+                        itemBarang.status = "APPROVED";
+                        toast = "Item Permintaan Barang Telah Disetujui...";
+                    }
+                } else {
                     itemBarang.status = "APPROVED";
+                    toast = "Data Permintaan Barang Telah Disetujui...";
                 }
             });
-            permintaanBarang.$update(function() {
-                toastr.success("Item Permintaan Barang Telah Disetujui...");
+            $scope.permintaanBarang.$update(function() {
+                toastr.success(toast);
                 $scope.query();
                 $scope.get(permintaanBarang.nomor);
             });
@@ -317,6 +325,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
@@ -329,6 +338,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             templateUrl: "modules/permintaanbarang/views/detail-permintaanbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then({}, function(reason) {
@@ -344,6 +354,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
             templateUrl: "modules/permintaanbarang/views/form-permintaanbarang.views.html",
             size: "lg",
             backdrop: "static",
+            windowClass: "app-modal-window",
             scope: $scope
         });
         $scope.modalInstance.result.then(function() {
