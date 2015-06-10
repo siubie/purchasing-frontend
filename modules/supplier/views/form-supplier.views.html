@@ -25,9 +25,9 @@
             <input type="text" class="form-control" id="nomorTelepon" name="nomorTelepon" placeholder="Masukkan Nomor Telepon.." ng-model="supplier.nomorTelepon" required/>
         </div>
         <div class="form-group col-xs-6 input-group-sm">
-            <label for="kategori">Kategori</label>
+            <label for="kategori">Golongan</label>
             <ui-select multiple ng-model="supplier.kategori" theme="bootstrap">
-                <ui-select-match placeholder="Masukkan Kategori...">
+                <ui-select-match placeholder="Masukkan Golongan...">
                     <span ng-bind="$item.kode"></span>
                 </ui-select-match>
                 <ui-select-choices repeat="kategoriBarang.kode as kategoriBarang in kategoriBarangs | filter:$select.search | orderBy:'kategori'">

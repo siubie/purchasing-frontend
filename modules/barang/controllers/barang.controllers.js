@@ -14,7 +14,7 @@ angular.module("barang.controllers", []).controller("barangController", function
     }, {
         name: "kategori",
         type: "string",
-        header: "Kategori",
+        header: "Golongan",
         grid: true,
         warning: true
     }, {

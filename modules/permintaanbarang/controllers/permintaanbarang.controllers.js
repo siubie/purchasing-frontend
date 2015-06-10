@@ -26,7 +26,7 @@ angular.module("permintaanBarang.controllers", []).controller("permintaanBarangC
         warning: true
     }, {
         name: "kategori",
-        header: "Kategori",
+        header: "Golongan",
         type: "array",
         grid: true,
         warning: true

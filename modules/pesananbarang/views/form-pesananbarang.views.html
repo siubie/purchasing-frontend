@@ -18,9 +18,9 @@
     <br/>
     <form class="row" name="pesananBarangForm">
         <div class="form-group col-xs-6 input-group-sm">
-            <label for="kategori">Kategori (Golongan)</label>
+            <label for="kategori">Golongan</label>
             <select class="form-control" id="kategori" name="kategori" ng-model="pesananBarang.kategori" ng-options="kategoriBarang.kode as kategoriBarang.kategori for kategoriBarang in kategoriBarangs | orderBy:'kategori'" ng-disabled="!newForm" required>
-                <option value="">-- Pilih Kategori --</option>
+                <option value="">-- Pilih Golongan --</option>
             </select>
         </div>
         <div class="form-group col-xs-6 input-group-sm">

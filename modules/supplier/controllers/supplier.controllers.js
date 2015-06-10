@@ -32,7 +32,7 @@ angular.module("supplier.controllers", []).controller("supplierController", func
     }, {
         name: "kategori",
         type: "array",
-        header: "Kategori",
+        header: "Golongan",
         grid: true,
         warning: true
     }];
