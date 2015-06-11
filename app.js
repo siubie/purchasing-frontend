@@ -17,6 +17,7 @@ angular.module("purchasingApp", [
     "departemen",
     "katalogBarang",
     "kategoriBarang",
+    "konversiSatuan",
     "penerimaanBarang",
     "penjualanWaste",
     "permintaanBarang",

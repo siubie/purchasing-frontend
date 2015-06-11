@@ -62,7 +62,7 @@
             <td colspan="4">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan="6" class="text-center">Item Barang</th>
+                        <th colspan="7" class="text-center">Item Barang</th>
                     </tr>
                     <tr>
                         <th class="text-center">Nomor SPP</th>
@@ -71,6 +71,7 @@
                         <th class="text-center">Jumlah</th>
                         <th class="text-center">Harga</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Pilihan</th>
                     </tr>
                     <tr ng-repeat="itemBarang in penerimaanBarang.lpbItemsList">
                         <td class="text-center" ng-bind="itemBarang.spp"></td>
@@ -79,6 +80,16 @@
                         <td class="text-center" ng-bind="itemBarang.jumlah"></td>
                         <td class="text-center" ng-bind="itemBarang.harga"></td>
                         <td class="text-center" ng-bind="itemBarang.status"></td>
+                        <td class="text-center">
+                            <div ng-if="itemBarang.editable">
+                                <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approve(penerimaanBarang, itemBarang.barang.kode)">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(penerimaanBarang, itemBarang.barang.kode)">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -88,6 +99,14 @@
         <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="penerimaanBarangForm.$invalid">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             <span>&nbsp;Ubah</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="approve(penerimaanBarang)" ng-if="access.update">
+            <span class="glyphicon glyphicon-ok"></span>
+            <span>&nbsp;Setujui</span>
+        </button>
+        <button class="btn btn-default btn-sm" type="button" ng-click="reject(penerimaanBarang)" ng-if="access.update">
+            <span class="glyphicon glyphicon-remove"></span>
+            <span>&nbsp;Tolak</span>
         </button>
         <button class="btn btn-default btn-sm" type="button" ng-click="delete(penerimaanBarang)" ng-if="access.delete" ng-show="!newForm">
             <span class="glyphicon glyphicon-trash"></span>

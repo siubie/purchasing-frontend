@@ -34,10 +34,10 @@
             </div>
             <div class="form-group col-xs-4 input-group-sm">
                 <label for="nomorSj">Nomor Surat Jalan</label>
-                <input type="text" class="form-control" id="nomorSj" name="nomorSj" placeholder="Masukkan Nomor Surat Jalan.." ng-model="penerimaanBarang.nomorSj" capitalize required/>
+                <input type="text" class="form-control" id="nomorSj" name="nomorSj" placeholder="Masukkan Nomor Surat Jalan.." ng-model="penerimaanBarang.nomorSj" required/>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="penerimaanBarang.sp">
             <div class="form-group col-xs-4">
                 <label for="supplier.nama">Supplier:&nbsp;</label>
                 <span ng-bind="penerimaanBarang.supplier.nama"></span>
@@ -50,8 +50,6 @@
                 <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
                 <span ng-bind="penerimaanBarang.valutaBayar"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="form-group col-xs-4">
                 <label for="kurs">Kurs:&nbsp;</label>
                 <span ng-bind="penerimaanBarang.kurs"></span>
@@ -60,8 +58,6 @@
                 <label for="diskon">Diskon:&nbsp;</label>
                 <span ng-bind="penerimaanBarang.diskon"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="form-group col-xs-12 input-group-sm">
                 <table class="table table-bordered table-condensed">
                     <tr>
@@ -92,17 +88,15 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12" ng-if="penerimaanBarang.editable">
-                <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penerimaanBarangForm.$invalid||!penerimaanBarang.lpbItemsList.length">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                    <span>&nbsp;Simpan</span>
-                </button>
-                <button type="button" class="btn btn-default btn-sm" ng-click="delete(penerimaanBarang)" ng-if="!newForm">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    <span>&nbsp;Hapus</span>
-                </button>
-            </div>
+        <div ng-if="penerimaanBarang.editable">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penerimaanBarangForm.$invalid||!penerimaanBarang.lpbItemsList.length">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span>&nbsp;Simpan</span>
+            </button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete(penerimaanBarang)" ng-if="!newForm">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;Hapus</span>
+            </button>
         </div>
     </form>
 </div>

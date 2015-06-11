@@ -52,11 +52,30 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     $scope.opened = {
         "tanggalDatang": false
     };
+    var checkEditable = function(penerimaanBarang, process) {
+        switch (penerimaanBarang.status) {
+            case "NEW":
+                penerimaanBarang.editable = true;
+                break;
+            default:
+                penerimaanBarang.editable = false;
+        }
+        angular.forEach(penerimaanBarang.lpbItemsList, function(itemBarang) {
+            switch (itemBarang.status) {
+                case "NEW":
+                    itemBarang.editable = true;
+                    break;
+                default:
+                    itemBarang.editable = false;
+            }
+        });
+        return penerimaanBarang;
+    };
     $scope.query = function() {
         $scope.pesananBarangs = pesananBarangFactory.query();
         $scope.penerimaanBarangs = penerimaanBarangFactory.query(function() {
             angular.forEach($scope.penerimaanBarangs, function(penerimaanBarang) {
-                penerimaanBarang.editable = true;
+                penerimaanBarang = checkEditable(penerimaanBarang);
             });
         });
         $scope.items = $scope.penerimaanBarangs;
@@ -66,7 +85,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         $scope.penerimaanBarang = penerimaanBarangFactory.get({
             id: id
         }, function() {
-            $scope.penerimaanBarang.editable = true;
+            $scope.penerimaanBarang = checkEditable($scope.penerimaanBarang);
         });
     };
     $scope.new = function(pesananBarang) {
@@ -74,7 +93,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             nomor: "LPB" + new Date().getTime(),
             tanggalBuat: new Date(),
             tanggalDatang: new Date(),
-            status: "RECEIVED",
+            status: "NEW",
             lpbItemsList: [],
             editable: true
         });
@@ -93,7 +112,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                         spp: itemBarang.spp,
                         jumlah: itemBarang.jumlah,
                         harga: itemBarang.harga,
-                        status: "RECEIVED",
+                        status: "NEW",
                     });
                 }
             });
@@ -122,8 +141,15 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             if (field.warning) {
                 switch (fieldName.length) {
                     case 1:
-                        if (!!$scope.penerimaanBarang[field.name]) {
-                            warning = warning + field.header + " : " + $scope.penerimaanBarang[field.name] + "\n";
+                        if (angular.isDefined($scope.penerimaanBarang[field.name])) {
+                            switch (field.type) {
+                                case "string":
+                                    warning = warning + field.header + " : " + $scope.penerimaanBarang[field.name] + "\n";
+                                    break;
+                                case "date":
+                                    warning = warning + field.header + " : " + $filter('date')($scope.penerimaanBarang[field.name], field.filter) + "\n";
+                                    break;
+                            }
                         }
                         break;
                     case 2:
@@ -169,6 +195,60 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
                 }
                 toastr.success("Data Penerimaan Barang Telah Dihapus...");
                 $scope.query();
+            });
+        }
+    };
+    $scope.approve = function(penerimaanBarang, kodeBarang) {
+        $scope.penerimaanBarang = penerimaanBarang;
+        var confirm = $window.confirm($scope.warning("approve"));
+        var toast = "";
+        if (confirm) {
+            $scope.penerimaanBarang.status = "APPROVED";
+            angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang) {
+                if (!!kodeBarang) {
+                    if (itemBarang.barang.kode == kodeBarang) {
+                        itemBarang.status = "APPROVED";
+                        toast = "Item Penerimaan Barang Telah Disetujui...";
+                    }
+                } else {
+                    itemBarang.status = "APPROVED";
+                    toast = "Data Penerimaan Barang Telah Disetujui...";
+                }
+            });
+            $scope.penerimaanBarang.$update(function() {
+                toastr.success(toast);
+                $scope.query();
+                $scope.get(penerimaanBarang.nomor);
+            });
+        }
+    };
+    $scope.reject = function(penerimaanBarang, kodeBarang) {
+        $scope.penerimaanBarang = penerimaanBarang;
+        var confirm = $window.confirm($scope.warning("reject"));
+        var toast = "";
+        var allRejected = 0;
+        if (confirm) {
+            angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang) {
+                if (!!kodeBarang) {
+                    if (itemBarang.barang.kode == kodeBarang) {
+                        itemBarang.status = "REJECTED";
+                        toast = "Item Penerimaan Barang Telah Ditolak...";
+                    }
+                } else {
+                    itemBarang.status = "REJECTED";
+                    toast = "Data Penerimaan Barang Telah Ditolak...";
+                }
+                if (itemBarang.status == "REJECTED") {
+                    allRejected++;
+                }
+            });
+            if (allRejected == $scope.penerimaanBarang.lpbItemsList.length) {
+                $scope.penerimaanBarang.status = "REJECTED";
+            }
+            $scope.penerimaanBarang.$update(function() {
+                toastr.success(toast);
+                $scope.query();
+                $scope.get(penerimaanBarang.nomor);
             });
         }
     };

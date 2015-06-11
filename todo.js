@@ -4,9 +4,9 @@ var todo = new Object({
     ],
     bug: [],
     priority: [
-        "fungsi approval",
         "pengesahan di semua modul transaksi",
-        "duplicate di item transaksi"
+        "duplicate di item transaksi",
+        "konversi satuan"
     ],
     feature: [
         "validasi input number di setiap modul (min dan max)",
@@ -16,11 +16,24 @@ var todo = new Object({
         "scrollfix di item barang",
         "autofocus di semua form",
         "informasi pada data kosong",
+        "gunakan var untuk fungsi yang tidak diakses oleh view",
+        "cari cara lain untuk data jenis barang",
+        "hapus tbody di tabel item permintaan barang",
+        "sembunyikan pilihan di item barang ketika sudah tidak ada item barang yang bisa diubah",
+        "cek span dan div",
+        "cek col-xs-12"
     ],
     bisnis: [
-        "jenis dipakai apa tidak",
+        "duplikasi data jenis di nama barang",
         "jenis per kategori",
         "harga di lpb dan retur",
-        "analisa proses input data bandingkan dengan existing"
+        "analisa proses input data bandingkan dengan existing",
+        "permintaan barang masih bisa diedit ketika hanya 1 item di reject"
+    ],
+    engine: [
+        "pindah komputasi ke engine (approve, reject, getHarga, getLeadtime)",
+        "otomatis buat katalog dari penerimaan barang",
+        "pengkodean",
+        "service jenis barang"
     ]
 });

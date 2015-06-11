@@ -1,4 +1,4 @@
-angular.module("pesananBarang.controllers", []).controller("pesananBarangController", function($filter, $http, $modal, $scope, $window, kategoriBarangFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory) {
+angular.module("pesananBarang.controllers", []).controller("pesananBarangController", function($filter, $http, $modal, $scope, $window, kategoriBarangFactory, konversiSatuanFactory, supplierFactory, permintaanBarangFactory, pesananBarangFactory, satuanGudangFactory) {
     $scope.module = "pesananBarang";
     $scope.access = {
         create: true,
@@ -51,6 +51,25 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         alert("ERROR : Proses Mengambil data Kurs Timeout!!!");
         delete $scope.kurs;
     });
+    var checkEditable = function(pesananBarang, process) {
+        switch (pesananBarang.status) {
+            case "NEW":
+                pesananBarang.editable = true;
+                break;
+            default:
+                pesananBarang.editable = false;
+        }
+        angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
+            switch (itemBarang.status) {
+                case "NEW":
+                    itemBarang.editable = true;
+                    break;
+                default:
+                    itemBarang.editable = false;
+            }
+        });
+        return pesananBarang;
+    };
     $scope.query = function() {
         $scope.suppliers = supplierFactory.query();
         $scope.kategoriBarangs = kategoriBarangFactory.query(function() {
@@ -60,25 +79,17 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             });
             $scope.kategoriBarangArray.sort();
         });
+        $scope.satuanGudangs = satuanGudangFactory.query(function() {
+            $scope.satuanGudangArray = [];
+            angular.forEach($scope.satuanGudangs, function(satuanGudang) {
+                $scope.satuanGudangArray.push(satuanGudang.satuan);
+            });
+            $scope.satuanGudangArray.sort();
+        });
         $scope.permintaanBarangs = permintaanBarangFactory.query();
         $scope.pesananBarangs = pesananBarangFactory.query(function() {
             angular.forEach($scope.pesananBarangs, function(pesananBarang) {
-                switch (pesananBarang.status) {
-                    case "NEW":
-                        pesananBarang.editable = true;
-                        break;
-                    default:
-                        pesananBarang.editable = false;
-                }
-                angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
-                    switch (itemBarang.status) {
-                        case "NEW":
-                            itemBarang.editable = true;
-                            break;
-                        default:
-                            itemBarang.editable = false;
-                    }
-                });
+                pesananBarang = checkEditable(pesananBarang);
             });
         });
         $scope.items = $scope.pesananBarangs;
@@ -88,22 +99,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         $scope.pesananBarang = pesananBarangFactory.get({
             id: id
         }, function() {
-            switch ($scope.pesananBarang.status) {
-                case "NEW":
-                    $scope.pesananBarang.editable = true;
-                    break;
-                default:
-                    $scope.pesananBarang.editable = false;
-            }
-            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-                switch (itemBarang.status) {
-                    case "NEW":
-                        itemBarang.editable = true;
-                        break;
-                    default:
-                        itemBarang.editable = false;
-                }
-            });
+            $scope.pesananBarang = checkEditable($scope.pesananBarang);
         });
     };
     $scope.new = function() {
@@ -150,8 +146,23 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             if (field.warning) {
                 switch (fieldName.length) {
                     case 1:
-                        if (!!$scope.pesananBarang[field.name]) {
-                            warning = warning + field.header + " : " + $scope.pesananBarang[field.name] + "\n";
+                        if (angular.isDefined($scope.pesananBarang[field.name])) {
+                            switch (field.type) {
+                                case "string":
+                                case "array":
+                                    warning = warning + field.header + " : " + $scope.pesananBarang[field.name] + "\n";
+                                    break;
+                                case "date":
+                                    warning = warning + field.header + " : " + $filter('date')($scope.pesananBarang[field.name], field.filter) + "\n";
+                                    break;
+                                case "ppn":
+                                    if ($scope.pesananBarang[field.name]) {
+                                        warning = warning + field.header + " : YA\n";
+                                    } else {
+                                        warning = warning + field.header + " : TIDAK\n";
+                                    }
+                                    break;
+                            }
                         }
                         break;
                     case 2:
@@ -200,78 +211,55 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             });
         }
     };
-    $scope.approveAllItem = function(pesananBarang) {
+    $scope.approve = function(pesananBarang, kodeBarang) {
         $scope.pesananBarang = pesananBarang;
         var confirm = $window.confirm($scope.warning("approve"));
+        var toast = "";
         if (confirm) {
             $scope.pesananBarang.status = "APPROVED";
             angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-                if (itemBarang.editable) {
+                if (!!kodeBarang) {
+                    if (itemBarang.barang.kode == kodeBarang) {
+                        itemBarang.status = "APPROVED";
+                        toast = "Item Pesanan Barang Telah Disetujui...";
+                    }
+                } else {
                     itemBarang.status = "APPROVED";
-                }
-            });
-            pesananBarang.$update(function() {
-                if (!!$scope.modalInstance) {
-                    $scope.modalInstance.close();
-                }
-                toastr.success("Semua Item Permintaan Barang Telah Disetujui...");
-                $scope.query();
-            });
-        }
-    };
-    $scope.rejectAllItem = function(pesananBarang) {
-        $scope.pesananBarang = pesananBarang;
-        var confirm = $window.confirm($scope.warning("reject"));
-        if (confirm) {
-            $scope.pesananBarang.status = "REJECTED";
-            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-                if (itemBarang.editable) {
-                    itemBarang.status = "REJECTED";
+                    toast = "Data Pesanan Barang Telah Disetujui...";
                 }
             });
             $scope.pesananBarang.$update(function() {
-                if (!!$scope.modalInstance) {
-                    $scope.modalInstance.close();
-                }
-                toastr.success("Semua Item Permintaan Barang Telah Ditolak...");
-                $scope.query();
-            });
-        }
-    };
-    $scope.approveItem = function(pesananBarang, itemBarangToApprove) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
-        if (confirm) {
-            pesananBarang.status = "APPROVED";
-            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-                if (itemBarang === itemBarangToApprove) {
-                    itemBarang.status = "APPROVED";
-                }
-            });
-            pesananBarang.$update(function() {
-                toastr.success("Item Permintaan Barang Telah Disetujui...");
+                toastr.success(toast);
                 $scope.query();
                 $scope.get(pesananBarang.nomor);
             });
         }
     };
-    $scope.rejectItem = function(pesananBarang, itemBarangToReject) {
-        var confirm = $window.confirm("Apakah Anda Yakin?");
+    $scope.reject = function(pesananBarang, kodeBarang) {
+        $scope.pesananBarang = pesananBarang;
+        var confirm = $window.confirm($scope.warning("reject"));
+        var toast = "";
         var allRejected = 0;
         if (confirm) {
-            angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
+            angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
+                if (!!kodeBarang) {
+                    if (itemBarang.barang.kode == kodeBarang) {
+                        itemBarang.status = "REJECTED";
+                        toast = "Item Pesanan Barang Telah Ditolak...";
+                    }
+                } else {
+                    itemBarang.status = "REJECTED";
+                    toast = "Data Pesanan Barang Telah Ditolak...";
+                }
                 if (itemBarang.status == "REJECTED") {
                     allRejected++;
                 }
-                if (itemBarang === itemBarangToReject) {
-                    itemBarang.status = "REJECTED";
-                    allRejected++;
-                }
-                if (allRejected == pesananBarang.spItemsList.length) {
-                    pesananBarang.status = "REJECTED";
-                }
             });
-            pesananBarang.$update(function() {
-                toastr.success("Item Permintaan Barang Telah Ditolak...");
+            if (allRejected == $scope.pesananBarang.spItemsList.length) {
+                $scope.pesananBarang.status = "REJECTED";
+            }
+            $scope.pesananBarang.$update(function() {
+                toastr.success(toast);
                 $scope.query();
                 $scope.get(pesananBarang.nomor);
             });
@@ -313,6 +301,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
                         $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.hargaKatalog;
                         $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
                         $scope.pesananBarang.spItemsList[index].jumlah = itemBarang.jumlah;
+                        $scope.pesananBarang.spItemsList[index].jumlahSpp = itemBarang.jumlah;
                     }
                 });
             }
@@ -325,9 +314,23 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         });
         return getTotalCost;
     };
+    $scope.getKonversiSatuan = function(index, satuanGudang, satuanKonversi) {
+        if (!!satuanKonversi) {
+            var konversiSatuan = konversiSatuanFactory.get({
+                id1: satuanGudang,
+                id2: satuanKonversi
+            }, function() {
+                if (!!konversiSatuan.nilai) {
+                    $scope.pesananBarang.spItemsList[index].konversi = konversiSatuan.nilai;
+                    $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahSpp / konversiSatuan.nilai;
+                }
+            });
+        }
+    };
     $scope.addDetail = function() {
         $scope.pesananBarang.spItemsList.push({
             jumlah: 0,
+            konversi: 1,
             harga: 0,
             hargaKatalog: 0,
             status: "NEW",
@@ -383,7 +386,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         });
     };
     $scope.$watch("pesananBarang.kategori", function(newKategori, oldKategori) {
-        if ((!!oldKategori && !!newKategori) && (oldKategori != newKategori)) {
+        if (!!oldKategori && (oldKategori != newKategori)) {
             $scope.pesananBarang.supplier = "";
             $scope.pesananBarang.spItemsList = [];
             $scope.addDetail();

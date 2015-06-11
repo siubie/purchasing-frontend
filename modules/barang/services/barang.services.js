@@ -48,6 +48,7 @@ angular.module("barang.services", []).factory("barangFactory", function($resourc
             ],
             "KOM": [
                 "CONSUMABLES",
+                "INVESTASI",
                 "NETWORK",
                 "SPAREPART"
             ]

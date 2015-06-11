@@ -26,65 +26,53 @@
                 <input type="checkbox" id="emergency" name="emergency" ng-model="permintaanBarang.emergency" />
             </label>
         </div>
-        <div class="form-group col-xs-12 input-group-sm">
+        <div class="form-group col-xs-12 input-group-sm" ng-if="!!permintaanBarang.kategori">
             <table class="table table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan=6>Item Barang</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">Nama</th>
-                        <th class="text-center">Satuan</th>
-                        <th class="text-center">Jumlah</th>
-                        <th class="text-center">Tanggal Butuh</th>
-                        <th class="text-center">Keterangan</th>
-                        <th class="text-center">Pilihan</th>
-                    </tr>
-                </thead>
-                <tbody ng-repeat="itemBarang in permintaanBarang.sppItemsList">
-                    <tr ng-if="itemBarang.editable">
-                        <td class="input-group-sm">
-                            <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in getBarangs(permintaanBarang.kategori) | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
-                            typeahead-editable="false" typeahead-on-select="itemBarang.hargaKatalog = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
-                            ng-disabled="!permintaanBarang.kategori" required/>
-                        </td>
-                        <td class="text-center input-group-sm">
-                            <select class="form-control" id="satuan" name="satuan" ng-model="itemBarang.satuan" ng-disabled="!permintaanBarang.kategori" required>
-                                <option value="">-- Pilih Satuan --</option>
-                                <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang == itemBarang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
-                            </select>
-                        </td>
-                        <td class="text-center input-group-sm">
-                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa = itemBarang.jumlah" ng-disabled="!permintaanBarang.kategori" required/>
-                        </td>
-                        <td class="text-center">
-                            <span ng-bind="itemBarang.tanggalButuh | date: 'dd MMMM yyyy'"></span>
-                            <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="itemBarang.minDate" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
-                            </span>
-                            <span>
-                                <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)" ng-disabled="!permintaanBarang.kategori">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </button>
-                            </span>
-                        </td>
-                        <td class="input-group-sm">
-                            <textarea class="form-control" ng-model="itemBarang.keterangan" ng-disabled="!permintaanBarang.kategori" capitalize></textarea>
-                        </td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="permintaanBarang.sppItemsList.length<=1">
-                                <span class="glyphicon glyphicon-trash"></span>
+                <tr>
+                    <th class="text-center" colspan=6>Item Barang</th>
+                </tr>
+                <tr>
+                    <th class="text-center">Nama</th>
+                    <th class="text-center">Satuan</th>
+                    <th class="text-center">Jumlah</th>
+                    <th class="text-center">Tanggal Butuh</th>
+                    <th class="text-center">Keterangan</th>
+                    <th class="text-center">Pilihan</th>
+                </tr>
+                <tr ng-repeat="itemBarang in permintaanBarang.sppItemsList">
+                    <td class="input-group-sm" ng-if="itemBarang.editable">
+                        <input type="text" class="form-control" id="barang" name="barang" placeholder="Masukkan Barang.." ng-model="itemBarang.barang" typeahead="barang as barang.nama for barang in getBarangs(permintaanBarang.kategori) | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
+                        typeahead-editable="false" typeahead-on-select="itemBarang.hargaKatalog = getHarga($item.kode); itemBarang.leadTime = getLeadTime($item.kode); itemBarang.minDate = getMinDate(itemBarang.leadTime); itemBarang.tanggalButuh = itemBarang.minDate"
+                        required/>
+                    </td>
+                    <td class="text-center" ng-if="!itemBarang.editable" ng-bind="itemBarang.barang.nama"></td>
+                    <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                    <td class="text-center input-group-sm" ng-if="itemBarang.editable">
+                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" pattern="\d+" ng-change="itemBarang.sisa = itemBarang.jumlah" required/>
+                    </td>
+                    <td class="text-center" ng-if="!itemBarang.editable" ng-bind="itemBarang.jumlah"></td>
+                    <td class="text-center" ng-if="itemBarang.editable">
+                        <span ng-bind="itemBarang.tanggalButuh | date: 'dd MMMM yyyy'"></span>
+                        <span ng-model="itemBarang.tanggalButuh" init-date="itemBarang.tanggalButuh" datepicker-popup="dd MMMM yyyy" is-open="opened.tanggalButuh[$index]" min-date="itemBarang.minDate" startingDay="1" current-text="Sekarang" clear-text="Hapus" close-text="Tutup">
+                        </span>
+                        <span>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="openTanggalButuh($event, $index)">
+                                <span class="glyphicon glyphicon-calendar"></span>
                             </button>
-                        </td>
-                    </tr>
-                    <tr ng-if="!itemBarang.editable">
-                        <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                        <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.jumlah"></td>
-                        <td class="text-center" ng-bind="itemBarang.tanggalButuh | date: longDate"></td>
-                        <td class="text-center" ng-bind="itemBarang.keterangan"></td>
-                        <td></td>
-                    </tr>
-                </tbody>
+                        </span>
+                    </td>
+                    <td class="text-center" ng-if="!itemBarang.editable" ng-bind="itemBarang.tanggalButuh | date: longDate"></td>
+                    <td class="input-group-sm" ng-if="itemBarang.editable">
+                        <textarea class="form-control" ng-model="itemBarang.keterangan"></textarea>
+                    </td>
+                    <td class="text-center" ng-if="!itemBarang.editable" ng-bind="itemBarang.keterangan"></td>
+                    <td class="text-center" ng-if="itemBarang.editable">
+                        <button type="button" class="btn btn-default btn-sm" ng-if="itemBarang.editable" ng-click="removeDetail($index)" ng-disabled="permintaanBarang.sppItemsList.length<=1">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                    <td ng-if="!itemBarang.editable"></td>
+                </tr>
             </table>
             <button type="button" class="btn btn-default btn-sm" ng-click="addDetail()">
                 <span class="glyphicon glyphicon-plus"></span>
@@ -96,7 +84,7 @@
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
-            <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete&&!newForm" ng-show="!newForm">
+            <button class="btn btn-default btn-sm" type="button" ng-click="delete(permintaanBarang)" ng-if="access.delete && !newForm" ng-show="!newForm">
                 <span class="glyphicon glyphicon-trash"></span>
                 <span>&nbsp;Hapus</span>
             </button>

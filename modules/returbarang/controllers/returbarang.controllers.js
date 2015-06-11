@@ -118,8 +118,15 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             if (field.warning) {
                 switch (fieldName.length) {
                     case 1:
-                        if (!!$scope.returBarang[field.name]) {
-                            warning = warning + field.header + " : " + $scope.returBarang[field.name] + "\n";
+                        if (angular.isDefined($scope.returBarang[field.name])) {
+                            switch (field.type) {
+                                case "string":
+                                    warning = warning + field.header + " : " + $scope.returBarang[field.name] + "\n";
+                                    break;
+                                case "date":
+                                    warning = warning + field.header + " : " + $filter('date')($scope.returBarang[field.name], field.filter) + "\n";
+                                    break;
+                            }
                         }
                         break;
                     case 2:

@@ -79,7 +79,14 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
                 field.warning = false;
             }
             if (field.warning && !!$scope.penjualanWaste[field.name]) {
-                warning = warning + field.header + " : " + $scope.penjualanWaste[field.name] + "\n";
+                switch (field.type) {
+                    case "string":
+                        warning = warning + field.header + " : " + $scope.penjualanWaste[field.name] + "\n";
+                        break;
+                    case "date":
+                        warning = warning + field.header + " : " + $filter('date')($scope.penjualanWaste[field.name], field.filter) + "\n";
+                        break;
+                }
             }
         });
         warning = warning + "Item Barang : \n";

@@ -42,7 +42,7 @@
         </div>
         <div class="form-group col-xs-2 input-group-sm" ng-if="!kurs">
             <label for="valuta">Valuta:&nbsp;</label>
-            <input type="text" class="form-control text-center" id="valuta" name="valuta" ng-model="pesananBarang.valuta" ng-pattern="/^[A-Z]{3,3}$/" required capitalize/>
+            <input type="text" class="form-control text-center" id="valuta" name="valuta" ng-model="pesananBarang.valuta" ng-pattern="/^[A-Z]{3,3}$/" required/>
         </div>
         <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs">
             <label for="valutaBayar">Valuta Bayar</label>
@@ -52,9 +52,9 @@
         </div>
         <div class="form-group col-xs-2 input-group-sm" ng-if="!kurs">
             <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
-            <input type="text" class="form-control text-center" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" ng-pattern="/^[A-Z]{3,3}$/" required capitalize/>
+            <input type="text" class="form-control text-center" id="valutaBayar" name="valutaBayar" ng-model="pesananBarang.valutaBayar" ng-pattern="/^[A-Z]{3,3}$/" required/>
         </div>
-        <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs">
+        <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs && !timeoutConversion">
             <label for="kurs">Kurs:&nbsp;</label>
             <span ng-bind="pesananBarang.kurs"></span>
         </div>
@@ -70,15 +70,17 @@
             <label for="ppn">PPN:&nbsp;</label>
             <input type="checkbox" id="ppn" name="ppn" ng-model="pesananBarang.ppn" />
         </div>
-        <div class="form-group col-xs-12 input-group-sm">
+        <div class="form-group col-xs-12 input-group-sm" ng-show="!!pesananBarang.kategori">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan="6">Item Barang</th>
+                    <th class="text-center" colspan="8">Item Barang</th>
                 </tr>
                 <tr>
                     <th class="text-center">Nomor SPP</th>
                     <th class="text-center">Nama</th>
-                    <th class="text-center">Satuan</th>
+                    <th class="text-center">Satuan Gudang</th>
+                    <th class="text-center">Satuan SP</th>
+                    <th class="text-center">Konversi</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Harga</th>
                     <th class="text-center">Pilihan</th>
@@ -86,19 +88,28 @@
                 <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
                     <td class="input-group-sm">
                         <input type="text" class="form-control" id="spp" name="spp" placeholder="Masukkan Nomor SPP.." ng-model="itemBarang.spp" typeahead="permintaanBarang.nomor for permintaanBarang in permintaanBarangs | filter:{kategori:pesananBarang.kategori} | filter:{status:'APPROVED'} | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'"
-                        typeahead-editable="false" ng-disabled="!pesananBarang.kategori" required/>
+                        typeahead-editable="false" required/>
                     </td>
                     <td class="input-group-sm">
                         <select class="form-control" ng-model="itemBarang.barang" ng-options="barang as barang.nama for barang in getBarangs(itemBarang.spp) | orderBy:'nama' track by barang.nama" ng-change="getItemBarang($index, itemBarang.spp, itemBarang.barang.kode)" ng-disabled="!itemBarang.spp">
                             <option value="">-- Pilih Barang --</option>
                         </select>
                     </td>
-                    <td class="text-center" ng-bind="itemBarang.satuan"></td>
+                    <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" max="{{::itemBarang.jumlah}}" pattern="\d+" ng-disabled="!pesananBarang.kategori" required/>
+                        <select class="form-control" id="satuan" name="satuan" ng-disabled="!itemBarang.barang" ng-model="itemBarang.satuan" ng-change="getKonversiSatuan($index, itemBarang.barang.satuan, itemBarang.satuan)" required>
+                            <option value="">-- Pilih Satuan --</option>
+                            <option ng-repeat="satuanGudang in satuanGudangArray" ng-selected="satuanGudang == itemBarang.satuan" value="{{satuanGudang}}">{{satuanGudang}}</option>
+                        </select>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" ng-disabled="!pesananBarang.kategori" required/>
+                        <input class="form-control text-center" type="number" name="konversi" ng-model="itemBarang.konversi" min="1" required/>
+                    </td>
+                    <td class="input-group-sm">
+                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" max="{{::itemBarang.jumlah}}" required/>
+                    </td>
+                    <td class="input-group-sm">
+                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" required/>
                     </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="pesananBarang.spItemsList.length<=1">
