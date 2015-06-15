@@ -115,10 +115,12 @@ angular.module("penjualanWaste.controllers", []).controller("penjualanWasteContr
         }
     };
     $scope.delete = function(penjualanWaste) {
-        $scope.penjualanWaste = penjualanWaste;
+        if (!!penjualanWaste) {
+            $scope.penjualanWaste = penjualanWaste;
+        }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            penjualanWaste.$delete(function() {
+            $scope.penjualanWaste.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }

@@ -4,12 +4,13 @@ var todo = new Object({
     ],
     bug: [],
     priority: [
+        "baca angular developer guide",
         "pengesahan di semua modul transaksi",
         "duplicate di item transaksi",
         "konversi satuan"
     ],
     feature: [
-        "validasi input number di setiap modul (min dan max)",
+        "validasi input number di setiap modul (min dan max) ui-validate",
         "gunakan return untuk fungsi dengan kembalian",
         "lengkapi field supplier",
         "spesifikasi hover di SPP",
@@ -21,7 +22,8 @@ var todo = new Object({
         "hapus tbody di tabel item permintaan barang",
         "sembunyikan pilihan di item barang ketika sudah tidak ada item barang yang bisa diubah",
         "cek span dan div",
-        "cek col-xs-12"
+        "cek col-xs-12",
+        "filter tampilan harga dan jumlah"
     ],
     bisnis: [
         "duplikasi data jenis di nama barang",

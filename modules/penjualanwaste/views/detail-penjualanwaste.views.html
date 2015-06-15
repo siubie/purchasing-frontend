@@ -28,9 +28,6 @@
             <td colspan="2">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th colspan="4" class="text-center">Detail Barang</th>
-                    </tr>
-                    <tr>
                         <th class="text-center">Nama Barang</th>
                         <th class="text-center">Satuan</th>
                         <th class="text-center">Jumlah</th>
@@ -51,11 +48,11 @@
         </tr>
     </table>
     <div ng-if="penjualanWaste.editable">
-        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="penjualanWasteForm.$invalid">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
+        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update">
+            <span class="glyphicon glyphicon-edit"></span>
             <span>&nbsp;Ubah</span>
         </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="delete(penjualanWaste)" ng-if="access.delete">
+        <button class="btn btn-default btn-sm" type="button" ng-click="delete()" ng-if="access.delete">
             <span class="glyphicon glyphicon-trash"></span>
             <span>&nbsp;Hapus</span>
         </button>

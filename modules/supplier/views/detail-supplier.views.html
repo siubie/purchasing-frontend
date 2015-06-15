@@ -30,11 +30,11 @@
         </tr>
     </table>
     <div ng-if="supplier.editable">
-        <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="supplierForm.$invalid">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
+        <button type="button" class="btn btn-default btn-sm" ng-click="$dismiss('update')" ng-if="access.update">
+            <span class="glyphicon glyphicon-edit"></span>
             <span>&nbsp;Ubah</span>
         </button>
-        <button type="button" class="btn btn-default btn-sm" ng-click="delete(supplier)" ng-if="access.delete">
+        <button type="button" class="btn btn-default btn-sm" ng-click="delete()" ng-if="access.delete">
             <span class="glyphicon glyphicon-trash"></span>
             <span>&nbsp;Hapus</span>
         </button>

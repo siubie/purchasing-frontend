@@ -5,134 +5,120 @@
     <h3>Detail Pesanan Barang (SP)
         <span ng-bind="pesananBarang.nomor"></span>
     </h3>
-    <table class="table table-bordered table-condensed">
-        <tr>
-            <td>
-                <strong>Tanggal</strong>
-            </td>
-            <td ng-bind="pesananBarang.tanggal | date:'longDate'"></td>
-            <td>
-                <strong>Supplier</strong>
-            </td>
-            <td ng-bind="pesananBarang.supplier.nama"></td>
-        </tr>
-        <tr>
-            <td class="col-xs-2">
-                <strong>PPN</strong>
-            </td>
-            <td class="col-xs-4">
-                <div ng-if="pesananBarang.jenis">YA</div>
-                <div ng-if="!pesananBarang.jenis">TIDAK</div>
-            </td>
-            <td class="col-xs-2">
-                <strong>Diskon</strong>
-            </td>
-            <td class="col-xs-4">
-                <span ng-bind="pesananBarang.diskon"></span>%
-            </td>
-        </tr>
-        <!-- <tr>
-            <td>
-                <strong>Valuta</strong>
-            </td>
-            <td ng-bind="pesananBarang.valuta"></td>
-            <td>
-                <strong>Valuta Bayar</strong>
-            </td>
-            <td ng-bind="pesananBarang.valutaBayar"></td>
-        </tr> -->
-        <tr>
-            <td>
-                <strong>Kurs</strong>
-            </td>
-            <td ng-bind="pesananBarang.kurs"></td>
-            <td>
-                <strong>Syarat Bayar</strong>
-            </td>
-            <td ng-bind="pesananBarang.syaratBayar"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Status</strong>
-            </td>
-            <td colspan="3" ng-bind="pesananBarang.status"></td>
-        </tr>
-        <tr>
-            <td colspan="8">
-                <table class="table table-bordered table-condensed">
-                    <tr>
-                        <th colspan="8" class="text-center">Item Barang</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">Nomor SPP</th>
-                        <th class="text-center">Nama</th>
-                        <th class="text-center">Satuan Gudang</th>
-                        <th class="text-center">Satuan SP</th>
-                        <th class="text-center">Jumlah</th>
-                        <th class="text-center">Harga</th>
-                        <th class="text-center">Harga Bayar</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Pilihan</th>
-                    </tr>
-                    <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
-                        <td class="text-center" ng-bind="itemBarang.spp"></td>
-                        <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                        <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.jumlah"></td>
-                        <td class="text-center">
-                            <span ng-bind="pesananBarang.valuta"></span>
-                            <span ng-bind="itemBarang.harga | number:2"></span>
-                            <span ng-if="itemBarang.harga * pesananBarang.kurs > itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-up" title="Harga Naik dari IDR {{itemBarang.hargaKatalog | number:2}}"></span>
-                            <span ng-if="itemBarang.harga * pesananBarang.kurs == itemBarang.hargaKatalog" class="glyphicon glyphicon-minus" title="Harga Tetap"></span>
-                            <span ng-if="itemBarang.harga * pesananBarang.kurs < itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-down" title="Harga Turun dari IDR {{itemBarang.hargaKatalog | number:2}}"></span>
-                        </td>
-                        <td class="text-center">
-                            <span ng-bind="pesananBarang.valutaBayar"></span>
-                            <span ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.jumlah | number:2"></span>
-                        </td>
-                        <td class="text-center" ng-bind="itemBarang.status"></td>
-                        <td class="text-center" ng-init="pesananBarang.someEditable=true">
-                            <div ng-if="itemBarang.editable">
-                                <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approve(pesananBarang, itemBarang.barang.kode)">
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                </button>
-                                <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(pesananBarang, itemBarang.barang.kode)">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="6" class="text-center">
-                            <strong>Total</strong>
-                        </td>
-                        <td class="text-center">
-                            <span ng-bind="pesananBarang.valutaBayar"></span>
-                            <span ng-bind="getTotalCost() | number:2"></span>
-                        </td>
-                        <td colspan="2"></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    <div ng-if="pesananBarang.editable">
-        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="pesananBarangForm.$invalid">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-            <span>&nbsp;Ubah</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="approve(pesananBarang)" ng-if="access.update">
-            <span class="glyphicon glyphicon-ok"></span>
-            <span>&nbsp;Setujui</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="reject(pesananBarang)" ng-if="access.update">
-            <span class="glyphicon glyphicon-remove"></span>
-            <span>&nbsp;Tolak</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="delete(pesananBarang)" ng-if="access.delete">
-            <span class="glyphicon glyphicon-trash"></span>
-            <span>&nbsp;Hapus</span>
-        </button>
-    </div>
+    <form name="pesananBarangForm">
+        <table class="table table-bordered table-condensed">
+            <tr>
+                <td>
+                    <strong>Tanggal</strong>
+                </td>
+                <td ng-bind="pesananBarang.tanggal | date:'longDate'"></td>
+                <td>
+                    <strong>Supplier</strong>
+                </td>
+                <td ng-bind="pesananBarang.supplier.nama"></td>
+            </tr>
+            <tr>
+                <td class="col-xs-2">
+                    <strong>PPN</strong>
+                </td>
+                <td class="col-xs-4">
+                    <div ng-if="pesananBarang.jenis">YA</div>
+                    <div ng-if="!pesananBarang.jenis">TIDAK</div>
+                </td>
+                <td class="col-xs-2">
+                    <strong>Diskon</strong>
+                </td>
+                <td class="col-xs-4">
+                    <span ng-bind="pesananBarang.diskon"></span>%
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Kurs</strong>
+                </td>
+                <td ng-bind="pesananBarang.kurs"></td>
+                <td>
+                    <strong>Syarat Bayar</strong>
+                </td>
+                <td ng-bind="pesananBarang.syaratBayar"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Status</strong>
+                </td>
+                <td colspan="3" ng-bind="pesananBarang.status"></td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th class="text-center">Nomor SPP</th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Satuan Gudang</th>
+                            <th class="text-center">Satuan Beli</th>
+                            <th class="text-center">Jumlah</th>
+                            <th class="text-center">Harga ({{pesananBarang.valuta}})</th>
+                            <th class="text-center">Harga Bayar ({{pesananBarang.valutaBayar}})</th>
+                            <th class="text-center">Status</th>
+                            <th colspan="2" class="text-center" ng-if="pesananBarang.editable">Pengesahan</th>
+                        </tr>
+                        <tr ng-repeat="itemBarang in pesananBarang.spItemsList">
+                            <td class="text-center" ng-bind="itemBarang.spp"></td>
+                            <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                            <td class="text-center" ng-bind="itemBarang.barang.satuan"></td>
+                            <td class="text-center" ng-bind="itemBarang.satuan"></td>
+                            <td class="text-center" ng-bind="itemBarang.jumlah"></td>
+                            <td class="text-center">
+                                <span ng-bind="itemBarang.harga | number:2"></span>
+                                <span ng-if="itemBarang.harga * pesananBarang.kurs > itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-up" title="Harga Naik dari IDR {{itemBarang.hargaKatalog | number:2}}"></span>
+                                <span ng-if="itemBarang.harga * pesananBarang.kurs == itemBarang.hargaKatalog" class="glyphicon glyphicon-minus" title="Harga Tetap"></span>
+                                <span ng-if="itemBarang.harga * pesananBarang.kurs < itemBarang.hargaKatalog" class="glyphicon glyphicon-arrow-down" title="Harga Turun dari IDR {{itemBarang.hargaKatalog | number:2}}"></span>
+                            </td>
+                            <td class="text-center">
+                                <span ng-bind="((itemBarang.harga * pesananBarang.kurs) - (itemBarang.harga * pesananBarang.kurs * pesananBarang.diskon / 100)) * itemBarang.jumlah | number:2"></span>
+                            </td>
+                            <td class="text-center" ng-bind="::itemBarang.status"></td>
+                            <td class="text-center" ng-if="pesananBarang.editable">
+                                <input type="radio" ng-model="itemBarang.status" value="APPROVED" ui-validate="'validateApproval($value)'" />
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </td>
+                            <td class="text-center" ng-if="pesananBarang.editable">
+                                <input type="radio" ng-model="itemBarang.status" value="REJECTED" ui-validate="'validateApproval($value)'" />
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="text-center" ng-bind="getTotalCost() | number:2"></td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <div ng-if="pesananBarang.editable">
+            <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update">
+                <span class="glyphicon glyphicon-edit"></span>
+                <span>&nbsp;Ubah</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="approve()" ng-if="access.update">
+                <span class="glyphicon glyphicon-ok"></span>
+                <span>&nbsp;Setujui Semua</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="reject()" ng-if="access.update">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>&nbsp;Tolak Semua</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="updateStatus()" ng-if="access.update" ng-disabled="pesananBarangForm.$invalid">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span>&nbsp;Simpan Pengesahan</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="delete()" ng-if="access.delete">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;Hapus</span>
+            </button>
+        </div>
+    </form>
 </div>

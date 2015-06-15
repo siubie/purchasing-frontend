@@ -12,24 +12,25 @@
             <span ng-bind="returBarang.nomor"></span>
         </h3>
     </div>
-    <br/>
     <form name="returBarangForm">
         <div class="row">
             <div class="form-group col-xs-4 input-group-sm">
                 <label for="lpb">Nomor LPB:&nbsp;</label>
                 <input type="text" class="form-control" id="lpb" name="lpb" placeholder="Masukkan Nomor LPB.." ng-model="returBarang.lpb" typeahead="penerimaanBarang.nomor for penerimaanBarang in penerimaanBarangs | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'"
-                typeahead-editable="false" typeahead-on-select="new ($item)" required/>
+                typeahead-editable="false" typeahead-on-select="new($item)" required/>
             </div>
-            <div class="form-group col-xs-4">
-                <label for="tanggalDatang">Tanggal Datang:&nbsp;</label>
-                <span ng-bind="returBarang.tanggalDatang | date:'longDate'"></span>
-            </div>
-            <div class="form-group col-xs-4">
-                <label for="sp">Nomor SP:&nbsp;</label>
-                <span ng-bind="returBarang.sp"></span>
+            <div ng-show="returBarang.lpb">
+                <div class="form-group col-xs-4">
+                    <label for="tanggalDatang">Tanggal Datang:&nbsp;</label>
+                    <span ng-bind="returBarang.tanggalDatang | date:'longDate'"></span>
+                </div>
+                <div class="form-group col-xs-4">
+                    <label for="sp">Nomor SP:&nbsp;</label>
+                    <span ng-bind="returBarang.sp"></span>
+                </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-show="returBarang.lpb">
             <div class="form-group col-xs-4">
                 <label for="supplier">Supplier:&nbsp;</label>
                 <span ng-bind="returBarang.supplier.nama"></span>
@@ -56,9 +57,6 @@
             </div>
             <div class="form-group col-xs-12 input-group-sm">
                 <table class="table table-bordered table-condensed">
-                    <tr>
-                        <th class="text-center" colspan="8">Item Barang</th>
-                    </tr>
                     <tr>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Satuan</th>
@@ -87,16 +85,16 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-xs-12" ng-if="returBarang.editable">
-                <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="returBarangForm.$invalid||!returBarang.returItemsList.length">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                    <span>&nbsp;Simpan</span>
-                </button>
-                <button type="button" class="btn btn-default btn-sm" ng-click="delete(returBarang)" ng-if="access.delete&&!newForm">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    <span>&nbsp;Hapus</span>
-                </button>
-            </div>
+        </div>
+        <div ng-if="returBarang.editable">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="returBarangForm.$invalid || !returBarang.returItemsList.length">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span>&nbsp;Simpan</span>
+            </button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete()" ng-if="access.delete && !newForm">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;Hapus</span>
+            </button>
         </div>
     </form>
 </div>

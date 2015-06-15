@@ -5,102 +5,122 @@
     <h3>Detail Retur Barang (LPBR)
         <span ng-bind="returBarang.nomor"></span>
     </h3>
-    <table class="table table-bordered table-condensed">
-        <tr>
-            <td class="col-xs-2">
-                <strong>Tanggal Retur</strong>
-            </td>
-            <td class="col-xs-4" ng-bind="returBarang.tanggalBuat | date:'longDate'"></td>
-            <td class="col-xs-2">
-                <strong>Tanggal Datang</strong>
-            </td>
-            <td class="col-xs-4" ng-bind="returBarang.tanggalDatang | date:'longDate'"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Nomor LPB</strong>
-            </td>
-            <td ng-bind="returBarang.lpb"></td>
-            <td>
-                <strong>Nomor SP</strong>
-            </td>
-            <td ng-bind="returBarang.sp"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Supplier</strong>
-            </td>
-            <td ng-bind="returBarang.supplier.nama"></td>
-            <td>
-                <strong>Diskon</strong>
-            </td>
-            <td>
-                <span ng-bind="returBarang.diskon"></span>%
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Valuta</strong>
-            </td>
-            <td ng-bind="returBarang.valuta"></td>
-            <td>
-                <strong>Valuta Bayar</strong>
-            </td>
-            <td ng-bind="returBarang.valutaBayar"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Kurs</strong>
-            </td>
-            <td ng-bind="returBarang.kurs"></td>
-            <td>
-                <strong>Nomor Surat Jalan</strong>
-            </td>
-            <td ng-bind="returBarang.nomorSj"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Status</strong>
-            </td>
-            <td colspan="3" ng-bind="returBarang.status"></td>
-        </tr>
-        <tr>
+    <form name="returBarangForm">
+        <table class="table table-bordered table-condensed">
             <tr>
-                <td colspan="4">
-                    <table class="table table-bordered table-condensed">
-                        <tr>
-                            <th colspan="7" class="text-center">Item Barang</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">Nama</th>
-                            <th class="text-center">Satuan</th>
-                            <th class="text-center">Jumlah Datang</th>
-                            <th class="text-center">Jumlah Retur</th>
-                            <th class="text-center">Harga</th>
-                            <th class="text-center">Alasan</th>
-                            <th class="text-center">Status</th>
-                        </tr>
-                        <tr ng-repeat="itemBarang in returBarang.returItemsList">
-                            <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                            <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                            <td class="text-center" ng-bind="itemBarang.jumlahDatang"></td>
-                            <td class="text-center" ng-bind="itemBarang.jumlahRetur"></td>
-                            <td class="text-center" ng-bind="itemBarang.harga"></td>
-                            <td class="text-center" ng-bind="itemBarang.alasan"></td>
-                            <td class="text-center" ng-bind="itemBarang.status"></td>
-                        </tr>
-                    </table>
+                <td class="col-xs-2">
+                    <strong>Tanggal Retur</strong>
+                </td>
+                <td class="col-xs-4" ng-bind="returBarang.tanggalBuat | date:'longDate'"></td>
+                <td class="col-xs-2">
+                    <strong>Tanggal Datang</strong>
+                </td>
+                <td class="col-xs-4" ng-bind="returBarang.tanggalDatang | date:'longDate'"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Nomor LPB</strong>
+                </td>
+                <td ng-bind="returBarang.lpb"></td>
+                <td>
+                    <strong>Nomor SP</strong>
+                </td>
+                <td ng-bind="returBarang.sp"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Supplier</strong>
+                </td>
+                <td ng-bind="returBarang.supplier.nama"></td>
+                <td>
+                    <strong>Diskon</strong>
+                </td>
+                <td>
+                    <span ng-bind="returBarang.diskon"></span>%
                 </td>
             </tr>
-    </table>
-    <div ng-if="returBarang.editable">
-        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="returBarangForm.$invalid">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-            <span>&nbsp;Ubah</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="delete(returBarang)" ng-if="access.delete">
-            <span class="glyphicon glyphicon-trash"></span>
-            <span>&nbsp;Hapus</span>
-        </button>
-    </div>
+            <tr>
+                <td>
+                    <strong>Valuta</strong>
+                </td>
+                <td ng-bind="returBarang.valuta"></td>
+                <td>
+                    <strong>Valuta Bayar</strong>
+                </td>
+                <td ng-bind="returBarang.valutaBayar"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Kurs</strong>
+                </td>
+                <td ng-bind="returBarang.kurs"></td>
+                <td>
+                    <strong>Nomor Surat Jalan</strong>
+                </td>
+                <td ng-bind="returBarang.nomorSj"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Status</strong>
+                </td>
+                <td colspan="3" ng-bind="returBarang.status"></td>
+            </tr>
+            <tr>
+                <tr>
+                    <td colspan="4">
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <th class="text-center">Nama</th>
+                                <th class="text-center">Satuan</th>
+                                <th class="text-center">Jumlah Datang</th>
+                                <th class="text-center">Jumlah Retur</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center">Alasan</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center" colspan="2" ng-if="returBarang.editable">Pilihan</th>
+                            </tr>
+                            <tr ng-repeat="itemBarang in returBarang.returItemsList">
+                                <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                                <td class="text-center" ng-bind="itemBarang.satuan"></td>
+                                <td class="text-center" ng-bind="itemBarang.jumlahDatang"></td>
+                                <td class="text-center" ng-bind="itemBarang.jumlahRetur"></td>
+                                <td class="text-center" ng-bind="itemBarang.harga"></td>
+                                <td class="text-center" ng-bind="itemBarang.alasan"></td>
+                                <td class="text-center" ng-bind="::itemBarang.status"></td>
+                                <td class="text-center" ng-if="returBarang.editable">
+                                    <input type="radio" ng-model="itemBarang.status" value="APPROVED" ui-validate="'validateApproval($value)'" />
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </td>
+                                <td class="text-center" ng-if="returBarang.editable">
+                                    <input type="radio" ng-model="itemBarang.status" value="REJECTED" ui-validate="'validateApproval($value)'" />
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+        </table>
+        <div ng-if="returBarang.editable">
+            <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update">
+                <span class="glyphicon glyphicon-edit"></span>
+                <span>&nbsp;Ubah</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="approve()" ng-if="access.update">
+                <span class="glyphicon glyphicon-ok"></span>
+                <span>&nbsp;Setujui Semua</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="reject()" ng-if="access.update">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>&nbsp;Tolak Semua</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="updateStatus()" ng-if="access.update" ng-disabled="returBarangForm.$invalid">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span>&nbsp;Simpan Pengesahan</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="delete()" ng-if="access.delete">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;Hapus</span>
+            </button>
+        </div>
+    </form>
 </div>

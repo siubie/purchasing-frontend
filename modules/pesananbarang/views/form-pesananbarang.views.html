@@ -3,7 +3,7 @@
         <span ng-bind="item|json"></span>
         <br/>
     </span> -->
-    <!-- <span ng-bind="kurs|json"></span> -->
+    <!-- <span ng-bind="pesananBarangForm.$error|json"></span> -->
     <button type="button" class="btn btn-default btn-xs pull-right" ng-click="$dismiss()">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
@@ -15,7 +15,6 @@
             <span ng-bind="pesananBarang.nomor"></span>
         </h3>
     </div>
-    <br/>
     <form class="row" name="pesananBarangForm">
         <div class="form-group col-xs-6 input-group-sm">
             <label for="kategori">Golongan</label>
@@ -32,7 +31,7 @@
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="diskon">Diskon</label>
-            <input type="number" class="form-control text-center" id="diskon" name="diskon" ng-model="pesananBarang.diskon" min="0" required />
+            <input type="number" class="form-control text-center" id="diskon" name="diskon" ng-model="pesananBarang.diskon" min="0" max="100" required />
         </div>
         <div class="form-group col-xs-2 input-group-sm" ng-if="!!kurs">
             <label for="valuta">Valuta</label>
@@ -60,7 +59,7 @@
         </div>
         <div class="form-group col-xs-2 input-group-sm" ng-if="!kurs || timeoutConversion">
             <label for="kurs">Kurs:&nbsp;</label>
-            <input type="number" class="form-control text-center" id="kurs" name="kurs" min="0" ng-model="pesananBarang.kurs" required />
+            <input type="number" class="form-control text-center" id="kurs" name="kurs" ng-model="pesananBarang.kurs" ui-validate="'validateNumber($value)'" required />
         </div>
         <div class="form-group col-xs-2 input-group-sm">
             <label for="syaratBayar">Syarat Bayar</label>
@@ -73,13 +72,10 @@
         <div class="form-group col-xs-12 input-group-sm" ng-show="!!pesananBarang.kategori">
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th class="text-center" colspan="8">Item Barang</th>
-                </tr>
-                <tr>
                     <th class="text-center">Nomor SPP</th>
                     <th class="text-center">Nama</th>
                     <th class="text-center">Satuan Gudang</th>
-                    <th class="text-center">Satuan SP</th>
+                    <th class="text-center">Satuan Beli</th>
                     <th class="text-center">Konversi</th>
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Harga</th>
@@ -106,10 +102,10 @@
                         <input class="form-control text-center" type="number" name="konversi" ng-model="itemBarang.konversi" min="1" required/>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" max="{{::itemBarang.jumlah}}" required/>
+                        <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" required/>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" min="0" required/>
+                        <input class="form-control text-center" type="number" name="harga" ng-model="itemBarang.harga" required/>
                     </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-default btn-sm" ng-click="removeDetail($index)" ng-disabled="pesananBarang.spItemsList.length<=1">
@@ -124,11 +120,11 @@
             </button>
         </div>
         <div class="col-xs-12" ng-if="pesananBarang.editable">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="pesananBarangForm.$invalid||!pesananBarang.spItemsList.length">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="pesananBarangForm.$invalid || !pesananBarang.spItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="delete(pesananBarang)" ng-if="access.delete&&!newForm">
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete()" ng-if="access.delete && !newForm">
                 <span class="glyphicon glyphicon-trash"></span>
                 <span>&nbsp;Hapus</span>
             </button>

@@ -61,9 +61,6 @@
             <div class="form-group col-xs-12 input-group-sm">
                 <table class="table table-bordered table-condensed">
                     <tr>
-                        <th class="text-center" colspan=6>Item Barang</th>
-                    </tr>
-                    <tr>
                         <th class="text-center">Nomor SPP</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Satuan</th>
@@ -89,11 +86,11 @@
             </div>
         </div>
         <div ng-if="penerimaanBarang.editable">
-            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penerimaanBarangForm.$invalid||!penerimaanBarang.lpbItemsList.length">
+            <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="penerimaanBarangForm.$invalid || !penerimaanBarang.lpbItemsList.length">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
                 <span>&nbsp;Simpan</span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="delete(penerimaanBarang)" ng-if="!newForm">
+            <button type="button" class="btn btn-default btn-sm" ng-click="delete()" ng-if="!newForm">
                 <span class="glyphicon glyphicon-trash"></span>
                 <span>&nbsp;Hapus</span>
             </button>

@@ -102,10 +102,12 @@ angular.module("waste.controllers", []).controller("wasteController", function($
         }
     };
     $scope.delete = function(waste) {
-        $scope.waste = waste;
+        if (!!waste) {
+            $scope.waste = waste;
+        }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            waste.$delete(function() {
+            $scope.waste.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }

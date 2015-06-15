@@ -130,12 +130,12 @@ angular.module("barang.controllers", []).controller("barangController", function
         }
     };
     $scope.delete = function(barang) {
-        if (!$scope.barang.nama) {
+        if (!!barang) {
             $scope.barang = barang;
         }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            barang.$delete(function() {
+            $scope.barang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }

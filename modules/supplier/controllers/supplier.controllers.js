@@ -108,10 +108,12 @@ angular.module("supplier.controllers", []).controller("supplierController", func
         }
     };
     $scope.delete = function(supplier) {
-        $scope.supplier = supplier;
+        if (!!supplier) {
+            $scope.supplier = supplier;
+        }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            supplier.$delete(function() {
+            $scope.supplier.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                     toastr.success("Data Supplier Telah Dihapus...");

@@ -5,112 +5,113 @@
     <h3>Detail Penerimaan Barang (LPB)
         <span ng-bind="penerimaanBarang.nomor"></span>
     </h3>
-    <table class="table table-bordered table-condensed">
-        <tr>
-            <td class="col-xs-2">
-                <strong>Tanggal Dibuat</strong>
-            </td>
-            <td class="col-xs-4" ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
-            <td class="col-xs-2">
-                <strong>Tanggal Datang</strong>
-            </td>
-            <td class="col-xs-4" ng-bind="penerimaanBarang.tanggalDatang | date:'longDate'"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Nomor SP</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.sp"></td>
-            <td>
-                <strong>Supplier</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.supplier.nama"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Nomor Surat Jalan</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.nomorSj"></td>
-            <td>
-                <strong>Diskon</strong>
-            </td>
-            <td>
-                <span ng-bind="penerimaanBarang.diskon"></span>%
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Valuta</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.valuta"></td>
-            <td>
-                <strong>Valuta Bayar</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.valutaBayar"></td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Kurs</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.kurs | number"></td>
-            <td>
-                <strong>Status</strong>
-            </td>
-            <td ng-bind="penerimaanBarang.status"></td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <table class="table table-bordered table-condensed">
-                    <tr>
-                        <th colspan="7" class="text-center">Item Barang</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">Nomor SPP</th>
-                        <th class="text-center">Nama</th>
-                        <th class="text-center">Satuan</th>
-                        <th class="text-center">Jumlah</th>
-                        <th class="text-center">Harga</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Pilihan</th>
-                    </tr>
-                    <tr ng-repeat="itemBarang in penerimaanBarang.lpbItemsList">
-                        <td class="text-center" ng-bind="itemBarang.spp"></td>
-                        <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
-                        <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                        <td class="text-center" ng-bind="itemBarang.jumlah"></td>
-                        <td class="text-center" ng-bind="itemBarang.harga"></td>
-                        <td class="text-center" ng-bind="itemBarang.status"></td>
-                        <td class="text-center">
-                            <div ng-if="itemBarang.editable">
-                                <button type="button" class="btn btn-default btn-xs" title="Setujui" ng-click="approve(penerimaanBarang, itemBarang.barang.kode)">
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                </button>
-                                <button type="button" class="btn btn-default btn-xs" title="Tolak" ng-click="reject(penerimaanBarang, itemBarang.barang.kode)">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    <div ng-if="penerimaanBarang.editable">
-        <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update" ng-disabled="penerimaanBarangForm.$invalid">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-            <span>&nbsp;Ubah</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="approve(penerimaanBarang)" ng-if="access.update">
-            <span class="glyphicon glyphicon-ok"></span>
-            <span>&nbsp;Setujui</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="reject(penerimaanBarang)" ng-if="access.update">
-            <span class="glyphicon glyphicon-remove"></span>
-            <span>&nbsp;Tolak</span>
-        </button>
-        <button class="btn btn-default btn-sm" type="button" ng-click="delete(penerimaanBarang)" ng-if="access.delete" ng-show="!newForm">
-            <span class="glyphicon glyphicon-trash"></span>
-            <span>&nbsp;Hapus</span>
-        </button>
-    </div>
+    <form name="penerimaanBarangForm">
+        <table class="table table-bordered table-condensed">
+            <tr>
+                <td class="col-xs-2">
+                    <strong>Tanggal Dibuat</strong>
+                </td>
+                <td class="col-xs-4" ng-bind="penerimaanBarang.tanggalBuat | date:'longDate'"></td>
+                <td class="col-xs-2">
+                    <strong>Tanggal Datang</strong>
+                </td>
+                <td class="col-xs-4" ng-bind="penerimaanBarang.tanggalDatang | date:'longDate'"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Nomor SP</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.sp"></td>
+                <td>
+                    <strong>Supplier</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.supplier.nama"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Nomor Surat Jalan</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.nomorSj"></td>
+                <td>
+                    <strong>Diskon</strong>
+                </td>
+                <td>
+                    <span ng-bind="penerimaanBarang.diskon"></span>%
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Valuta</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.valuta"></td>
+                <td>
+                    <strong>Valuta Bayar</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.valutaBayar"></td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Kurs</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.kurs | number"></td>
+                <td>
+                    <strong>Status</strong>
+                </td>
+                <td ng-bind="penerimaanBarang.status"></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th class="text-center">Nomor SPP</th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Satuan</th>
+                            <th class="text-center">Jumlah</th>
+                            <th class="text-center">Harga</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center" colspan="2" ng-if="penerimaanBarang.editable">Pilihan</th>
+                        </tr>
+                        <tr ng-repeat="itemBarang in penerimaanBarang.lpbItemsList">
+                            <td class="text-center" ng-bind="itemBarang.spp"></td>
+                            <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
+                            <td class="text-center" ng-bind="itemBarang.satuan"></td>
+                            <td class="text-center" ng-bind="itemBarang.jumlah"></td>
+                            <td class="text-center" ng-bind="itemBarang.harga"></td>
+                            <td class="text-center" ng-bind="::itemBarang.status"></td>
+                            <td class="text-center" ng-if="penerimaanBarang.editable">
+                                <input type="radio" ng-model="itemBarang.status" value="APPROVED" ui-validate="'validateApproval($value)'" />
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </td>
+                            <td class="text-center" ng-if="penerimaanBarang.editable">
+                                <input type="radio" ng-model="itemBarang.status" value="REJECTED" ui-validate="'validateApproval($value)'" />
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <div ng-if="penerimaanBarang.editable">
+            <button class="btn btn-default btn-sm" type="button" ng-click="$dismiss('update')" ng-if="access.update">
+                <span class="glyphicon glyphicon-edit"></span>
+                <span>&nbsp;Ubah</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="approve()" ng-if="access.update">
+                <span class="glyphicon glyphicon-ok"></span>
+                <span>&nbsp;Setujui Semua</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="reject()" ng-if="access.update">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>&nbsp;Tolak Semua</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="updateStatus()" ng-if="access.update" ng-disabled="penerimaanBarangForm.$invalid">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                <span>&nbsp;Simpan Pengesahan</span>
+            </button>
+            <button class="btn btn-default btn-sm" type="button" ng-click="delete()" ng-if="access.delete">
+                <span class="glyphicon glyphicon-trash"></span>
+                <span>&nbsp;Hapus</span>
+            </button>
+        </div>
+    </form>
 </div>

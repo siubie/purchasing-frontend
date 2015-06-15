@@ -64,7 +64,7 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
     };
     $scope.new = function() {
         $scope.katalogBarang = new katalogBarangFactory({
-            hargaSupplier: [],
+            historyHarga: [],
             editable: true
         });
     };
@@ -122,10 +122,12 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
         }
     };
     $scope.delete = function(katalogBarang) {
-        $scope.katalogBarang = katalogBarang;
+        if (!!katalogBarang) {
+            $scope.katalogBarang = katalogBarang;
+        }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            katalogBarang.$delete(function() {
+            $scope.katalogBarang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                     toastr.success("Data Katalog Barang Telah Dihapus...");

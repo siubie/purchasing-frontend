@@ -48,11 +48,21 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         field: "nomor",
         order: true
     };
+    var checkEditable = function(returBarang) {
+        switch (returBarang.status) {
+            case "NEW":
+                returBarang.editable = true;
+                break;
+            default:
+                returBarang.editable = false;
+        }
+        return returBarang;
+    };
     $scope.query = function() {
         $scope.penerimaanBarangs = penerimaanBarangFactory.query();
         $scope.returBarangs = returBarangFactory.query(function() {
             angular.forEach($scope.returBarangs, function(returBarang) {
-                returBarang.editable = true;
+                returBarang = checkEditable(returBarang);
             });
         });
         $scope.items = $scope.returBarangs;
@@ -62,14 +72,14 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         $scope.returBarang = returBarangFactory.get({
             id: id
         }, function() {
-            $scope.returBarang.editable = true;
+            $scope.returBarang = checkEditable($scope.returBarang);
         });
     };
     $scope.new = function(penerimaanBarang) {
         $scope.returBarang = new returBarangFactory({
             nomor: "LPBR" + new Date().getTime(),
             tanggalBuat: new Date(),
-            status: "RECEIVED",
+            status: "NEW",
             returItemsList: [],
             editable: true
         });
@@ -90,7 +100,7 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
                     jumlahDatang: itemBarang.jumlah,
                     jumlahRetur: 1,
                     harga: itemBarang.harga,
-                    status: "RECEIVED"
+                    status: "NEW"
                 });
             });
         }
@@ -107,6 +117,15 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
                 break;
             case "delete":
                 warning = warning + "Menghapus ";
+                break;
+            case "approve":
+                warning = warning + "Menyetujui ";
+                break;
+            case "reject":
+                warning = warning + "Menolak ";
+                break;
+            case "updateStatus":
+                warning = warning + "Mengesahkan ";
                 break;
         }
         warning = warning + "Data Retur Barang Berikut : \n\n";
@@ -163,15 +182,68 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         }
     };
     $scope.delete = function(returBarang) {
-        $scope.returBarang = returBarang;
+        if (!!returBarang) {
+            $scope.returBarang = returBarang;
+        }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            returBarang.$delete(function() {
+            $scope.returBarang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
                 toastr.success("Data Retur Barang Telah Dihapus...");
                 $scope.query();
+            });
+        }
+    };
+    $scope.approve = function() {
+        var confirm = $window.confirm($scope.warning("approve"));
+        if (confirm) {
+            $scope.returBarang.status = "APPROVED";
+            angular.forEach($scope.returBarang.returItemsList, function(itemBarang) {
+                itemBarang.status = "APPROVED";
+            });
+            $scope.returBarang.$update(function() {
+                $scope.modalInstance.close("approve");
+                toastr.success("Data Penerimaan Barang Telah Disetujui...");
+                $scope.query();
+            });
+        }
+    };
+    $scope.reject = function() {
+        var confirm = $window.confirm($scope.warning("reject"));
+        if (confirm) {
+            $scope.returBarang.status = "REJECTED";
+            angular.forEach($scope.returBarang.returItemsList, function(itemBarang) {
+                itemBarang.status = "REJECTED";
+            });
+            $scope.returBarang.$update(function() {
+                $scope.modalInstance.close("approve");
+                toastr.success("Data Penerimaan Barang Telah Ditolak...");
+                $scope.query();
+            });
+        }
+    };
+    $scope.updateStatus = function() {
+        var confirm = $window.confirm($scope.warning("updateStatus"));
+        if (confirm) {
+            var allRejected = 0;
+            angular.forEach($scope.returBarang.returItemsList, function(itemBarang) {
+                switch (itemBarang.status) {
+                    case "APPROVED":
+                        $scope.returBarang.status = "APPROVED";
+                        break;
+                    case "REJECTED":
+                        allRejected++;
+                        break;
+                }
+            });
+            if (allRejected == $scope.returBarang.returItemsList.length) {
+                $scope.returBarang.status = "REJECTED";
+            }
+            $scope.returBarang.$update(function() {
+                $scope.modalInstance.close("approve");
+                toastr.success("Data Penerimaan Barang Telah Disahkan...");
             });
         }
     };
@@ -199,7 +271,11 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             windowClass: "app-modal-window",
             scope: $scope
         });
-        $scope.modalInstance.result.then({}, function(reason) {
+        $scope.modalInstance.result.then(function(reason) {
+            if (reason == "approve") {
+                $scope.query();
+            }
+        }, function(reason) {
             if (reason == "update") {
                 $scope.openUpdate(returBarang);
             }
@@ -218,6 +294,20 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
         $scope.modalInstance.result.then(function() {
             $scope.query();
         });
+    };
+    $scope.validateApproval = function(value) {
+        if (value != "NEW") {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    $scope.validateNumber = function(value) {
+        if (value > 0) {
+            return true;
+        } else {
+            return false;
+        }
     };
     $scope.removeDetail = function(index) {
         $scope.returBarang.returItemsList.splice(index, 1);

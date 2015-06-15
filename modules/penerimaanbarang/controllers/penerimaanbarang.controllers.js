@@ -52,7 +52,7 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     $scope.opened = {
         "tanggalDatang": false
     };
-    var checkEditable = function(penerimaanBarang, process) {
+    var checkEditable = function(penerimaanBarang) {
         switch (penerimaanBarang.status) {
             case "NEW":
                 penerimaanBarang.editable = true;
@@ -60,15 +60,6 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             default:
                 penerimaanBarang.editable = false;
         }
-        angular.forEach(penerimaanBarang.lpbItemsList, function(itemBarang) {
-            switch (itemBarang.status) {
-                case "NEW":
-                    itemBarang.editable = true;
-                    break;
-                default:
-                    itemBarang.editable = false;
-            }
-        });
         return penerimaanBarang;
     };
     $scope.query = function() {
@@ -131,6 +122,15 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             case "delete":
                 warning = warning + "Menghapus ";
                 break;
+            case "approve":
+                warning = warning + "Menyetujui ";
+                break;
+            case "reject":
+                warning = warning + "Menolak ";
+                break;
+            case "updateStatus":
+                warning = warning + "Mengesahkan ";
+                break;
         }
         warning = warning + "Data Penerimaan Barang Berikut : \n\n";
         angular.forEach($scope.fields, function(field) {
@@ -186,10 +186,12 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
         }
     };
     $scope.delete = function(penerimaanBarang) {
-        $scope.penerimaanBarang = penerimaanBarang;
+        if (!!penerimaanBarang) {
+            $scope.penerimaanBarang = penerimaanBarang;
+        }
         var confirm = $window.confirm($scope.warning("delete"));
         if (confirm) {
-            penerimaanBarang.$delete(function() {
+            $scope.penerimaanBarang.$delete(function() {
                 if (!!$scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
@@ -198,57 +200,54 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             });
         }
     };
-    $scope.approve = function(penerimaanBarang, kodeBarang) {
-        $scope.penerimaanBarang = penerimaanBarang;
+    $scope.approve = function() {
         var confirm = $window.confirm($scope.warning("approve"));
-        var toast = "";
         if (confirm) {
             $scope.penerimaanBarang.status = "APPROVED";
             angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang) {
-                if (!!kodeBarang) {
-                    if (itemBarang.barang.kode == kodeBarang) {
-                        itemBarang.status = "APPROVED";
-                        toast = "Item Penerimaan Barang Telah Disetujui...";
-                    }
-                } else {
-                    itemBarang.status = "APPROVED";
-                    toast = "Data Penerimaan Barang Telah Disetujui...";
-                }
+                itemBarang.status = "APPROVED";
             });
             $scope.penerimaanBarang.$update(function() {
-                toastr.success(toast);
+                $scope.modalInstance.close("approve");
+                toastr.success("Data Penerimaan Barang Telah Disetujui...");
                 $scope.query();
-                $scope.get(penerimaanBarang.nomor);
             });
         }
     };
-    $scope.reject = function(penerimaanBarang, kodeBarang) {
-        $scope.penerimaanBarang = penerimaanBarang;
+    $scope.reject = function() {
         var confirm = $window.confirm($scope.warning("reject"));
-        var toast = "";
-        var allRejected = 0;
         if (confirm) {
+            $scope.penerimaanBarang.status = "REJECTED";
             angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang) {
-                if (!!kodeBarang) {
-                    if (itemBarang.barang.kode == kodeBarang) {
-                        itemBarang.status = "REJECTED";
-                        toast = "Item Penerimaan Barang Telah Ditolak...";
-                    }
-                } else {
-                    itemBarang.status = "REJECTED";
-                    toast = "Data Penerimaan Barang Telah Ditolak...";
-                }
-                if (itemBarang.status == "REJECTED") {
-                    allRejected++;
+                itemBarang.status = "REJECTED";
+            });
+            $scope.penerimaanBarang.$update(function() {
+                $scope.modalInstance.close("approve");
+                toastr.success("Data Penerimaan Barang Telah Ditolak...");
+                $scope.query();
+            });
+        }
+    };
+    $scope.updateStatus = function() {
+        var confirm = $window.confirm($scope.warning("updateStatus"));
+        if (confirm) {
+            var allRejected = 0;
+            angular.forEach($scope.penerimaanBarang.lpbItemsList, function(itemBarang) {
+                switch (itemBarang.status) {
+                    case "APPROVED":
+                        $scope.penerimaanBarang.status = "APPROVED";
+                        break;
+                    case "REJECTED":
+                        allRejected++;
+                        break;
                 }
             });
             if (allRejected == $scope.penerimaanBarang.lpbItemsList.length) {
                 $scope.penerimaanBarang.status = "REJECTED";
             }
             $scope.penerimaanBarang.$update(function() {
-                toastr.success(toast);
-                $scope.query();
-                $scope.get(penerimaanBarang.nomor);
+                $scope.modalInstance.close("approve");
+                toastr.success("Data Penerimaan Barang Telah Disahkan...");
             });
         }
     };
@@ -275,7 +274,11 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             windowClass: "app-modal-window",
             scope: $scope
         });
-        $scope.modalInstance.result.then({}, function(reason) {
+        $scope.modalInstance.result.then(function(reason) {
+            if (reason == "approve") {
+                $scope.query();
+            }
+        }, function(reason) {
             if (reason == "update") {
                 $scope.openUpdate(penerimaanBarang);
             }
@@ -297,6 +300,20 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
     };
     $scope.removeDetail = function(index) {
         $scope.penerimaanBarang.lpbItemsList.splice(index, 1);
+    };
+    $scope.validateApproval = function(value) {
+        if (value != "NEW") {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    $scope.validateNumber = function(value) {
+        if (value > 0) {
+            return true;
+        } else {
+            return false;
+        }
     };
     $scope.openCalendar = function($event) {
         $event.preventDefault();
