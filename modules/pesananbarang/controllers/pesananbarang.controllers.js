@@ -77,7 +77,30 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             });
             $scope.satuanGudangArray.sort();
         });
-        $scope.permintaanBarangs = permintaanBarangFactory.query();
+        $scope.permintaanBarangs = permintaanBarangFactory.query(function() {
+            var permintaanBarangArray = [];
+            angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
+                angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
+                    if (itemBarang.status == "APPROVED") {
+                        permintaanBarangArray.push({
+                            barang: itemBarang.barang,
+                            hargaKatalog: itemBarang.hargaKatalog,
+                            jumlah: itemBarang.jumlah,
+                            keterangan: itemBarang.keterangan,
+                            leadTime: itemBarang.leadTime,
+                            sisa: itemBarang.sisa,
+                            status: itemBarang.status,
+                            tanggalButuh: itemBarang.tanggalButuh,
+                            emergency: permintaanBarang.emergency,
+                            kategori: permintaanBarang.kategori,
+                            nomor: permintaanBarang.nomor,
+                            tanggal: permintaanBarang.tanggal
+                        });
+                    }
+                });
+            });
+            $scope.permintaanBarangs = permintaanBarangArray;
+        });
         $scope.pesananBarangs = pesananBarangFactory.query(function() {
             angular.forEach($scope.pesananBarangs, function(pesananBarang) {
                 pesananBarang = checkEditable(pesananBarang);
@@ -90,6 +113,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         $scope.pesananBarang = pesananBarangFactory.get({
             id: id
         }, function() {
+            $scope.pesananBarang.nominalDiskon = Number(($scope.getTotalCost() * $scope.pesananBarang.diskon / 100).toFixed(2));
             $scope.pesananBarang = checkEditable($scope.pesananBarang);
         });
     };
@@ -104,6 +128,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             valutaBayar: "IDR",
             status: "NEW",
             syaratBayar: 0,
+            nominalDiskon: 0,
             spItemsList: [],
             editable: true
         });
@@ -272,38 +297,38 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             $scope.timeoutConversion = true;
         });
     };
-    $scope.getBarangs = function(nomorSpp) {
+    $scope.getBarangs = function() {
         var barangs = [];
         angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
-            if (nomorSpp == permintaanBarang.nomor) {
-                angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
-                    if (itemBarang.status == "APPROVED") {
-                        barangs.push(itemBarang.barang);
-                    }
-                });
+            barangs.push(permintaanBarang.barang);
+        });
+        barangs = $filter('unique')(barangs);
+        return barangs;
+    };
+    $scope.getPermintaanBarangs = function(kodeBarang) {
+        var permintaanBarangs = [];
+        angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
+            if (permintaanBarang.barang.kode == kodeBarang) {
+                permintaanBarangs.push(permintaanBarang);
             }
         });
-        return barangs;
+        return permintaanBarangs;
     };
     $scope.getItemBarang = function(index, nomorSpp, kodeBarang) {
         angular.forEach($scope.permintaanBarangs, function(permintaanBarang) {
-            if (nomorSpp == permintaanBarang.nomor) {
-                angular.forEach(permintaanBarang.sppItemsList, function(itemBarang) {
-                    if (kodeBarang == itemBarang.barang.kode) {
-                        $scope.pesananBarang.spItemsList[index].harga = itemBarang.hargaKatalog;
-                        $scope.pesananBarang.spItemsList[index].hargaKatalog = itemBarang.hargaKatalog;
-                        $scope.pesananBarang.spItemsList[index].satuan = itemBarang.satuan;
-                        $scope.pesananBarang.spItemsList[index].jumlah = itemBarang.jumlah;
-                        $scope.pesananBarang.spItemsList[index].jumlahSpp = itemBarang.jumlah;
-                    }
-                });
+            if ((permintaanBarang.nomor == nomorSpp) && (permintaanBarang.barang.kode == kodeBarang)) {
+                $scope.pesananBarang.spItemsList[index].harga = permintaanBarang.hargaKatalog;
+                $scope.pesananBarang.spItemsList[index].hargaKatalog = permintaanBarang.hargaKatalog;
+                $scope.pesananBarang.spItemsList[index].satuan = permintaanBarang.barang.satuan;
+                $scope.pesananBarang.spItemsList[index].jumlah = permintaanBarang.jumlah;
+                $scope.pesananBarang.spItemsList[index].jumlahDiminta = permintaanBarang.jumlah;
             }
         });
     };
     $scope.getTotalCost = function() {
         var getTotalCost = 0;
         angular.forEach($scope.pesananBarang.spItemsList, function(itemBarang) {
-            getTotalCost = getTotalCost + (((itemBarang.harga * $scope.pesananBarang.kurs) - (itemBarang.harga * $scope.pesananBarang.kurs * $scope.pesananBarang.diskon / 100)) * itemBarang.jumlah);
+            getTotalCost = getTotalCost + (itemBarang.harga * $scope.pesananBarang.kurs * itemBarang.jumlah);
         });
         return getTotalCost;
     };
@@ -315,10 +340,19 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             }, function() {
                 if (!!konversiSatuan.nilai) {
                     $scope.pesananBarang.spItemsList[index].konversi = konversiSatuan.nilai;
-                    $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahSpp / konversiSatuan.nilai;
+                    $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahDiminta / konversiSatuan.nilai;
                 }
             });
         }
+        if (satuanGudang == satuanKonversi) {
+            $scope.pesananBarang.spItemsList[index].konversi = 1;
+        }
+    };
+    $scope.getNominalDiskon = function() {
+        $scope.pesananBarang.nominalDiskon = $scope.getTotalCost() * $scope.pesananBarang.diskon / 100;
+    };
+    $scope.getDiskon = function() {
+        $scope.pesananBarang.diskon = $scope.pesananBarang.nominalDiskon / $scope.getTotalCost() * 100;
     };
     $scope.addDetail = function() {
         $scope.pesananBarang.spItemsList.push({
