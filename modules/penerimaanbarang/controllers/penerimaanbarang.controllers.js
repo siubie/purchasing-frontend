@@ -251,6 +251,13 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             });
         }
     };
+    $scope.validateNumber = function(value) {
+        if (value > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     $scope.openCreate = function() {
         $scope.newForm = true;
         $scope.new();

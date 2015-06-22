@@ -21,13 +21,17 @@
             <input type="text" class="form-control" id="supplier" name="supplier" placeholder="Masukkan Supplier.." ng-model="katalogBarang.supplier" typeahead="supplier as supplier.nama for supplier in suppliers | filter:{kategori:katalogBarang.barang.kategori} | filter:{nama:$viewValue} | limitTo:10 | orderBy:'nama'"
             typeahead-editable="false" ng-disabled="!newForm || !katalogBarang.barang" required/>
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-4 input-group-sm">
             <label for="alias">Alias</label>
             <input type="text" class="form-control" id="alias" name="alias" placeholder="Masukkan Alias.." ng-model="katalogBarang.alias" />
         </div>
-        <div class="form-group col-xs-6 input-group-sm">
+        <div class="form-group col-xs-4 input-group-sm">
             <label for="leadTime">Lead Time</label>
-            <input type="number" class="form-control" id="leadTime" name="leadTime" pattern="\d+" placeholder="Masukkan Lead Time.." ng-model="katalogBarang.leadTime" required/>
+            <input type="number" class="form-control" id="leadTime" name="leadTime" placeholder="Masukkan Lead Time.." ng-model="katalogBarang.leadTime" ui-validate="'validateNumber($value)'" required/>
+        </div>
+        <div class="form-group col-xs-4 input-group-sm">
+            <label for="harga">Harga</label>
+            <input type="number" class="form-control" id="harga" name="harga" placeholder="Masukkan Lead Time.." ng-model="katalogBarang.historyHarga[0].harga" ui-validate="'validateNumber($value)'" required/>
         </div>
         <div class="col-xs-12" ng-if="katalogBarang.editable">
             <button type="submit" class="btn btn-default btn-sm" ng-click="newForm ? create() : update()" ng-disabled="katalogBarangForm.$invalid">

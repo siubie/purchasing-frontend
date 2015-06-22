@@ -73,7 +73,7 @@
                         <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                         <td class="text-center" ng-bind="itemBarang.satuan"></td>
                         <td class="input-group-sm">
-                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" min="1" max="{{::itemBarang.jumlah}}" pattern="\d+" required/>
+                            <input class="form-control text-center" type="number" name="jumlah" ng-model="itemBarang.jumlah" max="{{::itemBarang.jumlah}}" ui-validate="'validateNumber($value)'" required/>
                         </td>
                         <td class="text-center" ng-bind="itemBarang.harga"></td>
                         <td class="text-center">

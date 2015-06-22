@@ -345,9 +345,6 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
                 $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahDiminta / $scope.pesananBarang.spItemsList[index].konversi;
             });
         }
-        console.log("konversi : ", $scope.pesananBarang.spItemsList[index].konversi);
-        console.log("jumlahDiminta : ", $scope.pesananBarang.spItemsList[index].jumlahDiminta);
-        console.log("jumlah : ", $scope.pesananBarang.spItemsList[index].jumlah);
     };
     $scope.addDetail = function() {
         $scope.pesananBarang.spItemsList.push({

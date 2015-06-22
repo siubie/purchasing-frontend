@@ -23,7 +23,9 @@ var todo = new Object({
         "sembunyikan pilihan di item barang ketika sudah tidak ada item barang yang bisa diubah",
         "cek span dan div",
         "cek col-xs-12",
-        "filter tampilan harga dan jumlah"
+        "filter tampilan harga dan jumlah",
+        "pengaruh konversi satuan terhadap harga",
+        "tampilkan kedua jumlah di semua transaksi"
     ],
     bisnis: [
         "duplikasi data jenis di nama barang",

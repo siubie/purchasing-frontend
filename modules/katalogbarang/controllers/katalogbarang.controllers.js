@@ -64,7 +64,9 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
     };
     $scope.new = function() {
         $scope.katalogBarang = new katalogBarangFactory({
-            historyHarga: [],
+            historyHarga: [{
+                "tanggal": new Date()
+            }],
             editable: true
         });
     };
@@ -134,6 +136,13 @@ angular.module("katalogBarang.controllers", []).controller("katalogBarangControl
                 }
                 $scope.query();
             });
+        }
+    };
+    $scope.validateNumber = function(value) {
+        if (value > 0) {
+            return true;
+        } else {
+            return false;
         }
     };
     $scope.openCreate = function() {

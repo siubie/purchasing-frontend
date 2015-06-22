@@ -30,7 +30,7 @@ angular.module("purchasingApp", [
 ]);
 
 angular.module("purchasing.routes", []).config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise("/pesananbarang/");
+    $urlRouterProvider.otherwise("/barang/");
 });
 
 angular.module('purchasing.services', []).factory('constFactory', function() {
