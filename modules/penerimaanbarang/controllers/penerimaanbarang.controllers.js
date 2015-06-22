@@ -94,7 +94,6 @@ angular.module("penerimaanBarang.controllers", []).controller("penerimaanBarangC
             $scope.penerimaanBarang.diskon = pesananBarang.diskon;
             $scope.penerimaanBarang.kurs = pesananBarang.kurs;
             $scope.penerimaanBarang.valuta = pesananBarang.valuta;
-            $scope.penerimaanBarang.valutaBayar = pesananBarang.valutaBayar;
             angular.forEach(pesananBarang.spItemsList, function(itemBarang) {
                 if (itemBarang.status == "APPROVED") {
                     $scope.penerimaanBarang.lpbItemsList.push({

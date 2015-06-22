@@ -92,7 +92,6 @@ angular.module("returBarang.controllers", []).controller("returBarangController"
             $scope.returBarang.diskon = penerimaanBarang.diskon;
             $scope.returBarang.kurs = penerimaanBarang.kurs;
             $scope.returBarang.valuta = penerimaanBarang.valuta;
-            $scope.returBarang.valutaBayar = penerimaanBarang.valutaBayar;
             angular.forEach(penerimaanBarang.lpbItemsList, function(itemBarang) {
                 $scope.returBarang.returItemsList.push({
                     barang: itemBarang.barang,

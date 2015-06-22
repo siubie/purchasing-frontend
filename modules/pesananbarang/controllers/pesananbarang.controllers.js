@@ -124,7 +124,6 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             diskon: 0,
             kurs: 1,
             valuta: "IDR",
-            valutaBayar: "IDR",
             status: "NEW",
             syaratBayar: 0,
             spItemsList: [],
@@ -282,7 +281,7 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         }
     };
     $scope.getRate = function() {
-        var url = "http://jsonrates.com/get/?from=" + $scope.pesananBarang.valuta + "&to=" + $scope.pesananBarang.valutaBayar + "&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK";
+        var url = "http://jsonrates.com/get/?from=" + $scope.pesananBarang.valuta + "&to=IDR" + "&apiKey=jr-e24ec7990c9beb15f956913c940f1ed9&callback=JSON_CALLBACK";
         $http({
             method: "JSONP",
             url: url,

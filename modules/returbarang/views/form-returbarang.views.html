@@ -14,44 +14,40 @@
     </div>
     <form name="returBarangForm">
         <div class="row">
-            <div class="form-group col-xs-4 input-group-sm">
+            <div class="form-group col-xs-3 input-group-sm">
                 <label for="lpb">Nomor LPB:&nbsp;</label>
                 <input type="text" class="form-control" id="lpb" name="lpb" placeholder="Masukkan Nomor LPB.." ng-model="returBarang.lpb" typeahead="penerimaanBarang.nomor for penerimaanBarang in penerimaanBarangs | filter:{nomor:$viewValue} | limitTo:10 | orderBy:'nomor'"
                 typeahead-editable="false" typeahead-on-select="new($item)" required/>
             </div>
             <div ng-show="returBarang.lpb">
-                <div class="form-group col-xs-4">
+                <div class="form-group col-xs-3">
                     <label for="tanggalDatang">Tanggal Datang:&nbsp;</label>
                     <span ng-bind="returBarang.tanggalDatang | date:'longDate'"></span>
                 </div>
-                <div class="form-group col-xs-4">
+                <div class="form-group col-xs-3">
                     <label for="sp">Nomor SP:&nbsp;</label>
                     <span ng-bind="returBarang.sp"></span>
+                </div>
+                <div class="form-group col-xs-3">
+                    <label for="supplier">Supplier:&nbsp;</label>
+                    <span ng-bind="returBarang.supplier.nama"></span>
                 </div>
             </div>
         </div>
         <div class="row" ng-show="returBarang.lpb">
-            <div class="form-group col-xs-4">
-                <label for="supplier">Supplier:&nbsp;</label>
-                <span ng-bind="returBarang.supplier.nama"></span>
-            </div>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-xs-3">
                 <label for="diskon">Diskon:&nbsp;</label>
                 <span ng-bind="returBarang.diskon"></span>
             </div>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-xs-3">
                 <label for="valuta">Valuta:&nbsp;</label>
                 <span ng-bind="returBarang.valuta"></span>
             </div>
-            <div class="form-group col-xs-4">
-                <label for="valutaBayar">Valuta Bayar:&nbsp;</label>
-                <span ng-bind="returBarang.valutaBayar"></span>
-            </div>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-xs-3">
                 <label for="kurs">Kurs:&nbsp;</label>
                 <span ng-bind="returBarang.kurs"></span>
             </div>
-            <div class="form-group col-xs-4">
+            <div class="form-group col-xs-3">
                 <label for="nomorSj">Nomor Surat Jalan:&nbsp;</label>
                 <span ng-bind="returBarang.nomorSj"></span>
             </div>

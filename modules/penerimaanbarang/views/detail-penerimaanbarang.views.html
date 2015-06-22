@@ -45,19 +45,15 @@
                 </td>
                 <td ng-bind="penerimaanBarang.valuta"></td>
                 <td>
-                    <strong>Valuta Bayar</strong>
-                </td>
-                <td ng-bind="penerimaanBarang.valutaBayar"></td>
-            </tr>
-            <tr>
-                <td>
                     <strong>Kurs</strong>
                 </td>
                 <td ng-bind="penerimaanBarang.kurs | number"></td>
+            </tr>
+            <tr>
                 <td>
                     <strong>Status</strong>
                 </td>
-                <td ng-bind="penerimaanBarang.status"></td>
+                <td colspan="3" ng-bind="penerimaanBarang.status"></td>
             </tr>
             <tr>
                 <td colspan="4">
