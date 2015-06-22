@@ -38,7 +38,7 @@
                     </tr>
                     <tr ng-repeat="historyHarga in katalogBarang.historyHarga | orderBy:'tanggal':'false'">
                         <td class="text-center" ng-bind="historyHarga.tanggal | date:'longDate'"></td>
-                        <td class="text-center" ng-bind="historyHarga.harga | number"></td>
+                        <td class="text-center" ng-bind="historyHarga.harga | number:2"></td>
                     </tr>
                 </table>
             </td>
