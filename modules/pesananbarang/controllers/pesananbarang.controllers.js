@@ -113,7 +113,6 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         $scope.pesananBarang = pesananBarangFactory.get({
             id: id
         }, function() {
-            $scope.pesananBarang.nominalDiskon = Number(($scope.getTotalCost() * $scope.pesananBarang.diskon / 100).toFixed(2));
             $scope.pesananBarang = checkEditable($scope.pesananBarang);
         });
     };
@@ -128,7 +127,6 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
             valutaBayar: "IDR",
             status: "NEW",
             syaratBayar: 0,
-            nominalDiskon: 0,
             spItemsList: [],
             editable: true
         });
@@ -333,26 +331,23 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
         return getTotalCost;
     };
     $scope.getKonversiSatuan = function(index, satuanGudang, satuanKonversi) {
-        if (!!satuanKonversi) {
+        if (satuanGudang == satuanKonversi) {
+            $scope.pesananBarang.spItemsList[index].konversi = 1;
+            $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahDiminta / $scope.pesananBarang.spItemsList[index].konversi;
+        } else {
             var konversiSatuan = konversiSatuanFactory.get({
                 id1: satuanGudang,
                 id2: satuanKonversi
             }, function() {
                 if (!!konversiSatuan.nilai) {
                     $scope.pesananBarang.spItemsList[index].konversi = konversiSatuan.nilai;
-                    $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahDiminta / konversiSatuan.nilai;
                 }
+                $scope.pesananBarang.spItemsList[index].jumlah = $scope.pesananBarang.spItemsList[index].jumlahDiminta / $scope.pesananBarang.spItemsList[index].konversi;
             });
         }
-        if (satuanGudang == satuanKonversi) {
-            $scope.pesananBarang.spItemsList[index].konversi = 1;
-        }
-    };
-    $scope.getNominalDiskon = function() {
-        $scope.pesananBarang.nominalDiskon = $scope.getTotalCost() * $scope.pesananBarang.diskon / 100;
-    };
-    $scope.getDiskon = function() {
-        $scope.pesananBarang.diskon = $scope.pesananBarang.nominalDiskon / $scope.getTotalCost() * 100;
+        console.log("konversi : ", $scope.pesananBarang.spItemsList[index].konversi);
+        console.log("jumlahDiminta : ", $scope.pesananBarang.spItemsList[index].jumlahDiminta);
+        console.log("jumlah : ", $scope.pesananBarang.spItemsList[index].jumlah);
     };
     $scope.addDetail = function() {
         $scope.pesananBarang.spItemsList.push({

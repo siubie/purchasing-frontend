@@ -58,7 +58,7 @@
                             <td class="text-center" ng-bind="itemBarang.spp"></td>
                             <td class="text-center" ng-bind="itemBarang.barang.nama"></td>
                             <td class="text-center" ng-bind="itemBarang.satuan"></td>
-                            <td class="text-center" ng-bind="itemBarang.jumlahDiminta | number"></td>
+                            <td class="text-center" ng-bind="itemBarang.jumlahDiminta / itemBarang.konversi | number"></td>
                             <td class="text-center" ng-bind="itemBarang.jumlah | number"></td>
                             <td class="text-center">
                                 <span ng-bind="itemBarang.harga * pesananBarang.kurs | number:2"></span>
@@ -78,30 +78,25 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="text-center">
+                            <td colspan="6" class="text-center">
                                 <strong>Sub Total</strong>
                             </td>
-                            <td></td>
                             <td class="text-center" ng-bind="getTotalCost() | number:2"></td>
                             <td colspan="3"></td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="text-center">
-                                <strong>Diskon</strong>
-                            </td>
-                            <td class="text-center">
-                                <span ng-bind="pesananBarang.diskon | number:2"></span>
-                                <span>%</span>
+                            <td colspan="6" class="text-center">
+                                <strong>Diskon ({{pesananBarang.diskon}}%)
+                                </strong>
                             </td>
                             <td class="text-center" ng-bind="getTotalCost() * pesananBarang.diskon / 100 | number:2"></td>
                             <td colspan="3"></td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="text-center">
+                            <td colspan="6" class="text-center">
                                 <strong>Grand Total</strong>
                             </td>
-                            <td></td>
-                            <td class="text-center" ng-bind="getTotalCost() - pesananBarang.nominalDiskon | number:2"></td>
+                            <td class="text-center" ng-bind="getTotalCost() - (getTotalCost() * pesananBarang.diskon / 100) | number:2"></td>
                             <td colspan="3"></td>
                         </tr>
 
