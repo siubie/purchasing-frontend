@@ -132,14 +132,13 @@
                 </tr>
                 <tr>
                     <td colspan="5" class="text-center">
-                        <strong>Diskon</strong>
+                        <strong>Diskon ({{pesananBarang.diskon}}%)
+                        </strong>
                     </td>
                     <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="diskon" ng-model="pesananBarang.diskon" ng-change="getNominalDiskon()" required/>
+                        <input class="form-control text-center" type="number" name="diskon" ng-model="pesananBarang.diskon" required/>
                     </td>
-                    <td class="input-group-sm">
-                        <input class="form-control text-center" type="number" name="nominalDiskon" ng-model="pesananBarang.nominalDiskon" ng-change="getDiskon()" required/>
-                    </td>
+                    <td class="text-center" ng-bind="getTotalCost() * pesananBarang.diskon / 100 | number:2"></td>
                     <td colspan="3"></td>
                 </tr>
                 <tr>
@@ -147,7 +146,7 @@
                         <strong>Grand Total</strong>
                     </td>
                     <td></td>
-                    <td class="text-center" ng-bind="getTotalCost() - pesananBarang.nominalDiskon | number:2"></td>
+                    <td class="text-center" ng-bind="getTotalCost() - (getTotalCost() * pesananBarang.diskon / 100) | number:2"></td>
                     <td colspan="3"></td>
                 </tr>
             </table>

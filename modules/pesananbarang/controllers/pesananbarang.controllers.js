@@ -320,8 +320,8 @@ angular.module("pesananBarang.controllers", []).controller("pesananBarangControl
                 $scope.pesananBarang.spItemsList[index].harga = permintaanBarang.hargaKatalog;
                 $scope.pesananBarang.spItemsList[index].hargaKatalog = permintaanBarang.hargaKatalog;
                 $scope.pesananBarang.spItemsList[index].satuan = permintaanBarang.barang.satuan;
-                $scope.pesananBarang.spItemsList[index].jumlah = permintaanBarang.jumlah;
-                $scope.pesananBarang.spItemsList[index].jumlahDiminta = permintaanBarang.jumlah;
+                $scope.pesananBarang.spItemsList[index].jumlah = permintaanBarang.sisa;
+                $scope.pesananBarang.spItemsList[index].jumlahDiminta = permintaanBarang.sisa;
             }
         });
     };
